@@ -40,11 +40,11 @@ protected void Page_Load(object sender, EventArgs e)
                         } else {
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         }
-
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idModalidad"].ToString() + ",'" + drseldatos["modalidad"].ToString()+ "');\"></button>");
+                        
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idModalidad"].ToString() + ",'" + drseldatos["idmodalidad"].ToString()+ "');\"></button>");                        
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idModalidad"].ToString() + ");\"></button></td></tr>");
-
-
+                        
+                         
 
                     }
                     if (drseldatos.HasRows)
@@ -83,4 +83,47 @@ protected void Page_Load(object sender, EventArgs e)
         //HttpContext.Current.Session["idEdicion"] = id;
         //return "{\"Success\": \"" + Exitoso + "\"}";
     }
+
+    [WebMethod]
+    public static string borrarModalidad(int id){      
+        int Eliminado = 0;
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("EliminarModalidad", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@idModalidad", SqlDbType.Int).Value = id;
+
+                SqlParameter peliminado = comand.Parameters.Add("@Eliminado", SqlDbType.Int);
+                peliminado.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Eliminado = int.Parse(peliminado.Value.ToString());
+            }
+            Conn.Close();
+            return "{\"success\": \"" + Eliminado + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string GuardarModalidad(string Modalidad)
+    {
+        int Exitoso = 0;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("GuardarModalidad", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@Modalidad", SqlDbType.NVarChar, 120).Value = Modalidad;
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
 }
+    

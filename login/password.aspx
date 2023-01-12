@@ -32,9 +32,8 @@
             <div class="backLeft">
                 <div id="dLeyenda">
                     <p id="pLeyenda">
-                        Software desarrollado por La Facultad
-                        <br />
-                        de Comercio y Administraci&oacute;n Victoria
+                        Software desarrollado por La Facultad<br />
+                        de Comercio y Administraci&oacute;n Victoria.
                     </p>
                 </div>
             </div>

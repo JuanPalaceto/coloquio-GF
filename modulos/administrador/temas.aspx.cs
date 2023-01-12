@@ -11,29 +11,11 @@ using System.Data.SqlClient;
 
 public partial class temas : System.Web.UI.Page
 {
+    public string idTema, tema;
     protected void Page_Load(object sender, EventArgs e)
     {
-
-    }
-    [WebMethod]
-    public static string alternarActivo(int id)
-    {
-        int Exitoso = 1;
-        using (SqlConnection Conn = conn.conecta())
-        {
-            using (SqlCommand comand = new SqlCommand("activarTema", Conn))
-            {
-                comand.CommandType = CommandType.StoredProcedure;
-                comand.Parameters.AddWithValue("@idTema", id);
-                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
-                pexitoso.Direction = ParameterDirection.Output;
-                Conn.Open();
-                comand.ExecuteNonQuery();
-                Exitoso = int.Parse(pexitoso.Value.ToString());
-            }
-            Conn.Close();
-            return "{\"success\": \"" + Exitoso + "\"}";
-        }
+        idTema= Convert.ToString(HttpContext.Current.Session["idTema"]);
+        tema= Convert.ToString(HttpContext.Current.Session["tema"]);
     }
     [WebMethod]
     public static string TablaListarTemas()
@@ -64,7 +46,7 @@ public partial class temas : System.Web.UI.Page
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button>");
                         }
 
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idTema"].ToString() + ",'" + drseldatos["tema"].ToString() + "');\"></button>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idTema"].ToString() + ",'" + drseldatos["tema"].ToString()+ "');\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idTema"].ToString() + ");\"></button></td></tr>");
                     }
                     if (drseldatos.HasRows)
@@ -83,6 +65,26 @@ public partial class temas : System.Web.UI.Page
         }
     }
     [WebMethod]
+    public static string alternarActivo(int id)
+    {
+        int Exitoso = 1;
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("activarTema", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.AddWithValue("@idTema", id);
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            Conn.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }        
+    }    
+    [WebMethod]
     public static string editarTema(int id){
         using (SqlConnection Conn = conn.conecta())
         {
@@ -91,7 +93,7 @@ public partial class temas : System.Web.UI.Page
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
 
-                SqlParameter pedicion = comand.Parameters.Add("@tema", SqlDbType.NVarChar, 20);
+                SqlParameter pedicion = comand.Parameters.Add("@tema", SqlDbType.NVarChar, 50);
                 pedicion.Direction = ParameterDirection.Output;
 
                 Conn.Open();
@@ -112,7 +114,7 @@ public partial class temas : System.Web.UI.Page
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
-                command.Parameters.Add("@tema", SqlDbType.NVarChar, 20).Value = newTema;
+                command.Parameters.Add("@tema", SqlDbType.NVarChar, 50).Value = newTema;
 
                 Conn.Open();
                 command.ExecuteNonQuery();
@@ -120,13 +122,13 @@ public partial class temas : System.Web.UI.Page
             Conn.Close();
             return "";
         }
-    }
+    }    
     [WebMethod]
-    public static string borrarTema(int id){
+    public static string borrarTema(int id){      
         int Eliminado = 0;
         using (SqlConnection Conn = conn.conecta())
         {
-            using (SqlCommand comand = new SqlCommand("EliminarTema", Conn))
+            using (SqlCommand comand = new SqlCommand("eliminarTema", Conn))
             {
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;

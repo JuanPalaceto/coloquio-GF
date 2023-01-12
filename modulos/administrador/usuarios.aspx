@@ -7,13 +7,13 @@
 
     <!-- Ponencias section -->
                         <div>
-
+                            
                         </div>
                         <br />
                         <h3><strong>Lista de usuarios:</strong></h3>
                         <div id="generarTabla" class="table-responsive"></div>
-
-
+                            
+                           
                           <script>
         window.onload = function(){
             TablaUsu();
@@ -56,6 +56,26 @@
                     "processing": "Procesando...",
                     "search": "B&uacute;squeda:",
                     "zeroRecords": "No hay registros",
+                }
+            });
+        };
+
+        function alternarActivo(id){            
+            $.ajax({
+                type: 'POST',
+                url: 'usuarios.aspx/alternarActivo',
+                data: "{'id':'" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error" + jqXHR.responseText);
+                },
+                success: function (valor) {
+                    var JsonD = $.parseJSON(valor.d)
+                    console.log(JsonD);
+                    if(JsonD.success == 1){
+                        TablaUsu();
+                    }
                 }
             });
         };

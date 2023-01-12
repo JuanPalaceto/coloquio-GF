@@ -99,7 +99,7 @@ public partial class login : System.Web.UI.Page
 
                     // if (activo == 0){
                     //     lblTxt.Text = "¡Cuenta inactiva!";
-                    // }
+                    // }                  
                     // else if (activo == 1)
                     // {
                     //     switch(tipo){
@@ -111,8 +111,8 @@ public partial class login : System.Web.UI.Page
                     //             break;
                     //         case 3:
                     //             Response.Redirect("../modulos/administrador/panel.aspx");
-                    //             break;
-                    //     }
+                    //             break;                            
+                    //     }                        
                     // }
                     // else if (activo == 2)
                     // {

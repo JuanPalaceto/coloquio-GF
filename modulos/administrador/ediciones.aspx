@@ -2,9 +2,18 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <style>
-        .op:hover {
-            border-color: #4062F6;
-            background-color: rgba(#619AEA, 0.16);
+        .op{
+            border-color: white;
+            background-color:white;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .op:hover{
+            border: 10px;
+            opacity: 1;
+            border-color: #198754;
+            background-color:#20c997;
         }
     </style>
 </asp:Content>
@@ -43,7 +52,7 @@
                     <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-
+                    
                     <div class="form-group">
                         <label nowrap="nowrap" align="center">Edición:</label>
                         <input type="text" id="idEdicion" name="edicion" value="" size="30" hidden="hidden">
@@ -55,7 +64,7 @@
                         <option value="1">Activado</option>
                         <option value="0" selected="">Desactivado</option>
                     </select>
-
+                            
                         <br />
                         <br />
                 </div>
@@ -96,16 +105,16 @@
                                 <label><input class="form-check-input" type="radio" name="flexRadioDefault" id="plantilla1">
                                 Plantilla de Parametros Predeterminada: </label></input>
                                 <img src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
-
+                                
                             </div>
                         </div>
-
+                        
                         <div id="opcion2" class="col col-5 m-1 ms-auto card op">
                             <div>
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="plantilla2">
                                 <label>Plantilla de Parametros Nueva: </label>
                                 <img src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
-
+                                
                             </div>
                         </div>
                     </div>
@@ -119,7 +128,7 @@
     </div>
     <%-------------%>
 
-   <!--
+   <!-- 
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
             <h3><strong>Crear nueva edición</strong></h3>
@@ -149,7 +158,7 @@
                         </tr>
                     </tbody>
                 </ul>
-            </div>
+            </div>   
         </div>
     </div-->
 
@@ -161,13 +170,13 @@
         <div>
             <button type="button" class="btn  btn-primary confirmar" onclick="ModalNuevaEdicion();" style="float:left;" >Agregar Nueva Edicion</a>
         </div>
-        <br />
+        <br />        
         <div class="card-body">
         <%-- se genera la tabla --%>
-            <div id="generarTabla" class="table-responsive "></div>
+            <div id="generarTabla" class="table-responsive "></div>            
             <%-- leyendas --%>
             <div class="row">
-                <div class="col-auto">
+                <div class="col-auto">                
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activa</li>
@@ -182,7 +191,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
         <script>
         window.onload = function(){
@@ -230,7 +239,7 @@
             });
         };
 
-        /*function editarEdicion(id){
+        /*function editarEdicion(id){     
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/editarEdicion',
@@ -241,15 +250,15 @@
                     console.log("Error" + jqXHR.responseText);
                 },
                 success: function () {
-
-
+                  
+                   
                         window.location.href = "editar_ediciones.aspx";
                         //console.log("Salio");
                 }
             });
         };*/
 
-        /*function borrarEdicion(id){
+        /*function borrarEdicion(id){            
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/borrarEdicion',
@@ -268,9 +277,9 @@
             });
         };*/
 
-        function ModalNuevaEdicion(){
+        /*function ModalNuevaEdicion(){
             $("#modalNuevaEdi").modal('show');
-        }
+        }*/
 
         function ModalEditar(idEdicion, Edicion) {
             $("#modaledit").modal('show');
@@ -343,7 +352,7 @@
             });
         };
 
-        function alternarActivo(id){
+        function alternarActivo(id){            
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/alternarActivo',

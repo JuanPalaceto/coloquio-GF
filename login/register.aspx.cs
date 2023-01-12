@@ -17,7 +17,7 @@ public partial class register : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string Guardar(string nombre, string apellido, string email, string psw, string grado, string institucion, string dependencia, string ciudad, string pais, string telefono)
+    public static string Guardar(string nombre, string apellido, string email, string psw, string grado, string institucion, string dependencia, string ciudad, string estado, string telefono)
     {
         int Exitoso = 0;
         using (SqlConnection Conn = conn.conecta())
@@ -33,7 +33,7 @@ public partial class register : System.Web.UI.Page
                 comand.Parameters.Add("@institucion", SqlDbType.NVarChar, 50).Value = institucion;
                 comand.Parameters.Add("@dependencia", SqlDbType.NVarChar, 50).Value = dependencia;
                 comand.Parameters.Add("@ciudad", SqlDbType.NVarChar, 50).Value = ciudad;
-                comand.Parameters.Add("@pais", SqlDbType.NVarChar, 50).Value = pais;
+                comand.Parameters.Add("@estado", SqlDbType.NVarChar, 50).Value = estado;
                 comand.Parameters.Add("@telefono", SqlDbType.NChar, 10).Value = telefono;
 
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);

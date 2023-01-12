@@ -1,25 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/modulos/MasterPage.master" AutoEventWireup="true" CodeFile="editar_temas.aspx.cs" Inherits="modulos_administrador_editar_temas" %>
-
+﻿<%-- <%@ Page Title="" Language="C#" MasterPageFile="~/modulos/MasterPage.master" AutoEventWireup="true" CodeFile="editar_temas.aspx.cs" Inherits="modulos_administrador_editar_temas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-<style>
-        table, tr, td, th {
-            border: 3px solid white;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #1f6c49;
-            color: white;
-        }
-
-        td img {
-            width: 50px;
-        }
-
-        .nohover:hover {
-            background-color: #fff;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <!-- Ponencias section -->
@@ -86,4 +66,4 @@ function ActualizarTema(id){
     });
 };
 </script>
-</asp:Content>
+</asp:Content> --%>

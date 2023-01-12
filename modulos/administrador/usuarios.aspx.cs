@@ -38,16 +38,21 @@ public partial class usuarios : System.Web.UI.Page
                         sb.Append("<td class=\"align-middle\">" + drseldatos["email"].ToString() + "</td>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["tipo"].ToString() + "</td>");
 
-                         if(activo == 1){
-                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\"></button>");
+                        //  if(activo == 1){
+                        //     sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em; onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
+                        // } else {
+                        //     sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em; onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
+                        // }
+
+                        if(activo == 1){
+                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
                         } else {
-                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\"></button>");
+                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
                         }
 
 
-
                          sb.Append("<td align=\"center\"><a href=\"usuarios_editar.aspx\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" ></button></a>");
-
+                         
 
                     }
                     if (drseldatos.HasRows)
@@ -82,7 +87,7 @@ public partial class usuarios : System.Web.UI.Page
             }
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
-        }
+        }  
         //HttpContext.Current.Session["idEdicion"] = id;
         //return "{\"Success\": \"" + Exitoso + "\"}";
     }

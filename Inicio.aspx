@@ -42,7 +42,7 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 
-    <style>
+    <style> 
         @media only screen and (max-width: 600px) {
           .imgs {
             display:none;
@@ -73,26 +73,25 @@
          }
 
       }
-
-    </style>
+    </style>    
 </head>
 <body>
-    <!-- ======= Top Bar ======= -->
-    <div class="container d-flex justify-content-center justify-content-md-between">
+    <!-- ======= Top Bar ======= -->    
+    <div class="container d-flex justify-content-center justify-content-md-between">        
         <div class="float-end me-5" style="margin-left:auto;">
             <ul class="list-inline">
                 <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Alumnos.aspx">Alumnos Posgrado</a></li>
                 <li class="list-inline-item mx-1">/</li>
-                <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Docentes.aspx">Docentes Posgrado</a></li>
+                <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Docentes.aspx">Docentes Posgrado</a></li>                
             </ul>
-        </div>
+        </div>                   
     </div>
     <!-- Agregué el margin bottom negativo para reducir el espacio en blanco entre el header y el navbar -->
     <div class="container d-flex justify-content-center justify-content-md-between position-relative" style="margin-bottom:-18px; margin-top: -18px;">
         <img class="img_logo" src="<%= Page.ResolveUrl("~")%>assets/img/header/thumbnail_header2.png" alt="uat-fcav-logos" style="width: 100%;">
         <img class="img_logom" src="<%= Page.ResolveUrl("~")%>assets/img/header/headerm.png" alt="uat-fcav-logos" style="width: 100%;display:none;">
     </div>
-
+    
     <!-- End Top Bar -->
 
     <!-- ======= Header ======= -->
@@ -105,8 +104,8 @@
                         <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="#inicio">INICIO</a></li>
                         <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="#lineamientos">LINEAMIENTOS</a></li>
                         <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="#comite">COMIT&Eacute;</a></li>
-                        <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="#fechas">FECHAS</a></li>
-                        <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="login/login.aspx">REGISTRO</a></li>
+                        <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="#fechas">FECHAS</a></li>  
+                        <li class="col d-flex justify-content-center"><a class="nav-link scrollto logo" href="login/login.aspx">REGISTRO</a></li>                        
                     </ul>
                 </div>
                 <i id="clsbtn" class="bi bi-list mobile-nav-toggle"></i>
@@ -116,7 +115,7 @@
     </header>
     <!-- End Header -->
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server">            
         <!-- ======= Slider Section ======= -->
         <div class="container">
             <section id="hero">
@@ -127,14 +126,14 @@
                         <div class="carousel-item active" style="background-image: url(assets/img/slide/XColoquio.png); height: auto !important;">
                             <!-- <div class="carousel-container">
                                 <div class="container" >
-                                    <h2 id="titulo" class="animate__animated animate__fadeInUp" style="padding-bottom:45px; margin-bottom:-10px;">Bienvenidos a <span>División de Estudios de Posgrado e Investigación FCAV</span></h2>
+                                    <h2 id="titulo" class="animate__animated animate__fadeInUp" style="padding-bottom:45px; margin-bottom:-10px;">Bienvenidos a <span>División de Estudios de Posgrado e Investigación FCAV</span></h2>                            
                                 </div>
                             </div> -->
                         </div>
 
                         <!-- Slide 2 -->
                         <%-- <div class="carousel-item" style="background-image: url(assets/img/slide/DCA.png)"></div> --%>
-
+                        
                     </div>
 
                     <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
@@ -150,14 +149,15 @@
         </div>
         <!-- End Slider -->
         <br>
-        <main id="main">
+        <main id="main">          
         <!-- ======= Contenido ======= -->
             <div class="container" style="text-align:justify;">
-                <section id="about" class="about">
-                    <div class="row no-gutters">
+                <section id="about" class="about">                            
+                    <div class="row no-gutters">                                     
                         <div class="container">
                             <section id="featured-services2" class="featured-services">
                                 <div class="container">
+                                
                                     <%-- INICIO --%>
                                     <div id="inicio" style="padding-top:15px">
                                         <div class="section-title">
@@ -168,7 +168,7 @@
                                             <div class="container">
                                             <p class="lead" style="text-align:justify;">A estudiantes de nivel posgrado inscritos en programas afines a las <strong>Ciencias Administrativas</strong> a presentar sus avances de tesis o trabajos de investigación, con el objetivo de generar y difundir el conocimiento al crear un entorno de dialogo académico con profesores expertos para contribuir al fortalecimiento de las investigaciones participantes. Los trabajos aceptados deberán ser presentados en el <strong>X Coloquio de Investigación</strong> a celebrarse del <strong>10 al 12 de octubre del 2022</strong>.</p>
                                             </div>
-                                        </div>
+                                        </div>                                
                                         <br>
                                         <br>
                                     </div>
@@ -187,7 +187,7 @@
                                                 III. Tecnologías, innovación y redes de conocimiento.<br><br>
                                                 3. Los trabajos serán sometidos a una evaluación a doble ciego; los documentos aceptados serán presentados en modalidad oral con 15 minutos para exposición y 5 minutos para preguntas y respuestas.<br><br>
                                                 4. Este coloquio no tiene costo de inscripción.<br><br>
-                                                5. Las fecha para recepción de trabajos serán del 7 al 30 de septiembre de 2022.<br><br>
+                                                5. Las fecha para recepción de trabajos serán del 7 al 30 de septiembre de 2022.<br><br>                            
                                             </p>
                                             <p class="lead" style="text-align:center">Si quieres saber más, consulta la convocatoria completa:</p>
                                         </div>
@@ -197,19 +197,19 @@
                                                 <i class="fas fa-download me-2"></i>
                                                 Convocatoria
                                             </a>
-                                        </div>
+                                        </div>                                
                                         <br>
                                         <br>
                                     </div>
 
                                     <%-- COMITÉ --%>
                                     <div id="comite">
-                                        <div class="section-title" id="comite" style="padding-top:20px">
+                                        <div class="section-title" id="comite" style="padding-top:20px">                                    
                                             <h2 id="Noticias">Comit&eacute;</h2>
                                         </div>
                                         <div class="container" style="text-align:center">
                                             <ul style="display:inline-block;text-align:left;font-size:18px;font-family:'Tenor', sans-serif;">
-                                                <li>Dr. Arturo Briseño García</li>
+                                                <li>Dr. Arturo Briseño García</li>                                        
                                                 <li>Dr. Demian Abrego Almazán</li>
                                                 <li>Dr. Francisco García Fernández</li>
                                                 <li>Dr. Jesús Lavín Verástegui</li>
@@ -219,11 +219,11 @@
                                                 <li>Dra. Maritza Alvarez Herrera</li>
                                                 <li>Dra. Mónica Lorena Sánchez Limón</li>
                                                 <li>Dra. Norma Angélica Pedraza Melo</li>
-                                                <li>Dra. Yesenia Sánchez Tovar</li>
+                                                <li>Dra. Yesenia Sánchez Tovar</li>                
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                  
                             </section>
                         </div>
 
@@ -237,14 +237,15 @@
                                 </div>
 
                                 <%-- eventos --%>
-                                <div class="row no-gutters">
+                                <div class="row no-gutters">    
+
                                     <%-- evento 1 --%>
                                     <div class="col-lg-4 col-md-6">
                                         <div class="icon-box">
                                             <div class="icon">
                                                 <h1><span class="badge badge-secondary" style="background-color:#6c757d !important">10</span> Octubre</h1>
                                             </div>
-
+                                            
                                             <h4 class="title"><a href="#p">Mesas de investigaci&oacute;n.</a></h4>
                                             <ul class="list-inline" style="justify-content:left;">
                                                 <li class="list-inline-item"><i class="bi bi-calendar4-week" aria-hidden="true"></i> Lunes</li>
@@ -270,7 +271,7 @@
                                             </p>
                                             <p class="description">
                                                 <b>Lugar:</b> Posgrado.
-                                            </p>
+                                            </p>                                                                        
                                         </div>
                                     </div>
 
@@ -281,7 +282,7 @@
                                                 <h1><span class="badge badge-secondary" style="background-color:#6c757d !important">11</span> Octubre</h1>
                                             </div>
 
-                                            <h4 class="title"><a href="#p">Mesas de investigaci&oacute;n.</a></h4>
+                                            <h4 class="title"><a href="#p">Mesas de investigaci&oacute;n.</a></h4>                        
                                             <ul class="list-inline"  style="justify-content:left;">
                                                 <li class="list-inline-item"><i class="bi bi-calendar4-week" aria-hidden="true"></i> Martes</li>
                                                 <li class="list-inline-item"><i class="bi bi-clock" aria-hidden="true"></i> 12:00 P.M. a 14:00 P.M.</li>
@@ -292,7 +293,7 @@
                                             </p>
                                             <p class="description">
                                                 <b>Lugar:</b> Posgrado.
-                                            </p>
+                                            </p>               
                                         </div>
                                     </div>
 
@@ -304,26 +305,26 @@
                                                 <h1><span class="badge badge-secondary" style="background-color:#6c757d !important">12</span> Octubre</h1>
                                             </div>
 
-                                            <h4 class="title"><a href="#p">Mesas de investigaci&oacute;n.</a></h4>
+                                            <h4 class="title"><a href="#p">Mesas de investigaci&oacute;n.</a></h4>                        
                                             <ul class="list-inline"  style="justify-content:left;">
                                                 <li class="list-inline-item"><i class="bi bi-calendar4-week" aria-hidden="true"></i> Mi&eacute;rcoles</li>
-                                                <li class="list-inline-item"><i class="bi bi-clock" aria-hidden="true"></i> 10:00 A.M. a 12:00 P.M.</li>
+                                                <li class="list-inline-item"><i class="bi bi-clock" aria-hidden="true"></i> 10:00 A.M. a 12:00 P.M.</li>                                                
                                                 <li class="list-inline-item"><i class="bi bi-bookmark-check" aria-hidden="true"></i> 2022</li>
                                             </ul>
                                             <p class="description">
                                                 <b>Organizado por:</b> Divisi&oacute;n de Estudios de Posgrado e Investigaci&oacute;n.
-                                            </p>
+                                            </p>                                            
                                             <p class="description">
                                                 <b>Lugar:</b> Auditorio FCAV.
-                                            </p>
+                                            </p>               
                                         </div>
-                                    </div>
+                                    </div>                                                                        
                                 </div>
                             </section>
-                        </div>
-                    </div>
+                        </div>                                                                                
+                    </div>                                                 
                 </section>
-            </div>
+            </div>             
         </main>
     </form>
 
@@ -335,11 +336,11 @@
                 <p style="margin-bottom:-10px;">
                     Universidad Aut&oacute;noma de Tamaulipas
                     <br />
-                    Centro Universitario Victoria - FCAV, C.P. 87000
+                    Centro Universitario Victoria - FCAV, C.P. 87000 
                     <br />
                     Cd. Victoria, Tamaulipas, M&eacute;xico.
                     <br />
-                    Tel. (+52 834) 318 1800, Extensiones 2413, 2451 y 2452.</i>
+                    Tel. (+52 834) 318 1800, Extensiones 2413, 2451 y 2452.</i>                                        
                     <br />
                     Horario de Atención
                     <br />
