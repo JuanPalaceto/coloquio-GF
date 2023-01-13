@@ -17,14 +17,14 @@
             <br>
             <%-- leyendas --%>
             <div class="row">
-                <%-- <div class="col-auto">
+                <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aprobada</li>
                         <li><i class="fa-sharp fa-solid fa-xmark text-danger" style="font-size:1.2em;"></i> = Rechazada</li>
                         <li><i class="fa-sharp fa-solid fa-hourglass-half" style="font-size:1.2em;"></i> = No evaluada</li>
                     </ul>
-                </div> --%>
+                </div>
                 <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Acciones:</b></li>
