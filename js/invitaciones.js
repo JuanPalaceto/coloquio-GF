@@ -53,3 +53,68 @@ $('#selectEd').change(function(){
     TablaUsu();
 });
 /* ******************** */
+
+
+/* Se inicializa el plugin */
+$('#file-input').fileinput({
+    theme: 'fa5',
+    language: 'es',
+    showClose: false,
+    showBrowse: false,
+    showCaption: false,
+    dropZoneTitle: 'No hay archivos disponibles.',
+    maxFileSize: 8192,
+    maxFileCount: 1,
+    overwriteInitial: false,
+    initialPreviewAsData: true, //...
+    validateInitialCount: true,
+    allowedFileExtensions: ['pdf']//['doc', 'docx']
+});
+/* ******************** */
+
+
+/* Ver el archivo de la ponencia */
+function verPonencia(idPonencia, titulo){
+    $('#spanTitulo').html(titulo);
+    $('#modalArchivo').modal('show');
+
+    $.ajax({
+        type: "POST",
+        url: "ver_archivo.ashx",
+        data: { idPon: idPonencia },
+        success: function(response) {
+            $('#handler').html(response);
+        }
+    });
+
+}
+/* ******************** */
+
+
+/* Para reiniciar el file input cada que se cierra un modal */
+const myModalArchivo = document.getElementById('modalArchivo');
+myModalArchivo.addEventListener('hidden.bs.modal', function (event) {
+    $('#file-input').fileinput('destroy');
+    $('#file-input').fileinput({
+        theme: 'fa5',
+        language: 'es',
+        showClose: false,
+        showBrowse: false,
+        showCaption: false,
+        dropZoneTitle: 'No hay archivos disponibles.',
+        maxFileSize: 8192,
+        maxFileCount: 1,
+        overwriteInitial: false,
+        initialPreviewAsData: true, //...
+        validateInitialCount: true,
+        allowedFileExtensions: ['pdf']//['doc', 'docx']
+    });
+})
+/* ******************** */
+
+
+/* Administrar evaluadores de la ponencia */
+function editarEvaluador(idPonencia){
+
+}
+/* ******************** */

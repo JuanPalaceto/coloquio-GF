@@ -107,8 +107,8 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                                 sb.Append("<td data-order=\"5\">Sin estado.</td>");
                                 break;
                         }
-                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ");\"></button></td>");
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-plus text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ");\"></button></td>");
+                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button></td>");
+                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-plus text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ");\"></button></td>");
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody></table>");
