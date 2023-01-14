@@ -86,7 +86,6 @@ function verPonencia(idPonencia, titulo){
             $('#handler').html(response);
         }
     });
-
 }
 /* ******************** */
 
@@ -114,7 +113,23 @@ myModalArchivo.addEventListener('hidden.bs.modal', function (event) {
 
 
 /* Administrar evaluadores de la ponencia */
-function editarEvaluador(idPonencia){
+function editarEvaluador(idPonencia, titulo){
+    $('#spanTituloEv').html(titulo);
+    $('#modalEvaluadores').modal('show');
 
+    $.ajax({
+        type: "POST",
+        url: "invitaciones.aspx/ListarEvaluadores",
+        data: "{'idPonencia': '"+idPonencia+"'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+        },
+        success: function(response) {
+            $('#listaEvaluadores').html(response.d);
+        }
+    });
 }
 /* ******************** */
+

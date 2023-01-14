@@ -52,7 +52,7 @@
 
     <%-- Modal ver archivo --%>
     <div id="modalArchivo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelArchivo" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,6 +80,26 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%-- Modal adminsitrar evaluadores --%>
+    <div id="modalEvaluadores" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelEvaluadores" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="labelEvaluadores">Título: <span id="spanTituloEv"></span></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                </div>
+                <div class="modal-body">
+                    <div id="listaEvaluadores"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="float: right;" id="btnInvitar">Enviar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right;">Cerrar</button>
                 </div>
             </div>
         </div>

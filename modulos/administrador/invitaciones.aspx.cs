@@ -108,10 +108,44 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                                 break;
                         }
                         sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button></td>");
-                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-plus text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ");\"></button></td>");
+                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-plus text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button></td>");
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody></table>");
+
+                    drseldatos.Close();
+                }
+            }
+            con.Close();
+            return sb.ToString();
+        }
+    }
+
+
+    [WebMethod]
+    public static string ListarEvaluadores(int idPonencia)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand seldata = new SqlCommand("ListarEvaluadores", con))
+            {
+                seldata.CommandType = CommandType.StoredProcedure;
+                seldata.Parameters.AddWithValue("@idPonencia", idPonencia);
+
+                con.Open();
+                using (SqlDataReader drseldatos = seldata.ExecuteReader())
+                {
+                    sb.Append("<div class=\"list-group\">");
+                    while (drseldatos.Read())
+                    {
+                        sb.Append("<label class=\"list-group-item\">");
+                        sb.Append("<input class=\"form-check-input me-1\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\">");
+                        // Comprobar los datos (Porque puede haber evaluadores sin nombre(?))
+                        sb.Append("" + drseldatos["nombre"].ToString() + "");
+                        sb.Append("</label>");
+                    }
+                    sb.Append("</div>");
 
                     drseldatos.Close();
                 }
