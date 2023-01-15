@@ -145,3 +145,41 @@ $('#listaEvaluadores').on("click", "td.seleccionable", function(){
 //     }
 // });
 /* ******************** */
+
+
+/* Enviar invitaciones */
+var isDialogOpen = false;
+
+$("#btnEnviar").click(function() {
+    isDialogOpen = true;
+
+    Swal.fire({
+      titleText: '¿Desea continuar?',
+      text: "Se enviará una invitación a los usuarios seleccionados a evaluar esta ponencia. Si desea continuar haga click en Aceptar",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#1F6C49',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        isDialogOpen = false;
+      if (result.value) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+  });
+
+// Esto es pa' cerrar el sweetalert al mismo tiempo que el modal
+$(document).on('keydown', function(event) {
+    if (event.keyCode === 27 && isDialogOpen) {
+        // close the SweetAlert2 first
+        Swal.close();
+        isDialogOpen = false;
+        return false;
+    }
+});
+/* ******************** */

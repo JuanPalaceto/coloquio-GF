@@ -13,6 +13,9 @@
     <!--ESTOS SON OPCIONALES, AÑADEN EXTRAS DE ORIENTACIÓN (Deben cargarse antes del fileinput.js-->
     <script src="../../FileInput/js/plugins/piexif.js"></script>
     <script src="../../FileInput/js/plugins/sortable.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -110,7 +113,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="float: right;" id="btnInvitar">Enviar</button>
+                    <button type="button" class="btn btn-primary" style="float: right;" id="btnEnviar">Enviar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right;">Cerrar</button>
                 </div>
             </div>
