@@ -1,10 +1,11 @@
 window.onload = function(){
     setTimeout(() => {
-        TablaUsu();
+        TablaInvitaciones();
     }, 500);
 }
 
-function TablaUsu() {  //aqui se crea la tabla
+
+function TablaInvitaciones() {  //aqui se crea la tabla
     let idEdicion = $('#selectEd').val();
 
     $.ajax({
@@ -19,38 +20,19 @@ function TablaUsu() {  //aqui se crea la tabla
         success: function (tabla) {
             $("#generarTabla").html(tabla.d); //nombre del id del div de la tabla
             setTimeout(function myfunction() {
-                estiloDataTable();
+                let idTable = "tabla";
+                let orden = [[3, 'asc'], [0, 'asc']];
+                let contexto = "No hay ponencias pendientes.";
+                dataTable(idTable, orden, contexto);
             }, 100);
         }
     });
 }
 
-function estiloDataTable(page, leng) {
-    $('#tabla').DataTable({
-        "lengthMenu": [5, 10, 25, 50, 75, 100],
-        "pageLength": leng,
-        pagingType: 'numbers',
-        "order": [[4, 'asc'], [1, 'asc']],
-        language: {
-            "decimal": ".",
-            "emptyTable": "",
-            "info": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
-            "infoEmpty": "",
-            "infoFiltered": "<br/>(Filtrado de <b>_MAX_</b> registros en total)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrando _MENU_ registros",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "B&uacute;squeda:",
-            "zeroRecords": "No hay registros",
-        }
-    });
-};
 
 /* Actualizar tabla al seleccionar otra edición */
 $('#selectEd').change(function(){
-    TablaUsu();
+    TablaInvitaciones();
 });
 /* ******************** */
 
@@ -126,10 +108,40 @@ function editarEvaluador(idPonencia, titulo){
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
         },
-        success: function(response) {
-            $('#listaEvaluadores').html(response.d);
+        success: function(tablaEvaluadores) {
+            $('#listaEvaluadores').html(tablaEvaluadores.d);
+            let idTable = "tablaEvaluadores";
+            let orden = [[0, 'asc'], [1, 'asc']];
+            let contexto = "No hay evaluadores.";
+            dataTable(idTable, orden, contexto);
+
+            // Esto es para quitarle espacio a la columna de "Seleccionar" al mínimo
+            var table = $('#tablaEvaluadores').DataTable();
+            table.column(1).nodes().to$().css('width', '350px');
+            table.column(2).nodes().to$().css('width', '100px');
         }
     });
 }
 /* ******************** */
 
+
+/* Para poder hacer check cuando se clickee en el td de seleccionar (agregados después de cargar aka dinámicamente) */
+$('#listaEvaluadores').on("click", "td.seleccionable", function(){
+    let checkbox = $(this).find("input[type=checkbox]");
+    checkbox.prop("checked", !checkbox.prop("checked"));
+});
+
+// En caso que se quiera que se haga el check clickando en el nombre también hay que descomentar este bloque y comentar el anterior
+// $('#listaEvaluadores').on("click", "td.seleccionable", function(){
+//     let checkbox = $(this).find("input[type=checkbox]");
+//     if(checkbox.length > 0){
+//         checkbox.prop("checked", !checkbox.prop("checked"));
+//     } else {
+//         let prevTD = $(this).prev("td.seleccionable");
+//         if(prevTD.length > 0){
+//             checkbox = prevTD.find("input[type=checkbox]");
+//             checkbox.prop("checked", !checkbox.prop("checked"));
+//         }
+//     }
+// });
+/* ******************** */

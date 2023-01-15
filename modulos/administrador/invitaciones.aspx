@@ -96,6 +96,18 @@
                 </div>
                 <div class="modal-body">
                     <div id="listaEvaluadores"></div>
+
+                    <%-- leyendas --%>
+                    <div class="row">
+                        <div class="col-auto">
+                            <ul class="list-unstyled">
+                                <li><b>Estado de la invitación:</b></li>
+                                <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aceptada</li>
+                                <li><i class="fa-sharp fa-solid fa-xmark text-danger" style="font-size:1.2em;"></i> = Rechazada</li>
+                                <li><i class="fa-sharp fa-solid fa-hourglass-half" style="font-size:1.2em;"></i> = Pendiente</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="float: right;" id="btnInvitar">Enviar</button>
@@ -106,4 +118,5 @@
     </div>
 
     <script src="../../js/invitaciones.js"></script>
+    <script src="../../js/scripts.js"></script>
 </asp:Content>

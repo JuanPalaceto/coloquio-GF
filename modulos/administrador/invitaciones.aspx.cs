@@ -136,16 +136,32 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<div class=\"list-group\">");
+                    // sb.Append("<div class=\"list-group\">");
+                    sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");
+                    sb.Append("<thead>");
+                    sb.Append("<tr>");
+                    sb.Append("<th scope=\"col\">Seleccionar</th>");
+                    sb.Append("<th scope=\"col\">Nombre</th>");
+                    sb.Append("<th scope=\"col\">Estado</th>");
+                    sb.Append("</tr>");
+                    sb.Append("</thead>");
+                    sb.Append("<tbody>");
                     while (drseldatos.Read())
                     {
-                        sb.Append("<label class=\"list-group-item\">");
-                        sb.Append("<input class=\"form-check-input me-1\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\">");
-                        // Comprobar los datos (Porque puede haber evaluadores sin nombre(?))
+                        sb.Append("<tr>");
+                        sb.Append("<td class=\"seleccionable text-center align-middle\">");
+                        sb.Append("<input class=\"form-check-input\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\">");
+                        sb.Append("</td>");
+                        sb.Append("<td class=\"seleccionable align-middle\">");
                         sb.Append("" + drseldatos["nombre"].ToString() + "");
-                        sb.Append("</label>");
+                        sb.Append("</td>");
+                        sb.Append("<td class=\"text-center align-middle\">");
+                        sb.Append("Pendiente xd");
+                        sb.Append("</td>");
+                        sb.Append("</tr>");
                     }
-                    sb.Append("</div>");
+                    sb.Append("</tbody>");
+                    sb.Append("</table>");
 
                     drseldatos.Close();
                 }
