@@ -123,7 +123,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
 
 
     [WebMethod]
-    public static string ListarEvaluadores(int idPonencia)
+    public static string ListarEvaluadores(int idPonencia, int idEdicion)
     {
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
@@ -150,13 +150,21 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                     while (drseldatos.Read())
                     {
                         sb.Append("<tr>");
-                        // Para saber si tiene invitación o no en la ponencia seleccionada o su estado no es 3 (removido)
+                        // Para saber si tiene invitación o no en la ponencia seleccionada y que la edición sea la activa
                         if(!drseldatos.IsDBNull(2)){
-                            sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"1\"><input class=\"form-check-input\" type=\"checkbox\" checked=\"checked\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
+                            if (idEdicion == Convert.ToInt32(HttpContext.Current.Session["edicionActiva"])){
+                                sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"1\"><input class=\"form-check-input\" type=\"checkbox\" checked=\"checked\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
+                            } else {
+                                sb.Append("<td class=\"text-center align-middle\" data-order=\"1\"><input class=\"form-check-input\" type=\"checkbox\" checked=\"checked\" value=\"\" disabled></td>");
+                            }
 
                             estado = Convert.ToInt32(drseldatos["estado"].ToString());
                         } else {
-                            sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"2\"><input class=\"form-check-input\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
+                            if (idEdicion == Convert.ToInt32(HttpContext.Current.Session["edicionActiva"])){
+                                sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"2\"><input class=\"form-check-input\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
+                            } else {
+                                sb.Append("<td class=\"text-center align-middle\" data-order=\"2\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\" disabled></td>");
+                            }
 
                             estado = 3;
                         }

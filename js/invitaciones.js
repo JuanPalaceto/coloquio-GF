@@ -103,13 +103,21 @@ function editarEvaluador(idPonencia, titulo){
     globalIdPonencia = idPonencia;
     globalTitulo = titulo;
 
+    let idEdicion = $('#selectEd').val();
+
+
     $('#spanTituloEv').html(titulo);
     $('#modalEvaluadores').modal('show');
+
+    var data = {
+        idPonencia: globalIdPonencia,
+        idEdicion: idEdicion
+    };
 
     $.ajax({
         type: "POST",
         url: "invitaciones.aspx/ListarEvaluadores",
-        data: "{'idPonencia': '"+idPonencia+"'}",
+        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         error: function (jqXHR, textStatus, errorThrown) {
@@ -204,6 +212,7 @@ $("#btnEnviar").click(function() {
 
             // Selecciona los checkboxes en todas las páginas de la datatable
             // HAY QUE VER SI SELECCIONA CUANDO TRAIGO LA TABLA LLENA Y NO ABRO LA SIGUIENTE PÁGINA, SI NO REGRESAR YU PROBAR EL CÓDIGO DE ARRIBA
+            // Si sí funciona pus borrar el código de arriba:p
             var checkboxes = $('#tablaEvaluadores').DataTable().rows().nodes().to$().find('input[type="checkbox"]');
 
             // Selecciona los checkboxes que estén marcados y los guarda en el array
