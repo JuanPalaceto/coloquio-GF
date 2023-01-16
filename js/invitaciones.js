@@ -95,7 +95,14 @@ myModalArchivo.addEventListener('hidden.bs.modal', function (event) {
 
 
 /* Administrar evaluadores de la ponencia */
+// guardar el id de la ponencia en una variable global
+let globalIdPonencia, globalTitulo;
+
 function editarEvaluador(idPonencia, titulo){
+    // Guardo estos datos para usarlos al hacer el insert de las invitaciones
+    globalIdPonencia = idPonencia;
+    globalTitulo = titulo;
+
     $('#spanTituloEv').html(titulo);
     $('#modalEvaluadores').modal('show');
 
@@ -144,6 +151,11 @@ $('#listaEvaluadores').on("click", "td.seleccionable", function(){
 //         }
 //     }
 // });
+
+$('#listaEvaluadores').on("click", "td.seleccionable input[type=checkbox]", function(){
+    let checkbox = $(this);
+    checkbox.prop("checked", !checkbox.prop("checked"));
+});
 /* ******************** */
 
 
@@ -154,24 +166,80 @@ $("#btnEnviar").click(function() {
     isDialogOpen = true;
 
     Swal.fire({
-      titleText: '¿Desea continuar?',
-      text: "Se enviará una invitación a los usuarios seleccionados a evaluar esta ponencia. Si desea continuar haga click en Aceptar",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#1F6C49',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+        titleText: '¿Desea continuar?',
+        text: "Si desea guardar los cambios haga click en Aceptar",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#1F6C49',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         isDialogOpen = false;
-      if (result.value) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
-      }
+        if (result.value) {
+            // Obtener los evaluadores seleccionados (En todas las páginas del datatable)
+            // var values = [];
+            // var table = $('#tablaEvaluadores').DataTable();
+
+            // // Recorrer las páginas de la tabla
+            // for (var i = 0; i < table.page.info().pages; i++) {
+            //     // Limpia el array (porque se duplica al recorrer cada página)
+            //     values = [];
+            //     // Ir a la página
+            //     table.page(i).draw();
+
+            //     // Selecciona los checkboxes
+            //     var checkboxes = table.rows().nodes().to$().find('input[type="checkbox"]');
+
+            //     // Recorre los checkboxes para encontrar los que estén marcados y asignalos al array
+            //     checkboxes.each(function() {
+            //         if (this.checked) {
+            //             values.push($(this).val());
+            //         }
+            //     });
+            // }
+            // console.log(values);
+
+            // Obtener los evaluadores seleccionados (En todas las páginas del datatable)
+            var values = [];
+
+            // Selecciona los checkboxes en todas las páginas de la datatable
+            // HAY QUE VER SI SELECCIONA CUANDO TRAIGO LA TABLA LLENA Y NO ABRO LA SIGUIENTE PÁGINA, SI NO REGRESAR YU PROBAR EL CÓDIGO DE ARRIBA
+            var checkboxes = $('#tablaEvaluadores').DataTable().rows().nodes().to$().find('input[type="checkbox"]');
+
+            // Selecciona los checkboxes que estén marcados y los guarda en el array
+            checkboxes.each(function() {
+                if(this.checked) {
+                    values.push($(this).val());
+                }
+            });
+
+            // Valida que el array contenga algún check, de lo contrario envía un 0 en al array, lo que quiere decir que de existir, elimina todas las invitaciones de dicha ponencia en la BD
+            if(!(values.length > 0)){
+                values.push("0");
+            }
+
+            var data = {
+                idPonencia: globalIdPonencia,
+                evaluadores: values
+            };
+
+            // Manda invitaciones
+            $.ajax({
+                type: "POST",
+                url: "invitaciones.aspx/AdministrarEvaluadores",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function(response) {
+                    editarEvaluador(globalIdPonencia, globalTitulo);
+                }
+            });
+        }
     })
-  });
+});
 
 // Esto es pa' cerrar el sweetalert al mismo tiempo que el modal
 $(document).on('keydown', function(event) {

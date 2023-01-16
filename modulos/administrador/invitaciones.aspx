@@ -98,6 +98,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
+                    <div>
+                        <p><b>Lista de evaluadores</b></p>
+                    </div>
                     <div id="listaEvaluadores"></div>
 
                     <%-- leyendas --%>
@@ -113,7 +116,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" style="float: right;" id="btnEnviar">Enviar</button>
+                    <button type="button" class="btn btn-primary" style="float: right;" id="btnEnviar">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right;">Cerrar</button>
                 </div>
             </div>
