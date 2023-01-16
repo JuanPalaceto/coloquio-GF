@@ -131,9 +131,9 @@ function editarEvaluador(idPonencia, titulo){
             dataTable(idTable, orden, contexto);
 
             // Esto es para quitarle espacio a la columna de "Seleccionar" al mínimo
-            var table = $('#tablaEvaluadores').DataTable();
-            table.column(1).nodes().to$().css('width', '350px');
-            table.column(2).nodes().to$().css('width', '100px');
+            // var table = $('#tablaEvaluadores').DataTable();
+            // table.column(1).nodes().to$().css('width', '350px');
+            // table.column(2).nodes().to$().css('width', '120px');
         }
     });
 }

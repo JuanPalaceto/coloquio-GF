@@ -141,9 +141,9 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                     sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");
                     sb.Append("<thead>");
                     sb.Append("<tr>");
-                    sb.Append("<th scope=\"col\">Seleccionar</th>");
-                    sb.Append("<th scope=\"col\">Nombre</th>");
-                    sb.Append("<th scope=\"col\">Estado</th>");
+                    sb.Append("<th scope=\"col\" style=\"width: 80px;\">Seleccionar</th>");
+                    sb.Append("<th scope=\"col\"style=\"width: 500px;\">Nombre</th>");
+                    sb.Append("<th scope=\"col\" style=\"width: 80px;\">Estado</th>");
                     sb.Append("</tr>");
                     sb.Append("</thead>");
                     sb.Append("<tbody>");
