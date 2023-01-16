@@ -24,7 +24,7 @@ public partial class ediciones : System.Web.UI.Page
         {
             using (SqlCommand seldata = new SqlCommand("ListarEdiciones", con))
             {
-                seldata.CommandType = CommandType.StoredProcedure;                
+                seldata.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
@@ -32,19 +32,19 @@ public partial class ediciones : System.Web.UI.Page
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
-                        
+
                         sb.Append("<tr>");
-                        sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");                        
-                        
+                        sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
+
                         if(activo == 1){
                             sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         } else {
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         }
-                        
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");                        
+
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
-                                                
+
                     }
                     if (drseldatos.HasRows)
                     {
@@ -86,7 +86,7 @@ public partial class ediciones : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string borrarEdicion(int id){      
+    public static string borrarEdicion(int id){
         int Eliminado = 0;
         using (SqlConnection Conn = conn.conecta())
         {
@@ -122,8 +122,12 @@ public partial class ediciones : System.Web.UI.Page
                 Exitoso = int.Parse(pexitoso.Value.ToString());
             }
             Conn.Close();
+
+            // Actualiza la variable de sesión de la edición Activa
+            HttpContext.Current.Session["edicionActiva"] = id;
+
             return "{\"success\": \"" + Exitoso + "\"}";
-        }  
+        }
         //HttpContext.Current.Session["idEdicion"] = id;
         //return "{\"Success\": \"" + Exitoso + "\"}";
     }
