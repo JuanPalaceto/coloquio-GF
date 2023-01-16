@@ -30,6 +30,19 @@ function TablaInvitaciones() {  //aqui se crea la tabla
 }
 
 
+/* Esconde el botón de guardar si la edición seleccionada no es la activa */
+function ocultaBoton(edicionActiva){
+    let idEdicion = $('#selectEd').val();
+
+    if (idEdicion == edicionActiva){
+        $('#btnEnviar').show();
+    } else {
+        $('#btnEnviar').hide();
+    }
+}
+/* ******************** */
+
+
 /* Actualizar tabla al seleccionar otra edición */
 $('#selectEd').change(function(){
     TablaInvitaciones();
@@ -129,11 +142,6 @@ function editarEvaluador(idPonencia, titulo){
             let orden = [[0, 'asc'], [1, 'asc']];
             let contexto = "No hay evaluadores.";
             dataTable(idTable, orden, contexto);
-
-            // Esto es para quitarle espacio a la columna de "Seleccionar" al mínimo
-            // var table = $('#tablaEvaluadores').DataTable();
-            // table.column(1).nodes().to$().css('width', '350px');
-            // table.column(2).nodes().to$().css('width', '120px');
         }
     });
 }

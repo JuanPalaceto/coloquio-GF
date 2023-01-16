@@ -112,6 +112,8 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody></table>");
+                    // Para esconder el botón de guardaar si es una edición que no es la activa
+                    sb.Append("<script>ocultaBoton("+Convert.ToInt32(HttpContext.Current.Session["edicionActiva"])+");</script>");
 
                     drseldatos.Close();
                 }
