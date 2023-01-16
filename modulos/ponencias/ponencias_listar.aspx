@@ -16,7 +16,7 @@
             <br>
             <%-- leyendas --%>
             <div class="row">
-                <div class="col-auto">                
+                <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aprobada</li>
@@ -82,7 +82,7 @@
             });
         };
 
-        function editarPonencia(id){            
+        function editarPonencia(id){
             //$.ajax({
             //    type: 'POST',
             //    url: 'ponencias_listar.aspx/editarPonencia',
@@ -98,6 +98,7 @@
                         // Para comprobar si se va a editar o no
                         localStorage.setItem('activePillId', 'pills-1');
                         localStorage.setItem('idActual', id);
+                        localStorage.setItem('estadoRegistro', 1);
                         window.location.href = "ponencias_registrar.aspx";
             //        }
             //    }
