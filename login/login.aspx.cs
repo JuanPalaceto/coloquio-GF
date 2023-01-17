@@ -22,6 +22,7 @@ public partial class login : System.Web.UI.Page
         int idUsuario;
         int activo;
         int tipo;
+        int edicion;
         string nombre = "";
         if (email == "")
         {
@@ -57,6 +58,10 @@ public partial class login : System.Web.UI.Page
                     prmActivo.Direction = ParameterDirection.Output;
                     comand.Parameters.Add(prmActivo);
 
+                    SqlParameter prmEdicion = new SqlParameter("@edicion", SqlDbType.Int);
+                    prmEdicion.Direction = ParameterDirection.Output;
+                    comand.Parameters.Add(prmEdicion);
+
                     Conn.Open();
                     comand.ExecuteNonQuery();
 
@@ -64,11 +69,13 @@ public partial class login : System.Web.UI.Page
                     activo = Convert.ToInt32(prmActivo.Value);
                     nombre = Convert.ToString(prmNombre.Value);
                     tipo = Convert.ToInt32(prmTipo.Value);
+                    edicion = Convert.ToInt32(prmEdicion.Value);
                     Console.WriteLine(tipo);
 
                     Session["tipoUsuario"] = tipo;
                     Session["idusuario"] = idUsuario;
                     Session["nombreUsu"] = nombre;
+                    Session["edicionActiva"] = edicion;
 
                     switch (activo)
                     {
@@ -99,7 +106,7 @@ public partial class login : System.Web.UI.Page
 
                     // if (activo == 0){
                     //     lblTxt.Text = "¡Cuenta inactiva!";
-                    // }                  
+                    // }
                     // else if (activo == 1)
                     // {
                     //     switch(tipo){
@@ -111,8 +118,8 @@ public partial class login : System.Web.UI.Page
                     //             break;
                     //         case 3:
                     //             Response.Redirect("../modulos/administrador/panel.aspx");
-                    //             break;                            
-                    //     }                        
+                    //             break;
+                    //     }
                     // }
                     // else if (activo == 2)
                     // {

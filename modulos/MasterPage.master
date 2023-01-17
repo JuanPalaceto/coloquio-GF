@@ -309,6 +309,7 @@
 			function nuevaPonencia() {
 				localStorage.setItem('activePillId', 'pills-1');
 				localStorage.setItem('idActual', 0);
+				localStorage.setItem('estadoRegistro', 0);
 				$.ajax({
 					type: 'POST',
 					url: 'ponencias_registrar.aspx/NuevaPonencia',
