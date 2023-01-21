@@ -24,7 +24,6 @@ function TablaInvitaciones() {  //aqui se crea la tabla
                 let orden = [[3, 'asc'], [0, 'asc']];
                 let contexto = "No hay ponencias pendientes.";
                 dataTable(idTable, orden, contexto);
-                // estiloDataTable();
             }, 100);
         }
     });

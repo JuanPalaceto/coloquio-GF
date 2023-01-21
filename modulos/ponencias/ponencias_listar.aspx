@@ -16,7 +16,7 @@
             <br>
             <%-- leyendas --%>
             <div class="row">
-                <div class="col-auto">                
+                <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>                        
                         <li><i class="fa-solid fa-list-check text-secondary" style="font-size:1.2em;"></i> = Registro incompleto</li>                        
@@ -104,7 +104,7 @@
             });
         };
 
-        function editarPonencia(id){            
+        function editarPonencia(id){
             //$.ajax({
             //    type: 'POST',
             //    url: 'ponencias_listar.aspx/editarPonencia',
