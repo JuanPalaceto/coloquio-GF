@@ -26,7 +26,7 @@
                 <%-- tabs --%>
                 <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-1" data-bs-toggle="pill" data-bs-target="#pills-datos" type="button" role="tab" aria-controls="pills-datos" aria-selected="true">Datos</button>
+                        <button class="nav-link active" id="pills-1" data-bs-toggle="pill" data-bs-target="#pills-datos" type="button" role="tab" aria-controls="pills-datos" aria-selected="true">Datos generales</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-2" data-bs-toggle="pill" data-bs-target="#pills-autor" type="button" role="tab" aria-controls="pills-autor" aria-selected="false" disabled>Autores</button>
@@ -42,25 +42,25 @@
                     <input id="idPonencia" type="text" hidden="hidden"/>
                     <div class="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-1" tabindex="0">
                         <div class="row mb-3 g-3 align-items-center">
-                            <label for="txtTit" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Título:</label>
+                            <label for="txtTit" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Título de la ponencia:</label>
                             <div class="col-xxl-4 col-sm-6">
                                 <input type="text" id="txtTit" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-3 mb-3 align-items-center">
-                            <label for="selectMod" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Modalidad:</label>
+                            <label for="selectMod" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Modalidad de la ponencia:</label>
                             <div class="col-xxl-4 col-sm-6">
                                 <asp:DropDownList ID="selectMod" ClientIDMode="Static" CssClass="form-select" runat="server" required></asp:DropDownList>
                             </div>
                         </div>
                         <div class="row g-3 mb-3 align-items-center">
-                            <label for="selectTema" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Tema:</label>
+                            <label for="selectTema" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Tema de la ponencia:</label>
                             <div class="col-xxl-4 col-sm-6">
                                 <asp:DropDownList ID="selectTema" ClientIDMode="Static" CssClass="form-select" runat="server" required></asp:DropDownList>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
-                            <label for="txtRes" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Resumen:</label>
+                            <label for="txtRes" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Resumen de la ponencia:</label>
                             <div class="col-xxl-4 col-sm-6">
                                 <textarea id="txtRes" class="form-control" rows=8 maxlength="500" oninput="contador(this);" required></textarea>
                             </div>
@@ -76,18 +76,35 @@
                                 <input class="form-control" type="file" id="fileArch">
                             </div>
                         </div> --%>
-                        <div class="row g-3 align-items-center">
-                            <label for="txtPal" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Palabras clave:</label>
+                        <%-- Así era antes de achicar el input con las palabras --%>
+                        <%-- <div class="row g-3 align-items-center">
+                            <label for="txtPal" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Palabras clave de la ponencia:</label>
                             <div class="col-xxl-4 col-sm-6 col-8 d-grid d-sm-block">
                                 <input type="text" id="txtPal" class="form-control"/>
                             </div>
                             <div class="col-sm-3 col-4 d-grid d-sm-block">
                                 <button id="btnPalabras" class="btn btn-light border" type="button">Agregar</button>
                             </div>
+                        </div> --%>
+                        <div class="row g-3 align-items-center">
+                            <label for="txtPal" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Palabras clave de la ponencia:</label>
+                            <div class="col-xxl-3 col-sm-4 col-8 d-grid d-sm-block">
+                                <input type="text" id="txtPal" class="form-control"/>
+                            </div>
+                            <div class="col-xxl-1 col-sm-2 col-4 d-grid d-block">
+                                <button id="btnPalabras" class="btn btn-light border" type="button">Agregar</button>
+                            </div>
                         </div>
                         <div class="row g-3 mb-3 align-items-center" id="divPal">
-                            <div class="offset-xxl-4 offset-sm-3 col-xxl-4 col-sm-6 col-8 d-grid d-sm-block">
-                                <small class="form-text text-muted">Agregue las palabras de una por una.<span id="numPalabras" class="float-end">(0/5)</span></small>
+                            <div class="offset-xxl-4 offset-sm-3 col-xxl-3 col-sm-4 col-8">
+                                <div class="row">
+                                    <div class="col-xxl-10 col-sm-9 col-10 d-grid d-sm-block">
+                                        <p class="text-muted">Agregue las palabras de una por una.</p>
+                                    </div>
+                                    <div class="col-xxl-2 col-sm-3 col-2">
+                                        <span id="numPalabras" class="float-end text-muted">(0/5)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-3 mb-3 mt-3 align-items-center">
@@ -116,16 +133,13 @@
                                 <input id="file-input" type="file" multiple data-preview-file-type="any"/>
                             </div>
                         </div>
-                        <!-- <div class="row g-3 mt-4 mb-3 align-items-center">
+                        <div class="row g-3 mt-4 mb-3 align-items-center">
                             <div class="col-12 text-danger justificar">
                                 <p>
-                                    <u>Los trabajos deberán ser escritos en formato Microsoft Word, el nombre del archivo no debe contener espacios en blanco usar el subguión (guión bajo) como separador y el nombre deberá ser de 40 caracteres como máximo, el trabajo debera tener una extensión máxima de 15 cuartillas numeradas (incluidos anexos, bibliografía, cuadros y figuras), en hoja tamaño carta con 2.5 cm. en todos los márgenes.</u>
-                                </p>
-                                <p>
-                                    *Con ánimos de preservar el anonimato durante el proceso de evaluación, se deberá omitir el nombre del autor o autores y la afiliación dentro del cuerpo del trabajo.
+                                    <u>Los trabajos deberán ser cargados en formato <b>PDF</b>, el archivo deberá tener un tamaño máximo de <b>8mb</b> y se deberá cargar <b>1</b> archivo por ponencia.</u>
                                 </p>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="row g-3 mb-3 mt-4 align-items-center">
                             <div class="text-center">
                                 <button type="button" id="btnGuardar" class="btn btn-primary btn-block w-auto">Guardar</button>
