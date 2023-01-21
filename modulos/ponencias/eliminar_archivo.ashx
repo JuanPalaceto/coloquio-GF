@@ -13,9 +13,10 @@ public class eliminar_archivo : IHttpHandler, IReadOnlySessionState {
 
     public void ProcessRequest (HttpContext context) {
         string idponencia = Convert.ToString(HttpContext.Current.Session["idponencia"]);
+        string idusuario = Convert.ToString(HttpContext.Current.Session["idusuario"]);
 
         // Obtener la lista de archivos en la carpeta
-        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idponencia+"/"));
+        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idusuario+"/"+idponencia+"/"));
 
         // Guarda los archivos en un array
         FileInfo[] files = dir.GetFiles();

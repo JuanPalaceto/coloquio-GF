@@ -13,7 +13,7 @@ public partial class usuarios : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        CargarTipos();
     }
 
     [WebMethod]
@@ -44,15 +44,19 @@ public partial class usuarios : System.Web.UI.Page
                         //     sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em; onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
                         // }
 
-                        if(activo == 1){
+                        if (activo == 1)
+                        {
                             sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
-                        } else {
+                        }
+                        else
+                        {
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idUsuario"].ToString() + ");\"></button>");
                         }
 
 
-                         sb.Append("<td align=\"center\"><a href=\"usuarios_editar.aspx\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" ></button></a>");
-                         
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModificarUsuario(" + drseldatos["idUsuario"].ToString() + ")\" ></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idUsuario"].ToString() + ");\"></button></td></tr>");
+
 
                     }
                     if (drseldatos.HasRows)
@@ -70,8 +74,87 @@ public partial class usuarios : System.Web.UI.Page
             return sb.ToString();
         }
     }
-     [WebMethod]
-    public static string alternarActivo(int id){
+    private void CargarTipos()
+    {
+
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand cmdSeltipo = new SqlCommand("SelTipo", Conn))
+            {
+                cmdSeltipo.CommandType = CommandType.StoredProcedure;
+                Conn.Open();
+                txtTipo.Items.Clear();
+                txtTipo.AppendDataBoundItems = true;
+                txtTipo.Items.Add(new ListItem("Seleccionar...", "0"));
+                SqlDataReader drtipo = cmdSeltipo.ExecuteReader();
+                while (drtipo.Read())
+                {
+                    txtTipo.Items.Add(new ListItem(drtipo["tipo"].ToString(), drtipo["idTipo"].ToString()));
+                }
+                drtipo.Close();
+                drtipo.Dispose();
+                Conn.Close();
+                Conn.Dispose();
+            }
+        }
+    }
+
+[WebMethod]
+    public static string GuardarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena)
+    {
+        int Exitoso = 0;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("GuardarUsuario", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@nombre", SqlDbType.NVarChar, 120).Value = nombre;
+                comand.Parameters.Add("@apellidos", SqlDbType.NVarChar, 120).Value = apellidos;
+                comand.Parameters.Add("@telefono", SqlDbType.NVarChar, 120).Value = telefono;
+                comand.Parameters.Add("@tipo", SqlDbType.Int).Value = tipo;
+                comand.Parameters.Add("@email", SqlDbType.NVarChar, 120).Value = email;
+                comand.Parameters.Add("@contrasena", SqlDbType.NVarChar, 120).Value = contrasena;
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string ActualizarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena, int id)
+    {
+        int Exitoso = 0;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("ActualizarUsuario", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@nombre", SqlDbType.NVarChar, 120).Value = nombre;
+                comand.Parameters.Add("@apellidos", SqlDbType.NVarChar, 120).Value = apellidos;
+                comand.Parameters.Add("@telefono", SqlDbType.NVarChar, 120).Value = telefono;
+                comand.Parameters.Add("@tipo", SqlDbType.Int).Value = tipo;
+                comand.Parameters.Add("@email", SqlDbType.NVarChar, 120).Value = email;
+                comand.Parameters.Add("@contrasena", SqlDbType.NVarChar, 120).Value = contrasena;
+                comand.Parameters.Add("@idUsu", SqlDbType.Int).Value = id;
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string alternarActivo(int id)
+    {
         int Exitoso = 1;
         using (SqlConnection Conn = conn.conecta())
         {
@@ -87,8 +170,55 @@ public partial class usuarios : System.Web.UI.Page
             }
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
-        }  
+        }
         //HttpContext.Current.Session["idEdicion"] = id;
         //return "{\"Success\": \"" + Exitoso + "\"}";
+    }
+
+    [WebMethod]
+    public static string modusuario(int id)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("selidusuario", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                con.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\"}");
+                    }
+                    dr.Close();
+                }
+            }
+            con.Close();
+        }
+        return sb.ToString();
+    }
+
+    [WebMethod]
+    public static string borrarUsuario(int id)
+    {
+        int Eliminado = 0;
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("EliminarUsuario", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@idUsuario", SqlDbType.Int).Value = id;
+
+                SqlParameter peliminado = comand.Parameters.Add("@Eliminado", SqlDbType.Int);
+                peliminado.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Eliminado = int.Parse(peliminado.Value.ToString());
+            }
+            Conn.Close();
+            return "{\"success\": \"" + Eliminado + "\"}";
+        }
     }
 }

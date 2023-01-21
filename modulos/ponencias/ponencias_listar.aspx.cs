@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 public partial class ponencias_listar : System.Web.UI.Page
 {
@@ -31,7 +32,7 @@ public partial class ponencias_listar : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estatus</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int resultado = Convert.ToInt32(drseldatos["estado"].ToString());
@@ -50,20 +51,20 @@ public partial class ponencias_listar : System.Web.UI.Page
                                 break;
                             // no evaluada
                             case 1:
-                                sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-hourglass-half text-secondary\" style=\"font-size:1.2em;\"></i></td>");
+                                sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-regular fa-file-lines\" style=\"font-size:1.2em;\"></i></td>");
                                 break;
 
                             // evaluando
                             case 2:
-                                sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-clock text-secondary\" style=\"font-size:1.2em;\"></i></td>");
+                                sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-regular fa-hourglass-half\" style=\"font-size:1.2em;\"></i></td>");
                                 break;
 
-                            // aceptada
+                            // aprobada
                             case 3:
                                 sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-check text-success\" style=\"font-size:1.2em;\"></i></td>");
                                 break;
 
-                            // rechazada
+                            // reprobada
                             case 4:
                                 sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-xmark text-danger\" style=\"font-size:1.2em;\"></i></td>");
                                 break;
@@ -74,8 +75,8 @@ public partial class ponencias_listar : System.Web.UI.Page
                         }
 
                         sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarPonencia(" + drseldatos["idPonencia"].ToString() + ");\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-primary fa fa-user-pen text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarAutores(" + drseldatos["idPonencia"].ToString() + ");\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-download text-white\" style=\"width: 1.2em; height: 1.5em;\"></button></td></tr>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idPonencia"].ToString() + ");\"></button></td></tr>");
+                        // sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-download text-white\" style=\"width: 1.2em; height: 1.5em;\"></button></td></tr>");
                     }
                     if (drseldatos.HasRows)
                     {
@@ -93,21 +94,34 @@ public partial class ponencias_listar : System.Web.UI.Page
         }
     }
 
-    //[WebMethod]
-    //public static string editarPonencia(int id)
-    //{
-    //    int Exitoso = 1;
-    //    HttpContext.Current.Session["idponencia"] = id;
-        
-    //    return "{\"Success\": \"" + Exitoso + "\"}";
-    //}
-
     [WebMethod]
-    public static string editarAutores(int id)
+    public static string borrarPonencia(int id)
     {
-        int Exitoso = 1;
-        HttpContext.Current.Session["idponencia"] = id;
-        return "{\"Success\": \"" + Exitoso + "\"}";
-    }
+        int Eliminado = 0;
+        int user = Convert.ToInt32(HttpContext.Current.Session["idusuario"]);
+        string ruta = @"C:\inetpub\wwwroot\Coloquio\ponencias\" + user + "\\" + id;
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("EliminarPonencia", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = id;
 
+                SqlParameter peliminado = comand.Parameters.Add("@Eliminado", SqlDbType.Int);
+                peliminado.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Eliminado = int.Parse(peliminado.Value.ToString());
+            }
+            Conn.Close();
+            if (Eliminado == 1)
+            {
+                if (Directory.Exists(ruta))
+                {
+                    Directory.Delete(ruta);
+                }
+            }
+            return "{\"success\": \"" + Eliminado + "\"}";
+        }
+    }
 }

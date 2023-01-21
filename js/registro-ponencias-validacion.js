@@ -58,9 +58,15 @@ function validarPonencia(id){
                 addClass: 'translucent'
             });
           } else if (JsonD.success == 3){
+            let mensaje;
+            if (localStorage.getItem('estadoRegistro') == 0){
+              mensaje = 'Ponencia enviada correctamente.';
+            } else {
+              mensaje = 'Ponencia actualizada correctamente.'
+            }
             PNotify.success({
               //title: false,
-              text: 'Ponencia enviada correctamente.',
+              text: mensaje,
               delay: 3000,
               addClass: 'translucent'
             });

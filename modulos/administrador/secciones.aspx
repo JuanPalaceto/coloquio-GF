@@ -1,8 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/modulos/MasterPage.master" AutoEventWireup="true" CodeFile="secciones.aspx.cs" Inherits="modulos_administrador_secciones" %>
+﻿<%@ page title="" language="C#" masterpagefile="~/modulos/MasterPage.master" autoeventwireup="true" codefile="secciones.aspx.cs" inherits="modulos_administrador_secciones" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
     <!-- Modal -->
     <div class="modal fade" id="modalseccion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -10,12 +10,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Secciones</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
-                            <div class="row">
-                                <input type="text" id="txtidSec" value="0" hidden />
+                        <div class="row">
+                            <input type="text" id="txtidSec" value="0" hidden />
                             <div class="form-group col-md-6">
                                 <label for="txtseccion">Sección:</label>
                                 <input type="text" class="form-control" id="txtseccion">
@@ -24,7 +24,8 @@
                                 <label for="ddledicion">Edición:</label>
                                 <asp:DropDownList ID="ddledicion" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
                             </div>
-                            <br /><br />
+                            <br />
+                            <br />
                             <div class="col-md-12 modal-footer">
                                 <button type="button" class="btn  btn-primary" onclick="GuardarSeccion();" style="float: right; margin-left: 10px;">Guardar</button>
                                 <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
@@ -43,14 +44,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Eliminar Sección</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <h2>¿Está seguro de eliminar la sección?</h2>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary eliminar" data-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -60,29 +61,29 @@
     <!---------------------->
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
-        <h3><strong>Lista de secciones</strong></h3>
+            <h3><strong>Lista de secciones</strong></h3>
         </div>
         <div>
-            <button type="button" class="btn btn-primary" onclick="AgregarSeccion();Limpia();" style="float:left;" >Agregar Nueva Sección</a>
+            <button type="button" class="btn btn-primary" onclick="AgregarSeccion();Limpia();" style="float: left;">Agregar Nueva Sección</button>
         </div>
-        <br />        
+        <br />
         <div class="card-body">
-        <!-- Tabla de secciones -->
-            <div id="tabsecciones" class="table-responsive "></div>            
+            <!-- Tabla de secciones -->
+            <div id="tabsecciones" class="table-responsive "></div>
             <!-- Leyenda de los botones -->
             <div class="row">
                 <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Acciones:</b></li>
-                        <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar sección</li>
-                        <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar sección</li>
+                        <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size: 1.2em;"></i>= Editar sección</li>
+                        <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size: 1.2em;"></i>= Eliminar sección</li>
                     </ul>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 
-    
+
 
     <script>
 
@@ -91,10 +92,10 @@
         }
 
         //Se crea la tabla
-        function TablaSecciones() {  
+        function TablaSecciones() {
             $.ajax({
                 type: 'POST',
-                url: 'secciones.aspx/TablaListarEdiciones',
+                url: 'secciones.aspx/TablaListarSecciones',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -118,14 +119,14 @@
             var seccion = $('#txtseccion').val();
             var edicion = $('#ddledicion').val();
 
-                if (seccion == "" || edicion == 0) {
-                    PNotify.notice({
-                        text: 'Porfavor complete los campos.',
-                        delay: 2500,
-                        styling: 'bootstrap3'
-                    });
-                    return;
-                }
+            if (seccion == "" || edicion == 0) {
+                PNotify.notice({
+                    text: 'Porfavor complete los campos.',
+                    delay: 2500,
+                    styling: 'bootstrap3'
+                });
+                return;
+            }
 
             var obj = {};
             obj.seccion = seccion;
@@ -151,7 +152,7 @@
                     var JsonD = $.parseJSON(valor.d)
                     if (JsonD.success == 1) {
                         PNotify.success({
-                            text: 'La informacion se guardo correctamente.',
+                            text: 'La sección se guardo correctamente.',
                             delay: 2500,
                             styling: 'bootstrap3'
                         });
@@ -212,6 +213,7 @@
                 success: function (valor) {
                     var JsonD = $.parseJSON(valor.d)
                     if (JsonD.success == 1) {
+                        $('#modaldel').modal('hide');
                         TablaSecciones();
                         PNotify.success({
                             text: 'La sección se elimino correctamente.',
@@ -220,6 +222,7 @@
                         });
                     } else
                         if (JsonD.success == 2) {
+                            $('#modaldel').modal('hide');
                             PNotify.notice({
                                 text: 'No se puede eliminar la sección porque tiene parametros asignados.',
                                 delay: 2500,
@@ -233,7 +236,7 @@
         function Limpia() {
             $('#txtidSec').val(0);
             $('#txtseccion').val('');
-            $('#ddledicion').val(0);
+            //$('#ddledicion').val(0);
         }
     </script>
 </asp:Content>

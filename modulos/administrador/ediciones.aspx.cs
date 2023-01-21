@@ -24,7 +24,7 @@ public partial class ediciones : System.Web.UI.Page
         {
             using (SqlCommand seldata = new SqlCommand("ListarEdiciones", con))
             {
-                seldata.CommandType = CommandType.StoredProcedure;                
+                seldata.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
@@ -32,19 +32,19 @@ public partial class ediciones : System.Web.UI.Page
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
-                        
+
                         sb.Append("<tr>");
-                        sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");                        
-                        
+                        sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
+
                         if(activo == 1){
                             sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         } else {
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         }
-                        
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");                        
+
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
-                                                
+
                     }
                     if (drseldatos.HasRows)
                     {
@@ -86,7 +86,7 @@ public partial class ediciones : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string borrarEdicion(int id){      
+    public static string borrarEdicion(int id){
         int Eliminado = 0;
         using (SqlConnection Conn = conn.conecta())
         {
@@ -122,8 +122,12 @@ public partial class ediciones : System.Web.UI.Page
                 Exitoso = int.Parse(pexitoso.Value.ToString());
             }
             Conn.Close();
+
+            // Actualiza la variable de sesión de la edición Activa
+            HttpContext.Current.Session["edicionActiva"] = id;
+
             return "{\"success\": \"" + Exitoso + "\"}";
-        }  
+        }
         //HttpContext.Current.Session["idEdicion"] = id;
         //return "{\"Success\": \"" + Exitoso + "\"}";
     }
@@ -146,4 +150,85 @@ public partial class ediciones : System.Web.UI.Page
         }
     }
 
+    [WebMethod]
+    public static string TablaEdicion()
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand seldata = new SqlCommand("EdicionPredeterminada", con))
+            {
+                seldata.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                using (SqlDataReader drseldatos = seldata.ExecuteReader())
+                {
+                    string x = "";
+                    int ptsTotales = 0;
+                    int regNum = 0;
+
+                    if (drseldatos.HasRows)
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetros</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th></tr></thead><tbody>");
+                    while (drseldatos.Read())
+                    {
+                        int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
+                        ptsTotales += puntajeMax;
+                        string y = Convert.ToString(drseldatos["seccion"]);
+
+                        sb.Append("<tr>");
+                        if (x == y)
+                        {
+                            sb.Append("<td style=\"font-size:0px\">" + drseldatos["seccion"].ToString() + "</td>");
+                        }
+                        else
+                        {
+                            sb.Append("<td data-order=\"\">" + drseldatos["seccion"].ToString() + "</td>");
+                            x = Convert.ToString(drseldatos["seccion"]);
+                        }
+                        sb.Append("<td data-order=\"\">" + drseldatos["parametro"].ToString() + "</td>");
+                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");
+                        sb.Append("<td align=\"center\" data-order=\"\">" + puntajeMax + "</td>");
+                    }
+                    if (drseldatos.HasRows)
+                    {
+                        sb.Append("<tfoot><tr>");
+                        sb.Append("<td><b>Puntajes</b></td>");
+                        sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
+                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
+                        sb.Append("</tr></tfoot>");
+                        sb.Append("</tbody></table>");
+                        sb.Append("<input type=\"hidden\" value=\"" + regNum + "\" id= \"regTot\"></input>");
+                    }
+                    else
+                    {
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Evaluación</th></tr></thead><tbody>");
+                        sb.Append("<td style=\"text-align: center;\">No hay parámetros disponibles.</td></tbody></table>");
+                    }
+                    drseldatos.Close();
+                }
+            }
+            con.Close();
+            return sb.ToString();
+        }
+    }
+
+    [WebMethod]
+    public static string Guardar(string nombre, int opcion){
+        var Exitoso = 2;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("GuardarEdicion", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@Nombre", SqlDbType.NVarChar, 120).Value = nombre;
+                comand.Parameters.Add("@Opcion", SqlDbType.Int).Value = opcion;
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
 }

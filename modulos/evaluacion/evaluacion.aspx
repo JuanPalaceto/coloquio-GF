@@ -32,7 +32,7 @@
             <span id="conttxtRecomendaciones" class="float-end text-muted">(0/500)</span>
             </div>                    
         </div>
-        <div class="text-center"><a class="btn btn-primary btn-block" onclick="Guardar();" style="width: 25%;">Guardar</a></div>
+        <div class="text-center"><a class="btn btn-primary btn-block" onclick="Guardar();" style="width: auto;">Guardar</a></div>
     </div> 
 </div> 
 <script>

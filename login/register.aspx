@@ -16,8 +16,13 @@
     <link rel="stylesheet" type="text/css" href="../login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../login/fonts/iconic/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" type="text/css" href="../login/vendor/animate/animate.css">
+    <link href="../css/PNotifyBrightTheme.css" rel="stylesheet">
+    <script src="<%=Page.ResolveClientUrl("~/js/PNotify/PNotify.js")%>"></script>
+	<script src="<%=Page.ResolveClientUrl("~/js/PNotify/PNotifyMobile.js")%>"></script>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     <%-- icons unicode source --%>
     <%-- https://zavoloklom.github.io/material-design-iconic-font/icons.html#application --%>
 </head>
@@ -54,7 +59,7 @@
                         <%-- nombre --%>
                         <div class="wrap-input100 validate-input m-b-23">
                             <span class="label-input100">Nombre(s)</span>
-                            <input type="text" id="inputNom" class="input100" placeholder="Ingresa tu(s) nombre(s)" required>
+                            <input type="text" id="inputNom" class="input100" placeholder="Ingrese tu(s) nombre(s)" required>
                             <span class="focus-input100" data-symbol="&#xf207;"></span>                            
                         </div>
                         <%-- apellido --%>
@@ -66,13 +71,13 @@
                         <%-- correo electrónico --%>
                         <div class="wrap-input100 validate-input m-b-23">
                             <span class="label-input100">Correo electrónico</span>
-                            <input type="text" id="inputEmail" class="input100" placeholder="ejemplo@hotmail.com" required>
+                            <input type="text" id="inputEmail" class="input100" placeholder="ejemplo@outlook.com" required>
                             <span class="focus-input100" data-symbol="&#xf15a;"></span>
                         </div>
                         <%-- teléfono --%>
                         <div class="wrap-input100 validate-input m-b-23">
                             <span class="label-input100">Teléfono</span>
-                            <input type="text" id="inputTel" class="input100" pattern="[0-9]{10}" maxlength="10" placeholder="8343181800" required>
+                            <input type="text" id="inputTel" class="input100" maxlength="10" placeholder="8343181800" onkeypress="return isNumberKey(event)" required>
                             <span class="focus-input100" data-symbol="&#xf2be;"></span>
                         </div>
                         <%-- contraseña --%>
@@ -96,23 +101,32 @@
                                 <option value="Maestría">Maestría</option>
                                 <option value="Doctorado">Doctorado</option>
                             </select>
-                            <span class="focus-input100" data-symbol="&#xf174;"></span>
+                            <%-- <span class="focus-input100" data-symbol="&#xf174;"></span> --%>
                         </div>
                         <%-- institución --%>
-                        <div class="wrap-input100 validate-input m-b-23">
+                        <%-- <div class="wrap-input100 validate-input m-b-23">
                             <span class="label-input100">Institución</span>
-                            <select class="input100" id="inputInstitucion" onchange="cargarDependencia();">
+                            <select class="input100" id="inputInstitucion" data-live-search="true" onchange="cargarDependencia();">
                                 <option value="0">- Seleccionar -</option>
                             </select>
                             <span class="focus-input100" data-symbol="&#xf11c;"></span>
+                        </div> --%>
+                        
+                        <div class="wrap-input100 validate-input m-b-23">
+                            <span class="label-input100">Institución</span>
+                            <select class="input100" id="inputInstitucion" data-live-search="true" onchange="cargarDependencia();">
+                                <option value="0">- Seleccionar -</option>
+                            </select>
+                            <%-- <span class="focus-input100" data-symbol="&#xf11c;"></span> --%>
                         </div>
+
                         <%-- dependencia --%>
                         <div class="wrap-input100 validate-input m-b-23">
                             <span class="label-input100">Dependencia</span>
                             <select class="input100" id="inputDependencia" disabled>
                                 <option value="0">Seleccione una institución</option>
                             </select>
-                            <span class="focus-input100" data-symbol="&#xf18d;"></span>
+                            <%-- <span class="focus-input100" data-symbol="&#xf18d;"></span> --%>
                         </div>
                         <%-- estado --%>
                         <div class="wrap-input100 validate-input m-b-23">
@@ -120,7 +134,7 @@
                             <select class="input100" id="inputEstado" onchange="cargarCiudad();">
                                 <option value="0">- Seleccionar -</option>
                             </select>
-                            <span class="focus-input100" data-symbol="&#xf173;"></span>
+                            <%-- <span class="focus-input100" data-symbol="&#xf173;"></span> --%>
                         </div>
                         <%-- ciudad --%>
                         <div class="wrap-input100 validate-input m-b-23">
@@ -128,10 +142,8 @@
                             <select class="input100" id="inputCiudad" disabled>
                                 <option value="0">Seleccione un estado</option>
                             </select>
-                            <span class="focus-input100" data-symbol="&#xf133;"></span>
+                            <%-- <span class="focus-input100" data-symbol="&#xf133;"></span> --%>
                         </div>
-                        <%-- label informativo --%>
-                        <asp:Label runat="server" ID="lblTxt" /> 
                         <%-- botón de registro --%>
                         <div class="form-element form-submit text-center">                            
                             <button type="button" class="botones" onclick="registrar();">Registrar</button>
@@ -146,7 +158,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form>    
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.3/paper-full.min.js'></script>
     <script src="https://kit.fontawesome.com/b858070c46.js" crossorigin="anonymous"></script>
@@ -159,5 +171,11 @@
     <script src="../js/mainV2.js"></script>
     <script src="../js/indexV2.js"></script>
     <script src="../js/register.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').select2();
+        });
+    </script>
 </body>
 </html>

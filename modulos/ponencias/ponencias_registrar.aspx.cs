@@ -17,7 +17,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
         this.Form.Enctype = "Multipart/Form-Data";
         DropTipoAutor();
 
-        // Si la variable de sesión tiene algo ( es decir se hizo click en modificar una ponencia, asigna el id al textbox, de lo contrairo se asigna 0 desde html)
+        // Si la variable de sesión tiene algo ( es decir se hizo click en modificar una ponencia, asigna el id al textbox, de lo contrario se asigna 0 desde html)
         //idponencia = Convert.ToInt32(HttpContext.Current.Session["idponencia"]);
         //idPonencia.Text = idponencia.ToString();
 
@@ -135,7 +135,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string AgregaAutor(int idPonencia, int idAutor, string autor, string institucion, int tipo)
+    public static string AgregaAutor(int idPonencia, int idAutor, string autor, int tipo)
     {
         int Exitoso = 0;
         using (SqlConnection Conn = conn.conecta())
@@ -146,7 +146,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = idPonencia;
                 comand.Parameters.Add("@idAutor", SqlDbType.Int).Value = idAutor;
                 comand.Parameters.Add("@autor", SqlDbType.NVarChar, 50).Value = autor;
-                comand.Parameters.Add("@institucion", SqlDbType.NVarChar, 50).Value = institucion;
+                // comand.Parameters.Add("@institucion", SqlDbType.NVarChar, 50).Value = institucion;
                 comand.Parameters.Add("@tipo", SqlDbType.Int).Value = tipo;
 
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
@@ -174,14 +174,14 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Nombre</th><th scope=\"col\">Tipo</th><th scope=\"col\" style=\"max-width: 100px;\">Institución</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Nombre</th><th scope=\"col\">Tipo</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         sb.Append("<tr class=\"align-middle\">");
-                        sb.Append("<td>" + drseldatos["autor"].ToString() + "</td>");
-                        sb.Append("<td>" + drseldatos["tipoAutor"].ToString() + "</td>");
-                        sb.Append("<td>" + drseldatos["institucion"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-primary fa fa-user-pen text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarAutor(" + drseldatos["idAutor"].ToString() + ");\"></button>");
+                        sb.Append("<td width=\"60%\">" + drseldatos["autor"].ToString() + "</td>");
+                        sb.Append("<td width=\"20%\">" + drseldatos["tipoAutor"].ToString() + "</td>");
+                        // sb.Append("<td>" + drseldatos["institucion"].ToString() + "</td>");
+                        sb.Append("<td align=\"center\" width=\"20%\"><button type=\"button\" class=\"btn btn-icon btn-primary fa fa-user-pen text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarAutor(" + drseldatos["idAutor"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idAutor"].ToString() + ");\"></button></td></tr>");
                     }
                     if (drseldatos.HasRows)
@@ -216,7 +216,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"idAutor\": \"" + dr["idAutor"].ToString() + "\", \"autor\": \"" + dr["autor"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"institucion\": \"" + dr["institucion"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"idTipoAutor\": \"" + dr["idTipoAutor"].ToString() + "\"}");
+                        sb.Append("{\"idAutor\": \"" + dr["idAutor"].ToString() + "\", \"autor\": \"" + dr["autor"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"idTipoAutor\": \"" + dr["idTipoAutor"].ToString() + "\"}");
                     }
                     dr.Close();
                 }

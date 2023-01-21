@@ -8,43 +8,44 @@ function isNumberKey(evt) {
 };
 
 //--------------[No funciona]-------------------------------------------------
-window.onload = function () {
-    // Caracteres para correo
-    var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+// window.onload = function () {
+//     // Caracteres para correo
+//     var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
-    //Validación cliente
-    $('#inputPasswordConfirm').blur(function () {
-        if ($('#inputPassword').val() != $('#inputPasswordConfirm').val()) {
-            $('#inputPassword').addClass("is-invalid");
-            $('#inputPasswordConfirm').addClass("is-invalid");            
-            return;
-        } else {
-            $('#inputPassword').removeClass("is-invalid");
-            $('#inputPasswordConfirm').removeClass("is-invalid");
-        }
-    });
+//     //Validación cliente
+//     $('#inputPasswordConfirm').blur(function () {
+//         if ($('#inputPassword').val() != $('#inputPasswordConfirm').val()) {
+//             $('#inputPassword').addClass("is-invalid");
+//             $('#inputPasswordConfirm').addClass("is-invalid");            
+//             return;
+//         } else {
+//             $('#inputPassword').removeClass("is-invalid");
+//             $('#inputPasswordConfirm').removeClass("is-invalid");
+//         }
+//     });
 
-    $('#inputPassword').blur(function () {
-        if ($('#inputPassword').val() != $('#inputPasswordConfirm').val() && $('#inputPasswordConfirm').val() != "") {
-            $('#inputPassword').addClass("is-invalid");
-            $('#inputPasswordConfirm').addClass("is-invalid");
-            return;
-        } else {
-            $('#inputPassword').removeClass("is-invalid");
-            $('#inputPasswordConfirm').removeClass("is-invalid");
-        }
-    });
+//     $('#inputPassword').blur(function () {
+//         if ($('#inputPassword').val() != $('#inputPasswordConfirm').val() && $('#inputPasswordConfirm').val() != "") {
+//             $('#inputPassword').addClass("is-invalid");
+//             $('#inputPasswordConfirm').addClass("is-invalid");
+//             return;
+//         } else {
+//             $('#inputPassword').removeClass("is-invalid");
+//             $('#inputPasswordConfirm').removeClass("is-invalid");
+//         }
+//     });
 
-    $('#inputEmail').keyup(function () {
-        if (!regex.test($('#inputEmail').val())) {
-            $('#inputEmail').addClass("is-invalid");
-        } else {
-            $('#inputEmail').removeClass("is-invalid");
-        }
-    });
-};
+//     $('#inputEmail').keyup(function () {
+//         if (!regex.test($('#inputEmail').val())) {
+//             $('#inputEmail').addClass("is-invalid");
+//         } else {
+//             $('#inputEmail').removeClass("is-invalid");
+//         }
+//     });
+// };
 //-----------------------------------------------------------------------------
 
+//función del botón registrar
 function registrar(){
     //asignación de los campos a variables
     var nombre = $('#inputNom').val();
@@ -54,9 +55,9 @@ function registrar(){
     var pswConfirm = $('#inputPasswordConfirm').val();
     var telefono = $('#inputTel').val();
     var grado = $('#inputGrado').val();    
-    var institucion = $('#inputInstitucion option:selected').text();
+    var institucion = $('#inputInstitucion option:selected').val();
     var dependencia = $('#inputDependencia').val();
-    var estado = $('#inputEstado option:selected').text();
+    var estado = $('#inputEstado option:selected').val();
     var ciudad = $('#inputCiudad').val();
     
     //validaciones
@@ -64,72 +65,146 @@ function registrar(){
 
     if(nombre == ""){
         $('#inputNom').addClass("is-invalid");
-        $('#inputNom')[0].reportValidity();
+        $("#inputNom").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese su(s) nombre(s).',
+            delay: 2500,
+            addClass: 'translucent'
+        });        
         return;
     }
 
     if(apellido == ""){
         $('#inputApe').addClass("is-invalid");
-        $('#inputApe')[0].reportValidity();
+        $("#inputApe").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese sus apellidos.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
 
     if(email == "") {
         $('#inputEmail').addClass("is-invalid");
-        $('#inputEmail')[0].reportValidity();
+        $("#inputEmail").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese su correo electrónico.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     } else if (!regex.test(email)) {
-        alert("El correo no es válido.")
+        $("#inputEmail").focus();
+        PNotify.notice({
+            text: 'El correo no es válido.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
-
+    
     if(telefono == ""){
         $('#inputTel').addClass("is-invalid");
-        $('#inputTel')[0].reportValidity();
+        $("#inputTel").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese su número de teléfono.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
+        return;
+    } else if (telefono.length != 10) {
+        $('#inputTel').addClass("is-invalid");
+        $("#inputTel").focus();
+        PNotify.notice({
+            text: 'Por favor, haga coincidir su número con el formato solicitado (10 dígitos sin separadores).',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
 
     if(psw == ""){
         $('#inputPassword').addClass("is-invalid");
-        $('#inputPassword')[0].reportValidity();
+        $("#inputPassword").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese una contraseña.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
 
     if(pswConfirm == ""){
-        $('#inputPassword').addClass("is-invalid");
-        $('#inputPassword')[0].reportValidity();
+        $('#inputPasswordConfirm').addClass("is-invalid");
+        $("#inputPasswordConfirm").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese nuevamente su contraseña.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
 
-    if(pswConfirm != psw){
-        alert("Las contraseñas no coinciden");
+    if(psw != pswConfirm){        
         $('#inputPassword').addClass("is-invalid");
         $('#inputPasswordConfirm').addClass("is-invalid");
+        $("#inputPassword").focus();
+        PNotify.notice({
+            text: 'Las contraseñas no coinciden.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
         return;
     }
 
     if(grado == "0"){
-        alert("Seleccione un grado.");
+        $("#inputGrado").focus();
+        PNotify.notice({
+            text: 'Seleccione un grado académico.',
+            delay: 2500,
+            addClass: 'translucent'
+        });        
         return;
     }
 
-    if(institucion == "- Seleccionar -"){
-        alert("Seleccione una institución.");
+    if(institucion == "0"){
+        $("#inputInstitucion").focus();
+        PNotify.notice({
+            text: 'Seleccione una institución.',
+            delay: 2500,
+            addClass: 'translucent'
+        });  
         return;
     }
 
     if(dependencia == "0"){
-        alert("Seleccione una dependencia.");
+        $("#inputDependencia").focus();
+        PNotify.notice({
+            text: 'Seleccione una dependencia.',
+            delay: 2500,
+            addClass: 'translucent'
+        });  
         return;
     }
 
-    if(estado == "- Seleccionar -"){
-        alert("Seleccione un estado.");
+    if(estado == "0"){
+        $("#inputEstado").focus();
+        PNotify.notice({
+            text: 'Seleccione un estado.',
+            delay: 2500,
+            addClass: 'translucent'
+        });  
         return;
     }
 
     if(ciudad == "0"){
-        alert("Seleccione una ciudad.");
+        $("#inputCiudad").focus();
+        PNotify.notice({
+            text: 'Seleccione una ciudad.',
+            delay: 2500,
+            addClass: 'translucent'
+        });  
         return;
     }
     
@@ -160,10 +235,21 @@ function registrar(){
             success: function (valor) {
                 var JsonD = $.parseJSON(valor.d)
                 if (JsonD.success == 1) {
-                    alert('La informacion se guardó correctamente.');
-                    window.location.href = "login.aspx";
+                    PNotify.success({
+                        text: 'Te has registrado con éxito.',
+                        delay: 2500,
+                        addClass: 'translucent'
+                    });
+                    setTimeout(function myfunction() {
+                        window.location.href = "login.aspx";
+                    }, 2500);                    
                 } else if (JsonD.success == 2) {
-                    alert('Este correo ya está en uso.');
+                    $("#inputEmail").focus();
+                    PNotify.notice({
+                        text: 'Este correo ya está en uso.',
+                        delay: 2500,
+                        addClass: 'translucent'
+                    });
                 }
             }
         });
@@ -173,7 +259,9 @@ function registrar(){
     }            
 }
 
-//apis de los selects del registro
+//------------------------[Selects con apis]---------------------------------
+
+//Api de instituciones
 const batchTrack = document.getElementById("inputInstitucion");
 const getPost = async () => {
     const response = await fetch("https://api.datamexico.org/tesseract/data.jsonrecords?cube=anuies_enrollment&drilldowns=Institution&locale=es&measures=Students");
@@ -195,6 +283,7 @@ $("#inputInstitucion option[value=0]").attr('selected', 'selected');
 };
 displayOption();    
 
+//funcion para la api de dependencias
 function cargarDependencia(){        
     $("#inputDependencia option").each(function() {
         $(this).remove();            
@@ -223,7 +312,7 @@ function cargarDependencia(){
     batchTrack.appendChild(newOption);
     options.data.forEach(option => {            
         const newOption = document.createElement("option");
-        newOption.value = option.Campus;
+        newOption.value = option["Campus ID"];
         newOption.text = option.Campus;
         batchTrack.appendChild(newOption);
         $("#inputDependencia").removeAttr('disabled');    
@@ -235,6 +324,7 @@ function cargarDependencia(){
     }
 }
 
+//Api de estados al cargar la página
 const batchTrack2 = document.getElementById("inputEstado");
 const getPost2 = async () => {
     const response = await fetch("https://api.datamexico.org/tesseract/data.jsonrecords?cube=inegi_population_total&drilldowns=State&locale=es&measures=Population");
@@ -256,6 +346,7 @@ $("#inputEstado option[value=0]").attr('selected', 'selected');
 };
 displayOption2();    
 
+//funcion para la api de ciudades
 function cargarCiudad(){        
     $("#inputCiudad option").each(function() {
         $(this).remove();            
@@ -284,7 +375,7 @@ function cargarCiudad(){
     batchTrack2.appendChild(newOption);
     options.data.forEach(option => {            
         const newOption = document.createElement("option");
-        newOption.value = option.Municipality;
+        newOption.value = option["Municipality ID"];
         newOption.text = option.Municipality;
         batchTrack2.appendChild(newOption);
         $("#inputCiudad").removeAttr('disabled');    
@@ -296,6 +387,7 @@ function cargarCiudad(){
     }
 }
 
+//función para sortear alfabéticamente las opciones de un select mandando el id del select
 function sortear(id) {    
     $(id).append($(id+" option").remove().sort(function(a, b) {
         var at = $(a).text(),

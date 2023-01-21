@@ -16,7 +16,8 @@ public class subir_archivo : IHttpHandler, System.Web.SessionState.IRequiresSess
         if (context.Request.Files.Count > 0)
             {
                 string idponencia = Convert.ToString(HttpContext.Current.Session["idponencia"]);
-                string folderPath = HttpContext.Current.Server.MapPath("~/ponencias/"+ idponencia +"/");
+                string idusuario = Convert.ToString(HttpContext.Current.Session["idusuario"]);
+                string folderPath = HttpContext.Current.Server.MapPath("~/ponencias/"+ idusuario + "/" + idponencia + "/");
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
@@ -26,7 +27,7 @@ public class subir_archivo : IHttpHandler, System.Web.SessionState.IRequiresSess
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFile file = files[i];
-                    string fname = context.Server.MapPath("~/ponencias/" + idponencia + "/" + file.FileName);
+                    string fname = context.Server.MapPath("~/ponencias/" + idusuario + "/" + idponencia + "/ponencia_" + idponencia + ".pdf");
                     string rutaBD = fname;
 
                     file.SaveAs(fname);

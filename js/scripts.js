@@ -1,5 +1,5 @@
 // Scripts del sistema
-// 
+//
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -24,7 +24,7 @@ function contador(obj){
     var textTam=obj.value.length;
     var maxlen = obj.maxLength;
     var idspan = "cont" + obj.id;
-  
+
     if(textTam == maxlen || textTam == 0){
       document.getElementById(idspan).innerHTML='<span style="color: red;">('+textTam + '/' + maxlen + ')</span>';
     }else{
@@ -33,4 +33,30 @@ function contador(obj){
   }
   /* ******************** */
 
-    
+/* Estilos de la DataTable */
+function dataTable(idTabla, orden, contexto) {
+  $('#' + idTabla).DataTable({
+      "lengthMenu": [5, 10, 25, 50, 75, 100],
+      "pageLength": 10,
+      pagingType: 'numbers',
+      "order": orden,
+      language: {
+          "decimal": ".",
+          "emptyTable": "",
+          "info": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+          "infoEmpty": "",
+          "infoFiltered": "<br/>(Filtrado de <b>_MAX_</b> registros en total)",
+          "infoPostFix": "",
+          "thousands": ",",
+          "lengthMenu": "Mostrando _MENU_ registros",
+          "loadingRecords": "Cargando...",
+          "processing": "Procesando...",
+          "search": "B&uacute;squeda:",
+          "zeroRecords": contexto
+      }
+  });
+};
+/* ******************** */
+
+
+

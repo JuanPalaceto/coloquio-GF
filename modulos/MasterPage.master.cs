@@ -72,8 +72,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
 									</a>
 									<div class=""collapse"" id=""pagesCollapsePonenciasList"" aria-labelledby=""headingSix"" data-bs-parent=""#sidenavAccordionPages"">
 										<nav class=""sb-sidenav-menu-nested nav"">
-											<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_todas.aspx"">Todas</a>
-											<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx"">Clasificadas</a>
+											<a class=""nav-link"" href=""/coloquio/modulos/administrador/invitaciones.aspx"">Ponencias sin asignar</a>
+											<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx"">Ponencias evaluadas</a>
 										</nav>
 									</div>
                                     <a class=""nav-link collapsed"" href=""#"" data-bs-toggle=""collapse"" data-bs-target=""#collapseReportes"" aria-expanded=""false"" aria-controls=""collapseReportes"">

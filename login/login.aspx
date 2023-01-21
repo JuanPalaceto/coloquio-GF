@@ -69,16 +69,14 @@
                             <asp:TextBox ID="inputPassword" runat="server" class="input100" type="password"></asp:TextBox>
                             <span class="focus-input100" data-symbol="&#xf191;"></span>
                         </div>
+                        <div class="form-element form-submit">
+                            <a class="float-left" href="register.aspx" style="color:green;"><h6>¿No tienes cuenta? Ir al registro.</h6></a>
+                            <a class="float-right" href="password.aspx" style="color:green;"><h6>Recuperar contraseña.</h6></a>
+                        </div>                         
                         <asp:Label runat="server" ID="lblTxt" /> 
                         <div class="form-element form-submit text-center">
                             <asp:Button class="login" ID="inicio" runat="server" Text="Iniciar sesion" OnClick="login_Click" />
-                        </div>
-                        <div class="form-element form-submit">
-                            <a href="register.aspx" style="color:green;">¿No tienes cuenta? Ir al registro.</a>
-                            <a class="float-right" href="password.aspx" style="color:green;">Recuperar contraseña.</a>
-                        </div>
-
-
+                        </div>                    
                     </div>
                 </div>
             </div>

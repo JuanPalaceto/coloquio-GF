@@ -14,26 +14,26 @@ function limpiaAutor() {
 
     $('#idAutor').val("0");
     $('#selectAut').prop('selectedIndex', 0);
-    $('#txtIns').val("");
+    // $('#txtIns').val("");
     $('#txtAut').val("");
 }
 /* ******************** */
 
 /* Agregar autores */
 function agregarAutor(idPonencia) {
-    var idAutor = "", autor = "", institucion = "", tipo = "";
+    var idAutor = "", autor = "", tipo = "";
 
-    if ($('#txtAut')[0].checkValidity() && $('#txtIns')[0].checkValidity() && $('#selectAut')[0].checkValidity()) {
+    if ($('#txtAut')[0].checkValidity() && $('#selectAut')[0].checkValidity()) {
         idAutor = $('#idAutor').val();
         autor = $('#txtAut').val();
-        institucion = $('#txtIns').val();
+        // institucion = $('#txtIns').val();
         tipo = $('#selectAut').val();
 
         var obj = {};
         obj.idPonencia = idPonencia;
         obj.idAutor = idAutor;
         obj.autor = autor;
-        obj.institucion = institucion;
+        // obj.institucion = institucion;
         obj.tipo = tipo;
 
         $.ajax({
@@ -76,7 +76,7 @@ function agregarAutor(idPonencia) {
         });
     } else {
         $('#selectAut')[0].reportValidity();
-        $('#txtIns')[0].reportValidity();
+        // $('#txtIns')[0].reportValidity();
         $('#txtAut')[0].reportValidity();
     }
 };

@@ -2,19 +2,119 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <style>
-        .op{
+
+        .contain{
+            display: flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .radio-tile-group{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input-container{
+            position: relative; 
+            height: 14rem;
+            width: 14rem;
+            margin: 0.5rem;
+        }
+
+        .input-container input{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .input-container .radio-tile{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            border: 2px solid #858585;
+            border-radius: 8px;
+            transition: all 300ms ease;
+        }
+
+        /*.input-container label{
+            font-size: 0.80rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }*/
+
+        .radio-tile label{
+            position: relative;
+            bottom: 30px;
+            left: 10px;
+        }
+
+        input:checked + .radio-tile{
+            /*background-color: #217cb188;*/
+            box-shadow: 0 0 16px #217cb188;
+            border: 2px solid #217cb188;
+        }
+
+        input:hover + .radio-tile{
+            border: 2px solid #217cb188;
+            box-shadow: 0 0 16px #217cb188;
+        }
+        /*.lab1{
+            height: 250px;
+            width: 300px;
+            position: relative;
+            color: rgb(0, 0, 0);
+            border: 2px solid #000000;
+            padding: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .lab1 input:checked {
+            background-color: #005c00;
+        }
+
+        .lab1:hover{
+            border: 10px;
+            opacity: 1;
+            border-color: #269916;
+        }
+
+
+        input[type="radio"]:checked + label{
+            background-color: #005c00;
+            color: #01cc65;
+            opacity: 1;
+        }
+
+        input[type="radio"]:checked + label::before{
+            height: 16px;
+            width: 16px;
+            border: 10 px solid rgb(0, 0, 0);
+            background-color: #01cc65;
+        }*/
+
+        /*.op{
             border-color: white;
             background-color:white;
             opacity: 0.6;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
         .op:hover{
             border: 10px;
             opacity: 1;
-            border-color: #198754;
-            background-color:#20c997;
-        }
+            border-color: #9c9c9c;
+            background-color:#ffffff;
+        }*/
     </style>
 </asp:Content>
 
@@ -90,7 +190,7 @@
                     <br>
                     <div align="center">
                         <label nowrap="nowrap">Nombre de la Edicion: </label>
-                        <input  class="form" type="text" name="edicion" value="" size="30">
+                        <input  id="nombreEdi" class="form" type="text" name="edicion" value="" size="30">
                     </div>
                     <br>
                     <hr>
@@ -99,28 +199,28 @@
                     <br>
                     <!------------------------------------------->
                     <!------------------------------------------->
-                    <div class="row">
-                        <div id="opcion1" class="col col-5 m-1 card op">
-                            <div class="form-check">
-                                <label><input class="form-check-input" type="radio" name="flexRadioDefault" id="plantilla1">
-                                Plantilla de Parametros Predeterminada: </label></input>
-                                <img src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
-                                
+                    <div class="row contain">
+                        <div id="opcion1" class="radio-tile-group">
+                            <div class="form-check input-container">
+                                <input class="form-check-input" type="radio" name="radio" id="walk" value="1">
+                                <div class="radio-tile">
+                                    <label for="walk">Plantilla de Parametros Predeterminada:</label>
+                                    <img name="walk" src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
+                                </div>                                
                             </div>
-                        </div>
                         
-                        <div id="opcion2" class="col col-5 m-1 ms-auto card op">
-                            <div>
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="plantilla2">
-                                <label>Plantilla de Parametros Nueva: </label>
-                                <img src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
-                                
+                            <div class="form-check input-container">
+                                <input class="form-check-input" type="radio" name="radio" id="run" value="2">
+                                <div class="radio-tile">
+                                    <label for="run">Plantilla de Parametros Nueva: </label>
+                                    <img name="run" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn  btn-primary confirmar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
+                    <button type="button" class="btn  btn-primary" data-bs-dismiss="modal" style="float: right; margin-left: 5px;" onclick="Plantilla();">Confirmar</button>
                     <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
                 </div>
             </div>
@@ -128,6 +228,28 @@
     </div>
     <%-------------%>
 
+    <%-----------ModalEdicion-----------%>
+    <div id="ModalEdicion" class="modal fade bd-modal-del" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <!---Modal content--->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><b>Previsualizacion </b></h3>
+                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <!--Se genera tabla-->
+                    <div id="DatosEdicion" class="table-responsive"></div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-primary" data-bs-dismiss="modal" style="float: right; margin-left: 5px;" onclick="GuardarEdicion();">Continuar</button>
+                    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;" onclick="ModalNuevaEdicion();">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%----------------------%>
    <!-- 
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
@@ -168,7 +290,7 @@
         <h3><strong>Lista de ediciones</strong></h3>
         </div>
         <div>
-            <button type="button" class="btn  btn-primary confirmar" onclick="ModalNuevaEdicion();" style="float:left;" >Agregar Nueva Edicion</a>
+            <button type="button" class="btn  btn-primary" onclick="ModalNuevaEdicion();" style="float:left;" >Agregar Nueva Edicion</a>
         </div>
         <br />        
         <div class="card-body">
@@ -277,9 +399,9 @@
             });
         };*/
 
-        /*function ModalNuevaEdicion(){
+        function ModalNuevaEdicion(){
             $("#modalNuevaEdi").modal('show');
-        }*/
+        }
 
         function ModalEditar(idEdicion, Edicion) {
             $("#modaledit").modal('show');
@@ -295,7 +417,7 @@
             var UpEdicion=$("#nombreEdicion").val();
             $.ajax({
                 type: 'POST',
-                url: 'editar_ediciones.aspx/ModificarEdicion',
+                url: 'ediciones.aspx/ModificarEdicion',
                 data: "{'id':'" + id + "','newEdicion':'"+ UpEdicion +"'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -372,7 +494,85 @@
             });
         };
 
+        function Plantilla(){
+            var nombreEdi=$("#nombreEdi").val();
+            if($("#walk").is(":checked")){
+                $("#ModalEdicion").modal('show');
+                console.log(nombreEdi + "Plantilla predeterminada, Abre Pagina");
+                TablaEdicion();
+            }else if($("#run").is(":checked")){
+                console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
+                GuardarEdicion();                
+            }
+        }
+
+        function TablaEdicion() {  //aqui se crea la tabla
+            $.ajax({
+                type: 'POST',
+                url: 'ediciones.aspx/TablaEdicion',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (tabla) {
+                    $("#DatosEdicion").html(tabla.d); //nombre del id del div de la tabla
+                    setTimeout(function myfunction() {
+                        //estiloDataTable2();
+                    }, 100);
+                }
+            });
+        }
+
+        function GuardarEdicion(){
+            var nombreEdi=$("#nombreEdi").val();
+            var opcion;
+            if($("#walk").is(":checked")){
+                opcion=1;
+                PNotify.success({
+                            text: 'Edicion agregada correctamente.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+            }else if($("#run").is(":checked")){
+                opcion=2
+                PNotify.success({
+                            text: 'Edicion agregada correctamente.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+            }
+            console.log(opcion);
+
+            /*-----Problema de Envio-----
+            $.ajax({
+                type: 'POST',
+                url: 'ediciones.aspx/GuardarEdicion',
+                data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (valor){
+                    var JsonD = $.parseJSON(valor.d)
+                    if (JsonD.success == 1) {
+                        TablaUsu();
+                        PNotify.success({
+                            text: 'Edicion guardada correctamente.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+                    } else if (JsonD.success == 0) {
+                        PNotify.notice({
+                            text: 'Algo salió mal.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+                    } 
+                }
+            });*/
+        }
+
         </script>
 </asp:Content>
-
-

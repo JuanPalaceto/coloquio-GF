@@ -1,22 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.Services;
-using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Text;
+using System.Web.Services;
+using System.Web.UI.WebControls;
 public partial class temas : System.Web.UI.Page
 {
-    public string idTema, tema;
     protected void Page_Load(object sender, EventArgs e)
     {
-        idTema= Convert.ToString(HttpContext.Current.Session["idTema"]);
-        tema= Convert.ToString(HttpContext.Current.Session["tema"]);
+        DropEdiciones();
+        edicion.Enabled = false;
     }
+    
+    private void DropEdiciones()
+        {
+            using (SqlConnection con = conn.conecta())
+            {
+                using (SqlCommand cmdSeluam = new SqlCommand("SelEdiciones", con))
+                {
+                    cmdSeluam.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    edicion.Items.Clear();
+                    edicion.AppendDataBoundItems = true;
+                    //edicion.Items.Add(new ListItem("- Seleccione una edición -", "0"));
+                    SqlDataReader drcar = cmdSeluam.ExecuteReader();
+                    while (drcar.Read())
+                    {
+                        edicion.Items.Add(new ListItem(drcar["edicion"].ToString(), drcar["idEdicion"].ToString()));
+                    }
+                    drcar.Close();
+                    drcar.Dispose();
+                    con.Close();
+                    con.Dispose();
+                }
+            }
+        }
+
     [WebMethod]
     public static string TablaListarTemas()
     {
@@ -29,25 +48,25 @@ public partial class temas : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Tema</th><th scope=\"col\" style=\"max-width: 150px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Tema</th><th scope=\"col\">Edición</th><th scope=\"col\" style=\"max-width: 150px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
-
                         sb.Append("<tr>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["tema"].ToString() + "</td>");
-
+                        sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
                         if (activo == 1)
                         {
-                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
                         }
                         else
                         {
-                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
                         }
-
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idTema"].ToString() + ",'" + drseldatos["tema"].ToString()+ "');\"></button>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModificarTema(" + drseldatos["idTema"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idTema"].ToString() + ");\"></button></td></tr>");
+
                     }
                     if (drseldatos.HasRows)
                     {
@@ -55,7 +74,7 @@ public partial class temas : System.Web.UI.Page
                     }
                     else
                     {
-                        sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay ediciones disponibles.</td></tbody></table>");
+                        sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay temas disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
                 }
@@ -64,6 +83,98 @@ public partial class temas : System.Web.UI.Page
             return sb.ToString();
         }
     }
+
+    [WebMethod]
+    public static string GuardarTema(string tema, int edicion)
+    {
+        int Exitoso = 0;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("GuardarTema", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;                
+                comand.Parameters.Add("@tema", SqlDbType.NVarChar, 120).Value = tema;
+                comand.Parameters.Add("@edicion", SqlDbType.Int).Value = edicion;
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string updateTema(string tema, int edicion, int id)
+    {
+        int Exitoso = 0;
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("updateTema", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@tema", SqlDbType.NVarChar, 120).Value = tema;
+                comand.Parameters.Add("@edicion", SqlDbType.Int).Value = edicion;
+                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;                           
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                con.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            con.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string editarTema(int id)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("editarTema", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
+                con.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        sb.Append("{\"tema\": \"" + dr["tema"].ToString().Trim() + "\",\"edicion\": \"" + dr["idEdicion"].ToString().Trim() + "\"}");
+                    }
+                    dr.Close();
+                }
+            }
+            con.Close();
+        }
+        return sb.ToString();
+    }
+
+    [WebMethod]
+        public static string borrarTema(int id)
+        {
+            int Eliminado = 0;
+            using (SqlConnection con = conn.conecta())
+            {
+                using (SqlCommand comand = new SqlCommand("EliminarTema", con))
+                {
+                    comand.CommandType = CommandType.StoredProcedure;
+                    comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
+                    SqlParameter peliminado = comand.Parameters.Add("@Eliminado", SqlDbType.Int);
+                    peliminado.Direction = ParameterDirection.Output;
+                    con.Open();
+                    comand.ExecuteNonQuery();
+                    Eliminado = int.Parse(peliminado.Value.ToString());
+                }
+                con.Close();
+                return "{\"success\": \"" + Eliminado + "\"}";
+            }
+        }
+        
     [WebMethod]
     public static string alternarActivo(int id)
     {
@@ -83,64 +194,6 @@ public partial class temas : System.Web.UI.Page
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
         }        
-    }    
-    [WebMethod]
-    public static string editarTema(int id){
-        using (SqlConnection Conn = conn.conecta())
-        {
-            using (SqlCommand comand = new SqlCommand("editarTema", Conn))
-            {
-                comand.CommandType = CommandType.StoredProcedure;
-                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
-
-                SqlParameter pedicion = comand.Parameters.Add("@tema", SqlDbType.NVarChar, 50);
-                pedicion.Direction = ParameterDirection.Output;
-
-                Conn.Open();
-                comand.ExecuteNonQuery();
-
-                HttpContext.Current.Session["idTema"] = id;
-                HttpContext.Current.Session["tema"] = pedicion.Value.ToString();
-            }
-            Conn.Close();
-            return "";
-        }
-    }
-    [WebMethod]
-    public static string ModificarTema(int id, string newTema){
-        using (SqlConnection Conn = conn.conecta())
-        {
-            using (SqlCommand command = new SqlCommand("updateTema", Conn))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
-                command.Parameters.Add("@tema", SqlDbType.NVarChar, 50).Value = newTema;
-
-                Conn.Open();
-                command.ExecuteNonQuery();
-            }
-            Conn.Close();
-            return "";
-        }
-    }    
-    [WebMethod]
-    public static string borrarTema(int id){      
-        int Eliminado = 0;
-        using (SqlConnection Conn = conn.conecta())
-        {
-            using (SqlCommand comand = new SqlCommand("eliminarTema", Conn))
-            {
-                comand.CommandType = CommandType.StoredProcedure;
-                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
-
-                SqlParameter peliminado = comand.Parameters.Add("@Eliminado", SqlDbType.Int);
-                peliminado.Direction = ParameterDirection.Output;
-                Conn.Open();
-                comand.ExecuteNonQuery();
-                Eliminado = int.Parse(peliminado.Value.ToString());
-            }
-            Conn.Close();
-            return "{\"success\": \"" + Eliminado + "\"}";
-        }
-    }
-}
+    } 
+}   
+    

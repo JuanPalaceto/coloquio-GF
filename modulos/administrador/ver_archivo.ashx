@@ -1,32 +1,35 @@
-<%@ WebHandler Language="C#" Class="buscar_archivo" %>
+<%@ WebHandler Language="C#" Class="ver_archivo" %>
 
 using System;
 using System.Web;
 using System.Text;
 using System.IO;
 using System.Net;
-using System.Web.SessionState;
 
-public class buscar_archivo : IHttpHandler, IReadOnlySessionState {
+public class ver_archivo : IHttpHandler {
 
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/html";
+        string idPonencia = context.Request.Params["idPon"];
+
+        if (idPonencia.Equals("")){
+            context.Response.Write("<script>alert('Ocurrió un error. Favor de volver a intentarlo');</script>");
+            return;
+        }
 
         StringBuilder sbArchivos = new StringBuilder();
-        string idponencia = Convert.ToString(HttpContext.Current.Session["idponencia"]);
-        string idusuario = Convert.ToString(HttpContext.Current.Session["idusuario"]);
 
         // Comprobar si existe la carpeta
-        if (Directory.Exists(HttpContext.Current.Server.MapPath("~/ponencias/"+idusuario+"/"+idponencia+"/")) && idponencia != "0")
+        if (Directory.Exists(HttpContext.Current.Server.MapPath("~/ponencias/"+idPonencia+"/")))
         {
             // Si existen documentos
-            DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idusuario+"/"+idponencia+"/"));
+            DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idPonencia+"/"));
 
             FileInfo[] files = dir.GetFiles();
 
             if (files.Length > 0)
             {
-                sbArchivos.Append("<script>$('#file-input').fileinput('destroy'); $('#file-input').fileinput({ theme: 'fa5', language: 'es', uploadUrl: 'subir_archivo.ashx', maxFileSize: 8192, maxFileCount: 1, overwriteInitial: false, initialPreviewAsData: true, browseOnZoneClick: true, validateInitialCount: true, initialPreview: [");
+                sbArchivos.Append("<script>$('#file-input').fileinput('destroy'); $('#file-input').fileinput({ theme: 'fa5', language: 'es',  showClose: false, showBrowse:false, showCaption: false, dropZoneTitle: false, showUpload: false, showRemove: false, initialPreviewShowDelete: false, maxFileSize: 8192, maxFileCount: 1, overwriteInitial: false, initialPreviewAsData: true, browseOnZoneClick: false, validateInitialCount: true, initialPreview: [");
                 foreach (FileInfo item in files)
                 {
                     string rutaCompleta = item.FullName;
@@ -45,19 +48,19 @@ public class buscar_archivo : IHttpHandler, IReadOnlySessionState {
                     string tamano = (item.Length).ToString();
                     extension = extension.Replace(".", "");
                     if (extension == "pdf"){
-                        sbArchivos.Append("{ type: \""+extension+"\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", url: \"eliminar_archivo.ashx\", key: \""+nombreArchivo+"\" }, ");
+                        sbArchivos.Append("{ type: \""+extension+"\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", key: \""+nombreArchivo+"\" }, ");
                     } else if (extension == "jpg" || extension == "png" || extension == "jfif" || extension == "jpeg"){
-                        sbArchivos.Append("{ type: \"image\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", url: \"eliminar_archivo.ashx\", key: \""+nombreArchivo+"\" }, ");
+                        sbArchivos.Append("{ type: \"image\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", key: \""+nombreArchivo+"\" }, ");
                     } else if (extension == "doc" || extension == "docx" || extension == "ppt" || extension == "pptx" || extension == "xls" || extension == "xlsx"){
-                        sbArchivos.Append("{ type: \"office\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", url: \"eliminar_archivo.ashx\", key: \""+nombreArchivo+"\" }, ");
+                        sbArchivos.Append("{ type: \"office\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", key: \""+nombreArchivo+"\" }, ");
                     } else if (extension == "mp4"){
-                        sbArchivos.Append("{ type: \"video\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", url: \"eliminar_archivo.ashx\", key: \""+nombreArchivo+"\" }, ");
+                        sbArchivos.Append("{ type: \"video\", size: \""+tamano+"\", caption: \""+nombreArchivo+"\", key: \""+nombreArchivo+"\" }, ");
                     } else {
-                        sbArchivos.Append("{ size: \""+tamano+"\", caption: \""+nombreArchivo+"\", url: \"eliminar_archivo.ashx\", key: \""+nombreArchivo+"\" }, ");
+                        sbArchivos.Append("{ size: \""+tamano+"\", caption: \""+nombreArchivo+"\", key: \""+nombreArchivo+"\" }, ");
                     }
                 }
                 // lo mismo que rutaCompleta arriba, para descargar archivos
-                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idponencia+"/{filename}\" }).on(\"filepredelete\", function(jqXHR) { var abort = true; if (confirm('¿Desea eliminar este archivo?')) { abort = false; } return abort; });</script>");
+                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idPonencia+"/{filename}\" });</script>");
             }
             else
             {

@@ -99,9 +99,6 @@
 
                     <%-- Tab 3 --%>
                     <div class="tab-pane fade" id="pills-archivo" role="tabpanel" aria-labelledby="pills-2" tabindex="0">
-                        <!--Para hacer zoom y previsualizar en un modal-->
-                        <!-- Está en la master, el conflicto era el jquery repetido -->
-                        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
                         <!--JS PRINCIPAL DEL PLUGIN-->
                         <script src="../../FileInput/js/fileinput.js"></script>
                         <!--ESTE ES PARA LENGUAJE A ESPAÑOL-->
@@ -169,12 +166,12 @@
                                                 <input type="text" id="txtAut" class="form-control" required="required"/>
                                             </div>
                                         </div>
-                                        <div class="row mb-3 g-3 align-items-center">
+                                        <%-- <div class="row mb-3 g-3 align-items-center">
                                             <label for="txtIns" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Institución:</label>
                                             <div class="col-xxl-4 col-sm-6">
                                                 <input type="text" id="txtIns" class="form-control" required="required"/>
                                             </div>
-                                        </div>
+                                        </div> --%>
                                         <div class="row g-3 mb-3 align-items-center">
                                             <label for="selectAut" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-sm-end text-start">Tipo de autor:</label>
                                             <div class="col-xxl-4 col-sm-6">

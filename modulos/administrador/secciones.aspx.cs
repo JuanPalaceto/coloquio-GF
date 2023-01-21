@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.Services;
-using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
+using System.Web.Services;
+using System.Web.UI.WebControls;
 
 public partial class modulos_administrador_secciones : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         DropEdiciones();
+        ddledicion.Enabled = false;
 
     }
 
@@ -27,7 +24,7 @@ public partial class modulos_administrador_secciones : System.Web.UI.Page
                     con.Open();
                     ddledicion.Items.Clear();
                     ddledicion.AppendDataBoundItems = true;
-                    ddledicion.Items.Add(new ListItem("- Seleccione una edición -", "0"));
+                    //ddledicion.Items.Add(new ListItem("- Seleccione una edición -", "0"));
                     SqlDataReader drcar = cmdSeluam.ExecuteReader();
                     while (drcar.Read())
                     {
@@ -42,7 +39,7 @@ public partial class modulos_administrador_secciones : System.Web.UI.Page
         }
 
     [WebMethod]
-    public static string TablaListarEdiciones()
+    public static string TablaListarSecciones()
     {
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
@@ -153,7 +150,7 @@ public partial class modulos_administrador_secciones : System.Web.UI.Page
         public static string EliminarSeccion(int id)
         {
             int Eliminado = 0;
-            using (SqlConnection con = conexion.conecta())
+            using (SqlConnection con = conn.conecta())
             {
                 using (SqlCommand comand = new SqlCommand("EliminarSeccion", con))
                 {

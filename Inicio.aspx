@@ -80,9 +80,9 @@
     <div class="container d-flex justify-content-center justify-content-md-between">        
         <div class="float-end me-5" style="margin-left:auto;">
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Alumnos.aspx">Alumnos Posgrado</a></li>
-                <li class="list-inline-item mx-1">/</li>
-                <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Docentes.aspx">Docentes Posgrado</a></li>                
+                <%-- <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Alumnos.aspx">Alumnos Posgrado</a></li> --%>
+                <li class="list-inline-item mx-1"></li>
+                <%-- <li class="list-inline-item"><a href="/Posgrado/Servicios/Servicios_Docentes.aspx">Docentes Posgrado</a></li> --%>
             </ul>
         </div>                   
     </div>
