@@ -62,7 +62,7 @@
 
 			<ul class="navbar-nav ms-auto ms-md-0 me-lg-4 muestraMenu">
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-gear"></i></a>
+					<a class="nav-link dropdown-toggle no-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-gear"></i></a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 						<li><a class="dropdown-item" href="#!">Configuración</a></li>
 						<li><a class="dropdown-item" href="#!">Registro de Actividad</a></li>
@@ -323,6 +323,7 @@
 					}
 				});
 			};
+
 		</script>
 	</form>
 </body>

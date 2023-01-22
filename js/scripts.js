@@ -17,6 +17,11 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+    // Para setear el estado del collapse
+    if ($('.nav-link').hasClass('collapsed')) {
+      $('div.collapse').collapse('hide');
+    }
+
 });
 
 /* Contador de caracteres */
@@ -59,4 +64,10 @@ function dataTable(idTabla, orden, contexto) {
 /* ******************** */
 
 
-
+/* Colapsar submenú al abrir otro */
+$('.nav-link').not('.no-toggle').on('click', function () {
+    $('.navlink').removeClass('collapsed');
+    $('div.collapse').collapse('hide');
+    $(this).next('div.collapse').collapse('show');
+});
+/* ******************** */
