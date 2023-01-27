@@ -37,13 +37,13 @@ public partial class ediciones : System.Web.UI.Page
                         sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
 
                         if(activo == 1){
-                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         } else {
-                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         }
 
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
 
                     }
                     if (drseldatos.HasRows)
@@ -212,7 +212,7 @@ public partial class ediciones : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string Guardar(string nombre, int opcion){
+    public static string GuardarEdicion(string nombre, int opcion){
         var Exitoso = 2;
         using (SqlConnection con = conn.conecta())
         {

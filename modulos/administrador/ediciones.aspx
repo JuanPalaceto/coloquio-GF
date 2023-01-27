@@ -496,14 +496,19 @@
 
         function Plantilla(){
             var nombreEdi=$("#nombreEdi").val();
-            if($("#walk").is(":checked")){
+            if($("#nombreEdi").val("")){
+                console.log("Debe agregar nombre")
+            }else{
+                if($("#walk").is(":checked")){
                 $("#ModalEdicion").modal('show');
                 console.log(nombreEdi + "Plantilla predeterminada, Abre Pagina");
                 TablaEdicion();
-            }else if($("#run").is(":checked")){
-                console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
-                GuardarEdicion();                
+                }else if($("#run").is(":checked")){
+                    console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
+                    GuardarEdicion();                
+                }
             }
+            
         }
 
         function TablaEdicion() {  //aqui se crea la tabla
@@ -529,18 +534,74 @@
             var opcion;
             if($("#walk").is(":checked")){
                 opcion=1;
-                PNotify.success({
+                $.ajax({
+                    type: 'POST',
+                    url: 'ediciones.aspx/GuardarEdicion',
+                    data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                    },
+                    success: function (valor){
+                        var JsonD = $.parseJSON(valor.d)
+                        if (JsonD.success == 1) {
+                            TablaUsu();
+                            PNotify.success({
+                                text: 'Edicion guardada correctamente.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                        } else if (JsonD.success == 0) {
+                            PNotify.notice({
+                                text: 'Algo salió mal.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                        } 
+                    }
+                });
+
+                /*PNotify.success({
                             text: 'Edicion agregada correctamente.',
                             delay: 3000,
                             addClass: 'translucent'
-                        });
+                        });*/
             }else if($("#run").is(":checked")){
                 opcion=2
-                PNotify.success({
+                $.ajax({
+                    type: 'POST',
+                    url: 'ediciones.aspx/GuardarEdicion',
+                    data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                    },
+                    success: function (valor){
+                        var JsonD = $.parseJSON(valor.d)
+                        if (JsonD.success == 1) {
+                            TablaUsu();
+                            PNotify.success({
+                                text: 'Edicion guardada correctamente.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                        } else if (JsonD.success == 0) {
+                            PNotify.notice({
+                                text: 'Algo salió mal.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                        } 
+                    }
+                });
+
+                /*PNotify.success({
                             text: 'Edicion agregada correctamente.',
                             delay: 3000,
                             addClass: 'translucent'
-                        });
+                        });*/
             }
             console.log(opcion);
 

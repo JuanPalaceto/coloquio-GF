@@ -51,7 +51,7 @@ public class subir_archivo : IHttpHandler, System.Web.SessionState.IRequiresSess
                         extension = "otros";
                     }
                     // En buscar_archivo.ashx explico el ruteo y los puntos para preview y download
-                    context.Response.Write("{\"initialPreview\": [\"../../"+fname+"\"], \"initialPreviewConfig\": [{ \"type\": \""+extension+"\", \"size\": \""+tamano+"\", \"caption\": \""+nombreArchivo+"\", \"url\": \"eliminar_archivo.ashx\", \"key\": \""+nombreArchivo+"\"}], \"initialPreviewDownloadUrl\": \"../../ponencias/"+idponencia+"/{filename}\",  \"append\": true }");
+                    context.Response.Write("{\"initialPreview\": [\"../../"+fname+"\"], \"initialPreviewConfig\": [{ \"type\": \""+extension+"\", \"size\": \""+tamano+"\", \"caption\": \""+nombreArchivo+"\", \"url\": \"eliminar_archivo.ashx\", \"key\": \"ponencia_"+idponencia+".pdf\"}], \"initialPreviewDownloadUrl\": \"../../ponencias/"+idusuario+"/"+idponencia+"/{filename}\",  \"append\": true }");
 
 
                     // Guardar la ruta en la BD

@@ -7,58 +7,22 @@ function isNumberKey(evt) {
     return true;
 };
 
-//--------------[No funciona]-------------------------------------------------
-// window.onload = function () {
-//     // Caracteres para correo
-//     var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-
-//     //Validación cliente
-//     $('#inputPasswordConfirm').blur(function () {
-//         if ($('#inputPassword').val() != $('#inputPasswordConfirm').val()) {
-//             $('#inputPassword').addClass("is-invalid");
-//             $('#inputPasswordConfirm').addClass("is-invalid");            
-//             return;
-//         } else {
-//             $('#inputPassword').removeClass("is-invalid");
-//             $('#inputPasswordConfirm').removeClass("is-invalid");
-//         }
-//     });
-
-//     $('#inputPassword').blur(function () {
-//         if ($('#inputPassword').val() != $('#inputPasswordConfirm').val() && $('#inputPasswordConfirm').val() != "") {
-//             $('#inputPassword').addClass("is-invalid");
-//             $('#inputPasswordConfirm').addClass("is-invalid");
-//             return;
-//         } else {
-//             $('#inputPassword').removeClass("is-invalid");
-//             $('#inputPasswordConfirm').removeClass("is-invalid");
-//         }
-//     });
-
-//     $('#inputEmail').keyup(function () {
-//         if (!regex.test($('#inputEmail').val())) {
-//             $('#inputEmail').addClass("is-invalid");
-//         } else {
-//             $('#inputEmail').removeClass("is-invalid");
-//         }
-//     });
-// };
-//-----------------------------------------------------------------------------
-
 //función del botón registrar
 function registrar(){
     //asignación de los campos a variables
     var nombre = $('#inputNom').val();
     var apellido = $('#inputApe').val();
-    var email = $('#inputEmail').val();            
+    var curp = $('#inputCurp').val();
+    var email = $('#inputEmail').val();
     var psw = $('#inputPassword').val();
     var pswConfirm = $('#inputPasswordConfirm').val();
     var telefono = $('#inputTel').val();
     var grado = $('#inputGrado').val();    
-    var institucion = $('#inputInstitucion option:selected').val();
+    var institucion = $('#inputInstitucion').val();
     var dependencia = $('#inputDependencia').val();
-    var estado = $('#inputEstado option:selected').val();
+    var estado = $('#inputEstado').val();
     var ciudad = $('#inputCiudad').val();
+    
     
     //validaciones
     var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
@@ -85,25 +49,26 @@ function registrar(){
         return;
     }
 
-    if(email == "") {
-        $('#inputEmail').addClass("is-invalid");
-        $("#inputEmail").focus();
+    if(curp == ""){
+        $('#inputCurp').addClass("is-invalid");
+        $("#inputCurp").focus();
         PNotify.notice({
-            text: 'Por favor, ingrese su correo electrónico.',
+            text: 'Por favor, ingrese su CURP.',
             delay: 2500,
             addClass: 'translucent'
         });
         return;
-    } else if (!regex.test(email)) {
-        $("#inputEmail").focus();
+    } else if(curp.length != 18) {
+        $('#inputCurp').addClass("is-invalid");
+        $("#inputCurp").focus();
         PNotify.notice({
-            text: 'El correo no es válido.',
+            text: 'CURP no válido.',
             delay: 2500,
             addClass: 'translucent'
         });
         return;
     }
-    
+
     if(telefono == ""){
         $('#inputTel').addClass("is-invalid");
         $("#inputTel").focus();
@@ -123,6 +88,25 @@ function registrar(){
         });
         return;
     }
+
+    if(email == "") {
+        $('#inputEmail').addClass("is-invalid");
+        $("#inputEmail").focus();
+        PNotify.notice({
+            text: 'Por favor, ingrese su correo electrónico.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
+        return;
+    } else if (!regex.test(email)) {
+        $("#inputEmail").focus();
+        PNotify.notice({
+            text: 'El correo no es válido.',
+            delay: 2500,
+            addClass: 'translucent'
+        });
+        return;
+    }    
 
     if(psw == ""){
         $('#inputPassword').addClass("is-invalid");
@@ -150,7 +134,7 @@ function registrar(){
         $('#inputPassword').addClass("is-invalid");
         $('#inputPasswordConfirm').addClass("is-invalid");
         $("#inputPassword").focus();
-        PNotify.notice({
+        PNotify.warning({
             text: 'Las contraseñas no coinciden.',
             delay: 2500,
             addClass: 'translucent'
@@ -219,7 +203,8 @@ function registrar(){
     obj.dependencia = dependencia;
     obj.ciudad = ciudad;
     obj.estado = estado;
-    obj.telefono = telefono;                        
+    obj.telefono = telefono;
+    obj.curp = curp;
 
     //ejecución de la operación
     if ($('form')[0].checkValidity()){
@@ -384,6 +369,7 @@ function cargarCiudad(){
     $("#inputCiudad option[value=0]").attr('selected', 'selected');
     };
     displayOption2();
+    $('#inputCiudad').select2();
     }
 }
 
@@ -395,3 +381,4 @@ function sortear(id) {
         return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
     }));
 }
+

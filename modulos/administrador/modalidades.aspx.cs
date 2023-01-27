@@ -53,6 +53,7 @@ protected void Page_Load(object sender, EventArgs e)
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
+                    if (drseldatos.HasRows)
                     sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Modalidad</th><th scope=\"col\">Edición</th><th scope=\"col\">Estado</th><th scope=\"col\">Acciones</th><tbody>");
                     while (drseldatos.Read())
                     {
@@ -64,13 +65,13 @@ protected void Page_Load(object sender, EventArgs e)
                         
                         
                         if(activo == 1){
-                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         } else {
-                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
+                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         }
                         
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModificarModalidad(" + drseldatos["idModalidad"].ToString() + ");\"></button>");                        
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idModalidad"].ToString() + ");\"></button></td></tr>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarModalidad(" + drseldatos["idModalidad"].ToString() + ");\"></button>");                        
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idModalidad"].ToString() + ");\"></button></td></tr>");
                         
                          
 
@@ -81,7 +82,8 @@ protected void Page_Load(object sender, EventArgs e)
                     }
                     else
                     {
-                        sb.Append("<td colspan=\"5\" style=\"text-align: center;\">No hay Modalidades disponibles.</td></tbody></table>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Modalidades</th></tr></thead><tbody>");
+                        sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay modalidades disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
                 }

@@ -100,7 +100,7 @@ public partial class usuarios : System.Web.UI.Page
     }
 
 [WebMethod]
-    public static string GuardarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena)
+    public static string GuardarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena, string curp)
     {
         int Exitoso = 0;
         using (SqlConnection con = conn.conecta())
@@ -114,6 +114,7 @@ public partial class usuarios : System.Web.UI.Page
                 comand.Parameters.Add("@tipo", SqlDbType.Int).Value = tipo;
                 comand.Parameters.Add("@email", SqlDbType.NVarChar, 120).Value = email;
                 comand.Parameters.Add("@contrasena", SqlDbType.NVarChar, 120).Value = contrasena;
+                comand.Parameters.Add("@curp", SqlDbType.NVarChar, 120).Value = curp;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;
                 con.Open();
@@ -126,7 +127,7 @@ public partial class usuarios : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string ActualizarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena, int id)
+    public static string ActualizarUsuario(string nombre,string apellidos, string telefono, int tipo, string email, string contrasena, int id, string curp)
     {
         int Exitoso = 0;
         using (SqlConnection con = conn.conecta())
@@ -141,6 +142,7 @@ public partial class usuarios : System.Web.UI.Page
                 comand.Parameters.Add("@email", SqlDbType.NVarChar, 120).Value = email;
                 comand.Parameters.Add("@contrasena", SqlDbType.NVarChar, 120).Value = contrasena;
                 comand.Parameters.Add("@idUsu", SqlDbType.Int).Value = id;
+                comand.Parameters.Add("@curp", SqlDbType.NVarChar, 120).Value = curp;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;
                 con.Open();
@@ -190,7 +192,7 @@ public partial class usuarios : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\"}");
+                        sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\",\"cp\": \"" + dr["curp"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }

@@ -2,6 +2,22 @@ window.onload = function(){
     setTimeout(() => {
         TablaInvitaciones();
     }, 500);
+
+    var listaEvaluadores;
+
+    // Trae los evaluadores
+    $.ajax({
+        url: 'invitaciones.aspx/GetEvaluadores',
+        method: 'POST',        
+        success: function (data) {
+            listaEvaluadores = data;
+            console.log(listaEvaluadores);
+            console.log("hola");
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
 }
 
 
@@ -24,6 +40,7 @@ function TablaInvitaciones() {  //aqui se crea la tabla
                 let orden = [[3, 'asc'], [0, 'asc']];
                 let contexto = "No hay ponencias pendientes.";
                 dataTable(idTable, orden, contexto);
+                // estiloDataTable();
             }, 100);
         }
     });
@@ -69,16 +86,17 @@ $('#file-input').fileinput({
 
 
 /* Ver el archivo de la ponencia */
-function verPonencia(idPonencia, titulo){
-    $('#spanTitulo').html(titulo);
+function verPonencia(idPonencia, idUsuario){    
     $('#modalArchivo').modal('show');
+    verDatos(idPonencia);
+    TablaAut(idPonencia);
 
     $.ajax({
         type: "POST",
         url: "ver_archivo.ashx",
-        data: { idPon: idPonencia },
+        data: { idPon: idPonencia, idUsu: idUsuario },
         success: function(response) {
-            $('#handler').html(response);
+            $('#handler').html(response);                    
         }
     });
 }
@@ -258,7 +276,7 @@ $("#btnEnviar").click(function() {
     })
 });
 
-// Esto es pa' cerrar el sweetalert al mismo tiempo que el modal
+/* Esto es pa' cerrar el sweetalert al mismo tiempo que el modal */
 $(document).on('keydown', function(event) {
     if (event.keyCode === 27 && isDialogOpen) {
         // close the SweetAlert2 first
@@ -267,4 +285,82 @@ $(document).on('keydown', function(event) {
         return false;
     }
 });
+/* ******************** */
+
+/* Controla las pills */
+$('#btnMuestraAutores').on('click', function(){
+    $('#btnPillAutor').trigger('click');
+});
+
+$('#btnMuestraDatos').on('click', function(){
+    $('#btnPillData').trigger('click');
+});
+
+$('#btnMuestraArchivo').on('click', function(){
+    $('#btnPillFile').trigger('click');
+});
+
+$('#btnRegresaAutores').on('click', function(){
+    $('#btnPillAutor').trigger('click');
+});
+/* ******************** */
+
+
+/* Tabla de Autores */
+function TablaAut(id) {  //aqui se crea la tabla
+    $.ajax({
+        type: 'POST',
+        url: 'invitaciones.aspx/TablaListarAutores',
+        data: "{'id':'" + id + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error" + jqXHR.responseText);
+        },
+        success: function (tabla) {
+            $("#generarTablaAutores").html(tabla.d); //nombre del id del div de la tabla
+            setTimeout(function myfunction() {
+                let idTable = "tablaAutores";
+                let orden = [[0, 'asc']];
+                let contexto = "No existen autores para esta ponencia.";
+                dataTable('tablaAutores');
+            }, 100);
+        }
+    });
+  };
+/* ******************** */
+
+
+/* trae datos generales */
+function verDatos(id) {
+
+    $.ajax({
+        type: 'POST',
+        url: 'invitaciones.aspx/TraeDatos',
+        data: "{'id':'" + id + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+        },
+        success: function (datos) {
+            var JsonD = $.parseJSON(datos.d);
+  
+            // Trae los datos            
+            $('#txtTit').val(JsonD.titulo);
+            $("#selectMod option:selected").remove();
+            $('#selectMod').append($('<option>', {
+                value: 1,
+                text: JsonD.modalidad
+            }));
+            $("#selectTema option:selected").remove();
+            $('#selectTema').append($('<option>', {
+                value: 1,
+                text: JsonD.tema
+            }));            
+            $('#txtRes').val(JsonD.resumen);
+            $('#txtPal').val(JsonD.palabrasClave);
+        }
+    });
+}
 /* ******************** */

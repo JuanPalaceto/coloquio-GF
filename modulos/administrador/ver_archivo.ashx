@@ -11,6 +11,7 @@ public class ver_archivo : IHttpHandler {
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/html";
         string idPonencia = context.Request.Params["idPon"];
+        string idUsuario = context.Request.Params["idUsu"];
 
         if (idPonencia.Equals("")){
             context.Response.Write("<script>alert('Ocurrió un error. Favor de volver a intentarlo');</script>");
@@ -20,10 +21,10 @@ public class ver_archivo : IHttpHandler {
         StringBuilder sbArchivos = new StringBuilder();
 
         // Comprobar si existe la carpeta
-        if (Directory.Exists(HttpContext.Current.Server.MapPath("~/ponencias/"+idPonencia+"/")))
+        if (Directory.Exists(HttpContext.Current.Server.MapPath("~/ponencias/"+idUsuario+"/"+idPonencia+"/")))
         {
             // Si existen documentos
-            DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idPonencia+"/"));
+            DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ponencias/"+idUsuario+"/"+idPonencia+"/"));
 
             FileInfo[] files = dir.GetFiles();
 
@@ -60,7 +61,7 @@ public class ver_archivo : IHttpHandler {
                     }
                 }
                 // lo mismo que rutaCompleta arriba, para descargar archivos
-                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idPonencia+"/{filename}\" });</script>");
+                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idUsuario+"/"+idPonencia+"/{filename}\" });</script>");
             }
             else
             {

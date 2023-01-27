@@ -52,8 +52,8 @@
                                 </select>
                             </div> --%>
                             <div class="form-group col-md-6 mt-3">
-                                <label for="txtAutor" class="">Teléfono:</label>
-                                <input type="number" id="txtTelefono" class="form-control" maxlength = "10">
+                                <label for="txtAutor" class="">CURP:</label>
+                                <input type="text" id="txtCurp" class="form-control">
                             </div>
                             <div class="form-group col-md-6 mt-3">
                                 <label for="txtTipo" class="">Tipo:</label>
@@ -63,11 +63,15 @@
                                 <label for="txtAutor" class="">Email:</label>
                                 <input type="text" id="txtEmail" class="form-control">
                             </div>
-                            <div class="form-group col-md-6 mt-3" style="padding-bottom:35px;">
+                            <div class="form-group col-md-6 mt-3">
                                 <label for="txtAutor" class="">Contraseña:</label>
                                 <input type="password" id="txtContraseña" class="form-control">
-                            </div>                            
-                            <div class="col-md-12 modal-footer">
+                            </div>
+                            <div class="form-group col-md-6 mt-3">
+                                <label for="txtAutor" class="">Teléfono:</label>
+                                <input type="number" id="txtTelefono" class="form-control" maxlength = "10">
+                            </div>                       
+                            <div class="col-md-12 modal-footer mt-5">
                                 <button type="button" class="btn  btn-primary" onclick="GuardarSeccion();" style="float: right; margin-left: 10px;">Guardar</button>
                                 <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
                             </div>
@@ -137,8 +141,9 @@
             var tipo = $('#txtTipo').val();
             var email = $('#txtEmail').val();
             var contrasena = $('#txtContraseña').val();
+            var curp = $('#txtCurp').val();
 
-            if (nombre == "" || apellidos == "" || telefono == "" || tipo == 0 || email == "" || contrasena == "") {
+            if (nombre == "" || apellidos == "" || telefono == "" || tipo == 0 || email == "" || contrasena == "" || curp == "") {
                 PNotify.notice({
                     text: 'Porfavor complete los campos.',
                     delay: 2500,
@@ -172,6 +177,7 @@
             obj.email = email;
             obj.contrasena = contrasena;
             obj.id = idUsu;
+            obj.curp = curp;
 
             if (idUsu == 0) {
                 var url = 'usuarios.aspx/GuardarUsuario';
@@ -307,6 +313,7 @@
                     $('#txtTipo').val(jsonD.idT);
                     $('#txtEmail').val(jsonD.eml);
                     $('#txtContraseña').val(jsonD.contra);
+                    $('#txtCurp').val(jsonD.cp);
 
 
                     $('#modalusuario').modal('show');
@@ -510,6 +517,7 @@
             $('#txtTipo').val(0);
             $('#txtEmail').val('');
             $('#txtContraseña').val('');
+            $('#txtCurp').val('');
         }
 
     </script>

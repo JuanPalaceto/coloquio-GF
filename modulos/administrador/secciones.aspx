@@ -16,17 +16,17 @@
                     <div class="col-md-12">
                         <div class="row">
                             <input type="text" id="txtidSec" value="0" hidden />
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 mt-3">
                                 <label for="txtseccion">Sección:</label>
                                 <input type="text" class="form-control" id="txtseccion">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 mt-3">
                                 <label for="ddledicion">Edición:</label>
                                 <asp:DropDownList ID="ddledicion" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
                             </div>
                             <br />
                             <br />
-                            <div class="col-md-12 modal-footer">
+                            <div class="col-md-12 modal-footer mt-5">
                                 <button type="button" class="btn  btn-primary" onclick="GuardarSeccion();" style="float: right; margin-left: 10px;">Guardar</button>
                                 <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
                             </div>

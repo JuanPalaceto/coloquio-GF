@@ -49,7 +49,7 @@ public partial class modulos_evaluacion_ponencias_invitacion : System.Web.UI.Pag
                     }
                     else
                     {
-                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Ponencias</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Invitaciones</th></tr></thead><tbody>");
                         sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay invitaciones pendientes.</td></tbody></table>");
                     }
                     drseldatos.Close();

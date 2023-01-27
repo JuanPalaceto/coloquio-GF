@@ -57,7 +57,7 @@ public class buscar_archivo : IHttpHandler, IReadOnlySessionState {
                     }
                 }
                 // lo mismo que rutaCompleta arriba, para descargar archivos
-                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idponencia+"/{filename}\" }).on(\"filepredelete\", function(jqXHR) { var abort = true; if (confirm('¿Desea eliminar este archivo?')) { abort = false; } return abort; });</script>");
+                sbArchivos.Append("], initialPreviewDownloadUrl: \"../../ponencias/"+idusuario+"/"+idponencia+"/{filename}\" }); $('#btnGuardar').removeClass('btn-secondary');$('#btnGuardar').addClass('btn-primary');</script>");
             }
             else
             {

@@ -86,10 +86,13 @@ public partial class login : System.Web.UI.Page
                                     Response.Redirect("../modulos/ponencias/ponencias_listar.aspx");
                                     break;
                                 case 2:
-                                    Response.Redirect("../modulos/evaluacion/ponencias_evaluar.aspx");
+                                    Response.Redirect("../modulos/evaluacion/ponencias_invitacion.aspx");
                                     break;
                                 case 3:
                                     Response.Redirect("../modulos/administrador/ediciones.aspx");
+                                    break;
+                                case 4:
+                                    Response.Redirect("../modulos/administrador/invitaciones.aspx");
                                     break;
                             }
                             break;

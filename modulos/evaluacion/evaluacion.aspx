@@ -63,6 +63,7 @@
         $('#tabla').DataTable({            
             "bPaginate": false,
             "ordering": false,
+            "searching": false,
             language: {
                 "decimal": ".",
                 "emptyTable": "",

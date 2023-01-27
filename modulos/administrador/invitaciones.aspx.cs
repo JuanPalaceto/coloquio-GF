@@ -14,15 +14,56 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         DropEdicion();
+        // List<Evaluador> evaluadores = GetEvaluadores();
+
     }
 
+    public class Evaluador
+    {
+        public int ID { get; set; }
+        public string Nombre { get; set; }
+        public string Correo { get; set; }
+    }
 
-     private void DropEdicion()
+    [WebMethod]
+    public static List<Evaluador> GetEvaluadores()
+    {
+        using (SqlConnection con = conn.conecta())
+        {            
+            using (SqlCommand command = new SqlCommand("TraeEvaluadores", con))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                con.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                List<Evaluador> evaluadores = new List<Evaluador>();
+
+                while (reader.Read())
+                {
+                    evaluadores.Add(new Evaluador
+                    {
+                        ID = reader.GetInt32(0),
+                        Nombre = reader.GetString(1),
+                        Correo = reader.GetString(2)
+                    });
+                }
+                reader.Close();
+                reader.Dispose();
+
+                con.Close();
+
+                return evaluadores;
+            }
+        }
+    }
+
+    private void DropEdicion()
     {
         int edicionActiva = Convert.ToInt32(Session["edicionActiva"]);
         using (SqlConnection con = conn.conecta())
         {
-            using (SqlCommand cmdSelEdicion = new SqlCommand("SelEdiciones", con))
+            using (SqlCommand cmdSelEdicion = new SqlCommand("SelEdicioness", con))
             {
                 cmdSelEdicion.CommandType = CommandType.StoredProcedure;
                 con.Open();
@@ -67,7 +108,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estatus</th><th scope=\"col\" style=\"max-width: 100px;\">Ponencia</th><th scope=\"col\" style=\"max-width: 100px;\">Acciones</th></tr></thead><tbody>");
+                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estatus</th><th scope=\"col\" style=\"max-width: 100px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int resultado = Convert.ToInt32(drseldatos["estado"].ToString());
@@ -106,9 +147,11 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                             default:
                                 sb.Append("<td data-order=\"5\">Sin estado.</td>");
                                 break;
-                        }
-                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button></td>");
-                        sb.Append("<td align=\"center\" class=\"align-middle\"><button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-plus text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button></td>");
+                        }                        
+                        sb.Append("<td align=\"center\" class=\"align-middle\">");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white w50\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-gear text-white w50\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button>");
+                        sb.Append("</td>");
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody></table>");
@@ -140,7 +183,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 {
                     int estado;
 
-                    sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");
+                    sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");                    
                     sb.Append("<thead>");
                     sb.Append("<tr>");
                     sb.Append("<th scope=\"col\" style=\"width: 80px;\">Seleccionar</th>");
@@ -233,5 +276,73 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
         }
+    }
+
+
+    [WebMethod]
+    public static string TablaListarAutores(int id)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand seldata = new SqlCommand("ListarAutores", con))
+            {
+                seldata.CommandType = CommandType.StoredProcedure;
+                seldata.Parameters.AddWithValue("@idPonencia", id);
+                con.Open();
+                using (SqlDataReader drseldatos = seldata.ExecuteReader())
+                {
+                    if (drseldatos.HasRows)
+                        sb.Append("<table id=\"tablaAutores\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Nombre</th><th scope=\"col\">Tipo</th></tr></thead><tbody>");
+                    while (drseldatos.Read())
+                    {
+                        sb.Append("<tr class=\"align-middle\">");
+                        sb.Append("<td width=\"60%\">" + drseldatos["autor"].ToString() + "</td>");
+                        sb.Append("<td width=\"20%\">" + drseldatos["tipoAutor"].ToString() + "</td>");                        
+                        sb.Append("</tr>");
+                    }
+                    if (drseldatos.HasRows)
+                    {
+                        sb.Append("</tbody></table>");
+                    }
+                    else
+                    {
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Autores</th></tr></thead><tbody>");
+                        sb.Append("<tr><td style=\"text-align: center;\">No se han registrado autores.</td></tr></tbody></table>");
+                    }
+                    drseldatos.Close();
+                }
+            }
+            con.Close();
+            return sb.ToString();
+        }
+    }
+
+
+    [WebMethod]
+    public static string TraeDatos(int id)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("TraeDatos", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                Conn.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        sb.Append("{\"titulo\": \"" + dr["titulo"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"modalidad\": \"" + dr["modalidad"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"tema\": \"" + dr["tema"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"resumen\": \"" + dr["resumen"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"palabrasClave\": \"" + dr["palabrasClave"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}");
+                    }
+                    dr.Close();
+                }
+            }
+            Conn.Close();
+        }
+        HttpContext.Current.Session["idponencia"] = id;
+
+        return sb.ToString();
     }
 }

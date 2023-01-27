@@ -65,7 +65,7 @@
         <h3><strong>Lista de Modalidades</strong></h3>
         </div>
         <div>
-            <button type="button" class="btn  btn-primary" onclick="AgregarModalidad();" style="float:left;" >Agregar Nueva Modalidad</a>
+            <button type="button" class="btn  btn-primary" onclick="AgregarModalidad(); Limpia();" style="float:left;" >Agregar Nueva Modalidad</a>
         </div>
         <br />        
         <div class="card-body">

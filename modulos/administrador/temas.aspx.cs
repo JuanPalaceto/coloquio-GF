@@ -48,8 +48,8 @@ public partial class temas : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Tema</th><th scope=\"col\">Edición</th><th scope=\"col\" style=\"max-width: 150px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
-                    
+                    if (drseldatos.HasRows)
+                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Temas</th><th scope=\"col\">Edición</th><th scope=\"col\">Estado</th><th scope=\"col\">Acciones</th><tbody>");
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
@@ -58,22 +58,22 @@ public partial class temas : System.Web.UI.Page
                         sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
                         if (activo == 1)
                         {
-                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
+                            sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
                         }
                         else
                         {
-                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
+                            sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idTema"].ToString() + ");\"></button></td>");
                         }
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModificarTema(" + drseldatos["idTema"].ToString() + ");\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idTema"].ToString() + ");\"></button></td></tr>");
-
-                    }
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarTema(" + drseldatos["idTema"].ToString() + ");\"></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idTema"].ToString() + ");\"></button></td></tr>");
+                    }                   
                     if (drseldatos.HasRows)
                     {
                         sb.Append("</tbody></table>");
                     }
                     else
                     {
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Temas</th></tr></thead><tbody>");
                         sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay temas disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();

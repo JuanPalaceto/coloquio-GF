@@ -32,7 +32,8 @@ public partial class ponencias_listar : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    if (drseldatos.HasRows)
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Tema</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 100px;\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int resultado = Convert.ToInt32(drseldatos["estado"].ToString());
@@ -84,7 +85,8 @@ public partial class ponencias_listar : System.Web.UI.Page
                     }
                     else
                     {
-                        sb.Append("<td colspan=\"5\" style=\"text-align: center;\">No hay registros disponibles.</td></tbody></table>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Ponencias</th></tr></thead><tbody>");
+                        sb.Append("<td style=\"text-align: center;\">No se han registrado ponencias.</td></tbody></table>");
                     }
                     drseldatos.Close();
                 }

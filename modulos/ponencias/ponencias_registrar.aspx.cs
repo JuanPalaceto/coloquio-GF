@@ -41,7 +41,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 selectAut.AppendDataBoundItems = true;
                 selectMod.AppendDataBoundItems = true;
                 selectTema.AppendDataBoundItems = true;
-                selectAut.Items.Add(new ListItem("Seleccionar", ""));
+                selectAut.Items.Add(new ListItem("- Seleccionar -", ""));
                 selectMod.Items.Add(new ListItem("Seleccionar", ""));
                 selectTema.Items.Add(new ListItem("Seleccionar", ""));
                 SqlDataReader drtipo = cmdSeltipoaut.ExecuteReader();
@@ -135,7 +135,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string AgregaAutor(int idPonencia, int idAutor, string autor, int tipo)
+    public static string AgregaAutor(int idPonencia, int idAutor, string autor, string institucion, int tipo, string sexo)
     {
         int Exitoso = 0;
         using (SqlConnection Conn = conn.conecta())
@@ -146,7 +146,8 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = idPonencia;
                 comand.Parameters.Add("@idAutor", SqlDbType.Int).Value = idAutor;
                 comand.Parameters.Add("@autor", SqlDbType.NVarChar, 50).Value = autor;
-                // comand.Parameters.Add("@institucion", SqlDbType.NVarChar, 50).Value = institucion;
+                comand.Parameters.Add("@sexo", SqlDbType.NVarChar, 20).Value = sexo;
+                comand.Parameters.Add("@institucion", SqlDbType.NVarChar, 200).Value = institucion;
                 comand.Parameters.Add("@tipo", SqlDbType.Int).Value = tipo;
 
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
@@ -216,7 +217,7 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"idAutor\": \"" + dr["idAutor"].ToString() + "\", \"autor\": \"" + dr["autor"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"idTipoAutor\": \"" + dr["idTipoAutor"].ToString() + "\"}");
+                        sb.Append("{\"idAutor\": \"" + dr["idAutor"].ToString() + "\", \"autor\": \"" + dr["autor"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"idTipoAutor\": \"" + dr["idTipoAutor"].ToString() + "\",\"institucion\": \"" + dr["institucion"].ToString() + "\",\"sexo\": \"" + dr["sexo"].ToString() + "\" }");
                     }
                     dr.Close();
                 }

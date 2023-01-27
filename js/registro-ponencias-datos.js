@@ -11,19 +11,19 @@ $('#btnPalabras').on('click', function() {
             idPalabra++;
 
             if (idPalabra == 1) {
-                $('#divPal').after('<div id="divPal' + idPalabra + '" class="row mb-3"></div>');
+                $('#divPal').after('<div id="divPal' + idPalabra + '"  class="row mb-3 g-3"><div class="offset-xxl-4 col-xxl-4 offset-sm-3 col-sm-6 col-12"><div class="row g-3" id="rowPal' + idPalabra + '" ></div></div></div>');
             } else {
-                $('#divPal'+(idPalabra-1)).after('<div id="divPal' + idPalabra + '" class="row mb-3"></div>');
+                $('#divPal'+(idPalabra-1)).after('<div id="divPal' + idPalabra + '"  class="row mb-3 g-3"><div class="offset-xxl-4 col-xxl-4 offset-sm-3 col-sm-6 col-12"><div class="row g-3" id="rowPal' + idPalabra + '" ></div></div></div>');
             }
-            $('#divPal' + idPalabra).append('<div id="inputPal' + idPalabra + '" class="col-xxl-4 offset-xxl-4 col-sm-6 offset-sm-3 col-8 d-grid d-sm-block"></div>');
-            $('#divPal' + idPalabra).append('<div id="delPal' + idPalabra + '" class="col-sm-3 col-4 d-grid d-sm-block"></div>');
+            $('#rowPal' + idPalabra).append('<div id="inputPal' + idPalabra + '" class="col-xxl-10 col-sm-10 col-10  d-sm-block"></div>');
+            $('#rowPal' + idPalabra).append('<div id="delPal' + idPalabra + '" class="col-xxl-2 col-sm-2 col-2 d-grid d-grid d-block ms-0"></div>');
 
             $('<input/>').attr({ type: 'text', class: 'form-control', value: $("#txtPal").val(), id: 'txtPal' + idPalabra, disabled: 'disabled' }).appendTo('#inputPal'+idPalabra);
             $('#txtPal').val('');
             $('#txtPal').focus();
 
             $('<button>').attr({ type: 'button', class: 'btn btn-danger eliminar icon-trash-o h-100', value: '', onclick: '', id: 'btnPalabras' + idPalabra }).appendTo('#delPal' + idPalabra);
-            
+
             contadorPal++;
             if (contadorPal >= 3){
               $('#numPalabras').css("color", "");
@@ -50,7 +50,7 @@ $('#btnPalabras').on('click', function() {
     }
 });
 
-$(document).on("click", '.eliminar', function() {    
+$(document).on("click", '.eliminar', function() {
     // Esto es para obtener solo los numeros del id
     var id = $(this).attr('id').replace(/\D/g,'');
     if (id != '') {
@@ -76,9 +76,9 @@ $(document).on("click", '.eliminar', function() {
 /* Guardar ponencia */
 function guardarPonencia(id){
     var titulo = "", modalidad="", tema="", resumen="", palabras="";
-    
+
     if ($('#txtTit')[0].checkValidity() && $('#selectMod')[0].checkValidity() && $('#selectTema')[0].checkValidity() && $('#txtRes')[0].checkValidity()) {
-      if (arrayPalabras.length > 2 && arrayPalabras.length < 6) {      
+      if (arrayPalabras.length > 2 && arrayPalabras.length < 6) {
         palabras = arrayPalabras.join(', ');
       } else {
         $('#txtPal').focus();
@@ -88,16 +88,16 @@ function guardarPonencia(id){
           delay: 3000,
             addClass: 'translucent'
         });
-    
+
         return;
       }
-      
+
       id = $('#idPonencia').val();
       titulo = $('#txtTit').val();
       modalidad = $('#selectMod').val();
       tema = $('#selectTema').val();
-      resumen = $('#txtRes').val();    
-  
+      resumen = $('#txtRes').val();
+
       var obj = {};
       obj.id = id;
       obj.titulo = titulo;
@@ -105,7 +105,7 @@ function guardarPonencia(id){
       obj.tema = tema;
       obj.resumen = resumen;
       obj.palabras = palabras;
-  
+
       $.ajax({
         type: 'POST',
         url: 'ponencias_registrar.aspx/GuardaPonencia',
@@ -123,8 +123,8 @@ function guardarPonencia(id){
               text: 'Datos guardados correctamente.',
               delay: 3000,
                 addClass: 'translucent'
-            });          
-          } else {          
+            });
+          } else {
             PNotify.notice({
               //title: false,
               text: 'Datos actualizados correctamente',
@@ -132,28 +132,28 @@ function guardarPonencia(id){
                 addClass: 'translucent'
             });
           }
-  
+
           localStorage.setItem('idActual', JsonD.id);
           $('#idPonencia').val(JsonD.id);
-          
+
           $("#pills-2").removeAttr('disabled');
           $("#pills-3").removeAttr('disabled');
           $('#pills-2').trigger('click');
-  
+
           if (JsonD.titulo != '') {
             $('#lblTit').html('Editar ponencia: ' + JsonD.titulo);
-          }        
+          }
         }
-      });    
+      });
     } else {
       $('#txtRes')[0].reportValidity();
       $('#selectTema')[0].reportValidity();
       $('#selectMod')[0].reportValidity();
-      $('#txtTit')[0].reportValidity();    
+      $('#txtTit')[0].reportValidity();
     }
   }
-  
-  
+
+
 $('#btnPonencia').on('click',  function() {
   var id = $('#idPonencia').val();
   guardarPonencia(id);
@@ -163,7 +163,7 @@ $('#btnPonencia').on('click',  function() {
 
 /* modificarPonencia */
 function modificarPonencia(id) {
-  
+
   $.ajax({
       type: 'POST',
       url: 'ponencias_registrar.aspx/ModificaPonencia',
@@ -174,14 +174,14 @@ function modificarPonencia(id) {
           console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
       },
       success: function (datos) {
-          var JsonD = $.parseJSON(datos.d);          
+          var JsonD = $.parseJSON(datos.d);
 
           // Trae los datos a los inputs
           //$('#idPonencia').val(JsonD.idPonencia);
           $('#txtTit').val(JsonD.titulo);
           $('#selectMod option[value="' + JsonD.idModalidad + '"]').attr("selected", "selected");
           $('#selectTema option[value="' + JsonD.idTema + '"]').attr("selected", "selected");
-          $('#txtRes').val(JsonD.resumen);          
+          $('#txtRes').val(JsonD.resumen);
           // // Dividir el campo según sus registros y por ", "
           var arrayPalabrasClave = (JsonD.palabrasClave).split(", ");
           // //verificar si son uno o más registros
@@ -192,14 +192,14 @@ function modificarPonencia(id) {
                    arrayPalabras.push(palabra);
 
                    idPalabra++;
-                   // se genera la estructura                                     
+                   // se genera la estructura
                    if (idPalabra == 1) {
-                       $('#divPal').after('<div id="divPal' + idPalabra + '" class="row mb-3"></div>');
+                       $('#divPal').after('<div id="divPal' + idPalabra + '"  class="row mb-3 g-3"><div class="offset-xxl-4 col-xxl-4 offset-sm-3 col-sm-6 col-12"><div class="row g-3" id="rowPal' + idPalabra + '" ></div></div></div>');
                    } else {
-                       $('#divPal' + (idPalabra - 1)).after('<div id="divPal' + idPalabra + '" class="row mb-3"></div>');
+                       $('#divPal' + (idPalabra - 1)).after('<div id="divPal' + idPalabra + '"  class="row mb-3 g-3"><div class="offset-xxl-4 col-xxl-4 offset-sm-3 col-sm-6 col-12"><div class="row g-3" id="rowPal' + idPalabra + '" ></div></div></div>');
                    }
-                   $('#divPal' + idPalabra).append('<div id="inputPal' + idPalabra + '" class="col-xxl-4 offset-xxl-4 col-sm-6 offset-sm-3 col-8 d-grid d-sm-block"></div>');
-                   $('#divPal' + idPalabra).append('<div id="delPal' + idPalabra + '" class="col-sm-3 col-4 d-grid d-sm-block"></div>');
+                   $('#rowPal' + idPalabra).append('<div id="inputPal' + idPalabra + '" class="col-10"></div>');
+                   $('#rowPal' + idPalabra).append('<div id="delPal' + idPalabra + '" class="col-2 d-grid d-block"></div>');
 
                    $('<input/>').attr({ type: 'text', class: 'form-control', value: $("#txtPal").val(), id: 'txtPal' + idPalabra, disabled: 'disabled' }).appendTo('#inputPal' + idPalabra);
                    $('#txtPal').val('');
@@ -209,7 +209,7 @@ function modificarPonencia(id) {
 
                    //se asigna cada palabra a cada campo generado
                    $('#txtPal' + idPalabra).val(palabra);
-                  
+
                    contadorPal++;
                    if (contadorPal >= 3) {
                        $('#numPalabras').css("color", "");
@@ -231,3 +231,4 @@ function modificarPonencia(id) {
   }
 
   /* ******************** */
+  

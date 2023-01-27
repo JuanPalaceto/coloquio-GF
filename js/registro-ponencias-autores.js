@@ -14,27 +14,32 @@ function limpiaAutor() {
 
     $('#idAutor').val("0");
     $('#selectAut').prop('selectedIndex', 0);
-    // $('#txtIns').val("");
+    $('#inputEstado').prop('selectedIndex', 0);
+    $('#inputSex').prop('selectedIndex', 0);
     $('#txtAut').val("");
+    cargarDependencia();
 }
 /* ******************** */
 
 /* Agregar autores */
 function agregarAutor(idPonencia) {
     var idAutor = "", autor = "", tipo = "";
+    institucion = $('#inputInstitucion').val();
+    sexo = $('#inputSex').val();
 
-    if ($('#txtAut')[0].checkValidity() && $('#selectAut')[0].checkValidity()) {
+    if ($('#txtAut')[0].checkValidity() && institucion != "0" && $('#selectAut')[0].checkValidity() && sexo != "0") {
         idAutor = $('#idAutor').val();
-        autor = $('#txtAut').val();
-        // institucion = $('#txtIns').val();
+        autor = $('#txtAut').val();        
         tipo = $('#selectAut').val();
+        sexo = $('#inputSex').val();
 
         var obj = {};
         obj.idPonencia = idPonencia;
         obj.idAutor = idAutor;
         obj.autor = autor;
-        // obj.institucion = institucion;
+        obj.institucion = institucion;
         obj.tipo = tipo;
+        obj.sexo = sexo;
 
         $.ajax({
             type: 'POST',
@@ -74,10 +79,19 @@ function agregarAutor(idPonencia) {
                 TablaAut(idPonencia);
             }
         });
-    } else {
+    } else {        
         $('#selectAut')[0].reportValidity();
-        // $('#txtIns')[0].reportValidity();
-        $('#txtAut')[0].reportValidity();
+        // $('#inputInstitucion')[0].reportValidity();
+        if(institucion == "0"){
+            $("#inputInstitucion").focus();
+            PNotify.notice({
+                text: 'Seleccione una institución.',
+                delay: 2500,
+                addClass: 'translucent'
+            });  
+            return;
+        }
+        $('#txtAut')[0].reportValidity();        
     }
 };
 
@@ -150,8 +164,9 @@ function editarAutor(id) {
             // Trae los datos a los inputs
             $('#idAutor').val(JsonD.idAutor);
             $('#txtAut').val(JsonD.autor);
-            $('#txtIns').val(JsonD.institucion);
+            $('#inputInstitucion').val(JsonD.institucion);
             $('#selectAut').val(JsonD.idTipoAutor);
+            $('#inputSex').val(JsonD.sexo);
             $("#modaladd").modal('show');
         }
     });

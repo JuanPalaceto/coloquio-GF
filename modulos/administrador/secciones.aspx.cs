@@ -50,14 +50,15 @@ public partial class modulos_administrador_secciones : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
+                    if (drseldatos.HasRows)
                     sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th scope=\"col\">Edición</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         sb.Append("<tr>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["seccion"].ToString() + "</td>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ModificarSeccion(" + drseldatos["idSeccion"].ToString() + ");\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"ConfirmarEliminar(" + drseldatos["idSeccion"].ToString() + ");\"></button></td></tr>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarSeccion(" + drseldatos["idSeccion"].ToString() + ");\"></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idSeccion"].ToString() + ");\"></button></td></tr>");
 
                     }
                     if (drseldatos.HasRows)
@@ -66,7 +67,8 @@ public partial class modulos_administrador_secciones : System.Web.UI.Page
                     }
                     else
                     {
-                        sb.Append("<td colspan=\"2\" style=\"text-align: center;\">No hay ediciones disponibles.</td></tbody></table>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Secciones</th></tr></thead><tbody>");
+                        sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay secciones disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
                 }

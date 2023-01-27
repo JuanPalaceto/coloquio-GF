@@ -45,8 +45,8 @@ function validarPonencia(id){
           if (JsonD.success == 1){
             PNotify.notice({
               //title: false,
-              text: 'Favor de subir un archivo en formato .PDF',
-              delay: 3000,
+              text: 'Favor de subir un archivo en formato .PDF y posteriormente haga click en Subir archivo',
+              delay: 4000,
               addClass: 'translucent'
             });
           } else if (JsonD.success == 2) {

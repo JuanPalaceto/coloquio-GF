@@ -11763,3 +11763,10 @@ body {
     margin-left: auto !important;
   }
 }
+
+/* Para los botones */
+.w50 {
+  width: 15px;
+  height: 20px;
+  margin: 2px;
+}

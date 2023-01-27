@@ -22,6 +22,31 @@
         #inicio:hover{
             background-color:#51a97f;
         }
+
+        h6:hover {
+            text-decoration:underline;
+        }
+
+        @media only screen and (max-width: 1450px) {
+            #centrarlink {
+                text-align:center;                
+            }
+
+            a {                
+                <%-- width:100%; --%>
+                display:inline-block;
+            }
+        }
+
+        @media only screen and (min-width: 1451px) {
+            #link-r {
+                float:right;
+            }
+
+            h6 {                                
+                display:inline-block;
+            }
+        }   
     </style>
 </head>
 <body>
@@ -69,9 +94,9 @@
                             <asp:TextBox ID="inputPassword" runat="server" class="input100" type="password"></asp:TextBox>
                             <span class="focus-input100" data-symbol="&#xf191;"></span>
                         </div>
-                        <div class="form-element form-submit">
-                            <a class="float-left" href="register.aspx" style="color:green;"><h6>¿No tienes cuenta? Ir al registro.</h6></a>
-                            <a class="float-right" href="password.aspx" style="color:green;"><h6>Recuperar contraseña.</h6></a>
+                        <div class="form-element form-submit" id="centrarlink">
+                            <a href="register.aspx" style="color:green;"><h6>¿No tienes cuenta? Ir al registro.</h6></a>
+                            <a id="link-r" href="password.aspx" style="color:green;"><h6>Recuperar contraseña.</h6></a>
                         </div>                         
                         <asp:Label runat="server" ID="lblTxt" /> 
                         <div class="form-element form-submit text-center">

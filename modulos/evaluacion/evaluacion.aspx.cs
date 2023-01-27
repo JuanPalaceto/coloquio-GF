@@ -35,7 +35,7 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                     int regNum = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetros</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);

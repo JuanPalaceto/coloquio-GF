@@ -24,8 +24,8 @@
                                 <label for="edicion">Edición:</label>
                                 <asp:DropDownList ID="edicion" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
                             </div>
-                            <br />
-                            <br />
+                            <br /><br />
+                        <br /><br />
                             <div class="col-md-12 modal-footer">
                                 <button type="button" class="btn  btn-primary" onclick="GuardarTema();" style="float: right; margin-left: 10px;">Guardar</button>
                                 <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
@@ -74,8 +74,8 @@
                     <ul class="list-unstyled">
                             <ul class="list-unstyled">
                                     <li><b>Estados:</b></li>
-                                    <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activa</li>
-                                    <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactiva</li>
+                                    <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activo</li>
+                                    <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactivo</li>
                                 </ul>
                             </div>
                             <div class="col-auto">

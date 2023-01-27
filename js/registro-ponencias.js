@@ -13,7 +13,7 @@ window.onload = function(){
       //Trae los registros
       modificarPonencia(idpon);
     }
-  }, 500);
+  }, 500);  
 };
 
 
@@ -88,6 +88,34 @@ $('#file-input').fileinput({
   //   showZoom: false
   // },
   allowedFileExtensions: ['pdf']//['doc', 'docx']
+}).on('fileuploaded', function() {
+  $('#btnGuardar').removeClass('btn-secondary');
+  $('#btnGuardar').addClass('btn-primary');
+}).on('filebeforedelete', function() {
+  return new Promise(function(resolve, reject) {
+      $.confirm({
+          escapeKey: true,
+          backgroundDismiss: true,
+          icon: 'fa fa-warning',
+          title: '¡Confirmación!',
+          content: '¿Está seguro que desea eliminar este archivo?',
+          type: 'orange',
+          buttons: {   
+              Eliminar: {
+                  btnClass: 'btn-primary text-white',
+                  keys: ['enter'],
+                  // text: 'Eliminar',
+                  action: function(){
+                      resolve();
+                      $('#btnGuardar').addClass('btn-secondary');
+                      $('#btnGuardar').removeClass('btn-primary');
+                  }
+              },
+              Cancelar: function(){       
+              }
+          }
+      });
+  });
 });
 /* ******************** */
 

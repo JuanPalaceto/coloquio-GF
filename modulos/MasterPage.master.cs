@@ -30,14 +30,14 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 break;
             // Evaluador
             case 2:
-                pagInicio = "/Coloquio/modulos/evaluacion/ponencias_evaluar.aspx";
+                pagInicio = "/Coloquio/modulos/evaluacion/ponencias_invitacion.aspx";
                 modulo = "Evaluación";
-                menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-list""></i></div>Ponencias Asignadas</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-check""></i></div>Ponencias Evaluadas</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_invitacion.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-question""></i></div>Invitaciones</a>";
+                menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_invitacion.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-question""></i></div>Invitaciones</a>
+                                    <a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-list""></i></div>Ponencias Asignadas</a>
+									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-check""></i></div>Ponencias Evaluadas</a>";
                 cambiaRol = @"<ul class=""navbar-nav ms-auto ms-md-0 me-lg-2 muestraMenu"">
 								<li class=""nav-item dropdown"">
-									<a class=""nav-link dropdown-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
+									<a class=""nav-link dropdown-toggle no-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
 									<ul class=""dropdown-menu dropdown-menu-end"" aria-labelledby=""navbarDropdown"">
 										<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>
 									</ul>
@@ -59,12 +59,21 @@ public partial class MasterPage : System.Web.UI.MasterPage
             case 3:
                 pagInicio = "/Coloquio/modulos/administrador/ediciones.aspx";
                 modulo = "Administrador";
-                menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/administrador/ediciones.aspx"">Ediciones</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/administrador/modalidades.aspx"">Modalidades</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/administrador/temas.aspx"">Temas</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/administrador/usuarios.aspx"">Usuarios</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/administrador/secciones.aspx"">Secciones</a>
-									<a class=""nav-link"" href=""/coloquio/modulos/administrador/parametros.aspx"">Parámetros</a>
+                menuDisponible = @"<a class=""nav-link collapsed"" href=""#"" data-bs-toggle=""collapse"" data-bs-target=""#pagesCollapseCatalogos"" aria-expanded=""false"" aria-controls=""pagesCollapseCatalogos"">
+									<div class=""sb-nav-link-icon""><i class=""fa-regular fa-folder-open""></i></div>
+										Cátalogos
+										<div class=""sb-sidenav-collapse-arrow""><i class=""fas fa-angle-down""></i></div>
+									</a>
+                                    <div class=""collapse"" id=""pagesCollapseCatalogos"" aria-labelledby=""headingSix"" data-bs-parent=""#sidenavAccordionPages"">
+										<nav class=""sb-sidenav-menu-nested nav"">
+                                            <a class=""nav-link"" href=""/coloquio/modulos/administrador/ediciones.aspx"">Ediciones</a>
+											<a class=""nav-link"" href=""/coloquio/modulos/administrador/modalidades.aspx"">Modalidades</a>
+									        <a class=""nav-link"" href=""/coloquio/modulos/administrador/temas.aspx"">Temas</a>
+									        <a class=""nav-link"" href=""/coloquio/modulos/administrador/usuarios.aspx"">Usuarios</a>
+									        <a class=""nav-link"" href=""/coloquio/modulos/administrador/secciones.aspx"">Secciones</a>
+									        <a class=""nav-link"" href=""/coloquio/modulos/administrador/parametros.aspx"">Parametros</a>
+										</nav>
+									</div>
 									<a class=""nav-link collapsed"" href=""#"" data-bs-toggle=""collapse"" data-bs-target=""#pagesCollapsePonenciasList"" aria-expanded=""false"" aria-controls=""pagesCollapsePonenciasList"">
 									<div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-lines""></i></div>
 										Ponencias
@@ -72,7 +81,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
 									</a>
 									<div class=""collapse"" id=""pagesCollapsePonenciasList"" aria-labelledby=""headingSix"" data-bs-parent=""#sidenavAccordionPages"">
 										<nav class=""sb-sidenav-menu-nested nav"">
-											<a class=""nav-link"" href=""/coloquio/modulos/administrador/invitaciones.aspx"">Ponencias sin asignar</a>
+											<a class=""nav-link"" href=""/coloquio/modulos/administrador/invitaciones.aspx"">Administrar ponencias</a>
 											<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx"">Ponencias evaluadas</a>
 										</nav>
 									</div>
@@ -89,7 +98,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
                                     </div>";
                 break;
             // Temporal para cambiar de Evaluador a ponente
-            default:
+            case 99:
                 pagInicio = "/coloquio/modulos/ponencias/ponencias_listar.aspx";
                 modulo = "Ponencias";
                 menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_listar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-lines""></i></div>Mis Ponencias</a>
@@ -114,6 +123,13 @@ public partial class MasterPage : System.Web.UI.MasterPage
 								</div>";
                 tipoRol = "Evaluador";
                 break;
+            // Auxiliar
+            default:
+                pagInicio = "/Coloquio/modulos/administrador/invitaciones.aspx";
+                modulo = "Auxiliar";
+                menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/administrador/invitaciones.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-pen""></i></div>Administrar ponencias</a>
+								    <a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-circle-check""></i></div>Ponencias evaluadas</a>";									
+                break;
         }
 
         if (idusu == null || idusu == "")
@@ -128,7 +144,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         // Si es evaluador, cambialo a ponente(temporal), de lo contrario debe ser ponente(temporal), por lo tanto se regresa a evaluador
         if (Convert.ToInt32(Session["tipoUsuario"]) == 2)
         {
-            Session["tipoUsuario"] = 4;
+            Session["tipoUsuario"] = 99;
             Response.Redirect("/coloquio/modulos/ponencias/ponencias_listar.aspx");
         }
         else
