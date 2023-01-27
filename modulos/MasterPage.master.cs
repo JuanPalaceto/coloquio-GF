@@ -37,7 +37,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
 									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-check""></i></div>Ponencias Evaluadas</a>";
                 cambiaRol = @"<ul class=""navbar-nav ms-auto ms-md-0 me-lg-2 muestraMenu"">
 								<li class=""nav-item dropdown"">
-									<a class=""nav-link dropdown-toggle no-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
+									<a class=""nav-link dropdown-toggle no-toggle no-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
 									<ul class=""dropdown-menu dropdown-menu-end"" aria-labelledby=""navbarDropdown"">
 										<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>
 									</ul>
@@ -128,7 +128,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 pagInicio = "/Coloquio/modulos/administrador/invitaciones.aspx";
                 modulo = "Auxiliar";
                 menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/administrador/invitaciones.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-pen""></i></div>Administrar ponencias</a>
-								    <a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-circle-check""></i></div>Ponencias evaluadas</a>";									
+								    <a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_clasificadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-circle-check""></i></div>Ponencias evaluadas</a>";
                 break;
         }
 
