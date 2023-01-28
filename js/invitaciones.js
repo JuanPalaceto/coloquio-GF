@@ -2,22 +2,6 @@ window.onload = function(){
     setTimeout(() => {
         TablaInvitaciones();
     }, 500);
-
-    var listaEvaluadores;
-
-    // Trae los evaluadores
-    $.ajax({
-        url: 'invitaciones.aspx/GetEvaluadores',
-        method: 'POST',        
-        success: function (data) {
-            listaEvaluadores = data;
-            console.log(listaEvaluadores);
-            console.log("hola");
-        },
-        error: function (err) {
-            alert(err);
-        }
-    });
 }
 
 
@@ -86,7 +70,7 @@ $('#file-input').fileinput({
 
 
 /* Ver el archivo de la ponencia */
-function verPonencia(idPonencia, idUsuario){    
+function verPonencia(idPonencia, idUsuario){
     $('#modalArchivo').modal('show');
     verDatos(idPonencia);
     TablaAut(idPonencia);
@@ -96,7 +80,7 @@ function verPonencia(idPonencia, idUsuario){
         url: "ver_archivo.ashx",
         data: { idPon: idPonencia, idUsu: idUsuario },
         success: function(response) {
-            $('#handler').html(response);                    
+            $('#handler').html(response);
         }
     });
 }
@@ -345,8 +329,8 @@ function verDatos(id) {
         },
         success: function (datos) {
             var JsonD = $.parseJSON(datos.d);
-  
-            // Trae los datos            
+
+            // Trae los datos
             $('#txtTit').val(JsonD.titulo);
             $("#selectMod option:selected").remove();
             $('#selectMod').append($('<option>', {
@@ -357,7 +341,7 @@ function verDatos(id) {
             $('#selectTema').append($('<option>', {
                 value: 1,
                 text: JsonD.tema
-            }));            
+            }));
             $('#txtRes').val(JsonD.resumen);
             $('#txtPal').val(JsonD.palabrasClave);
         }

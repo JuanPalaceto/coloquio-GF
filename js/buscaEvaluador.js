@@ -1,49 +1,83 @@
+// Variable global con el ID de evaluador
+var idEvaluador;
+
 $(function () {
     // Inicializa el plugin
     $("#txtEvaluador").autocomplete({
         // El origen de los datos: request los datos que envía (la búsqueda), response lo que regresa
         source: function (request, response) {
+            // Array que va a mostrar las opciones
             var arrayReturn = [];
             $.ajax({
                 url: 'invitaciones.aspx/GetEvaluadores',
-                method: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                // Convertir el request en json: tiene que ser request.term porque así lo envía el plugin
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({ term: request.term }),
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
-                    // Recupera y lee la lista, se guarda en un array
-                    for (var i = 0; i < data.d.length; i++) {
-                        var nombre = data.d[i].nombres + " " + data.d[i].primerApellido + " " + data.d[i].segundoApellido;
-                        nombre = nombre.replace(null, "");
+                    arrayReturn = JSON.parse(data.d);
 
-                        var cvu = "";
-                        if (data.d[i].idOrcid != null) {
-                            cvu = data.d[i].idOrcid;
-                        } else if (data.d[i].idCvuConacyt != null) {
-                            cvu = data.d[i].idCvuConacyt;
-                        } else if (data.d[i].curp != null) {
-                            cvu = data.d[i].curp;
-                        }
-                        //value es lo que se insertará en el input, data es adicional, data es para el segundo input
-                        arrayReturn.push({ 'value': nombre.trim(), 'data': cvu });
+                    for (var i = 0; i < arrayReturn.length; i++){
+                        arrayReturn[i]['label'] = arrayReturn[i].Nombre;
                     }
-                    // El responde es la data que va a regresar
+
                     response(arrayReturn);
                 },
-                error: function (err) {
-                    alert(err);
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
                 }
             });
         },
+        appendTo: "#modalEvaluadores",
         // el tiemp oen milisegundos antes de comenzar a buscar una vez que se deja de teclear
         delay: 500,
         // la cantidad mínima de caracteres antes de comenzar a buscar
         minLength: 1,
+        // Esto está bonito pero puede jugar en contra
+        // focus: function (event, ui) {
+        //     $('#txtEvaluador').val(ui.item.label);
+
+        //     return false;
+        // },
         // al seleccionar un autor, guarda su orcid, cvu o curp en otro input con data
         select: function (event, ui) {
-            $('#txtAutorhidd').val(ui.item.value+"1");
-            $('#txtCVU').val(ui.item.data);
+            $('#spanCorreo').html('('+ ui.item.Correo+ ')');
+            idEvaluador = ui.item.ID;
         }
-    });
+    }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+          .append( "<div>" + item.label + "<br><span class='fst-italic small-gray'>" + item.Correo + "</span></div>" )
+          .appendTo( ul );
+    };
 });
+
+
+/* Que limpie los campos cada que se modifique el input */
+$("#txtEvaluador").on("input", function() {
+    limpiaAutocomplete();
+});
+/* ******************** */
+
+
+/* Función para limpiar los campos */
+function limpiaAutocomplete(){
+    $('#spanCorreo').html('');
+    idEvaluador = 0;
+}
+/* ******************** */
+
+
+/* Para limpiar el autocomplete cuando se cierre el modal */
+const myModalEvaluador = document.getElementById('modalEvaluadores');
+myModalEvaluador.addEventListener('hidden.bs.modal', function (event) {
+    $("#txtEvaluador").val('');
+    limpiaAutocomplete();
+})
+/* ******************** */
+
+
+/* Para buscar en cuanto se haga click en el input */
+$("#txtEvaluador").click(function() {
+    $(this).autocomplete("search");
+});
+/* ******************** */

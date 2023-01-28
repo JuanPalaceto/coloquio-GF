@@ -1,2 +1,3 @@
 # Datos sensibles de autenticación a la base de datos, uubicación, usuario y contrraseña
 Web.config
+modulos/administrador/wsEvaluadores.asmx

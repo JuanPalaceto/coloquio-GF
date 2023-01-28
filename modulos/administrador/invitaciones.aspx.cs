@@ -8,31 +8,26 @@ using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Web.Script.Serialization;
 
 public partial class modulos_administrador_invitaciones : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         DropEdicion();
-        // List<Evaluador> evaluadores = GetEvaluadores();
-
-    }
-
-    public class Evaluador
-    {
-        public int ID { get; set; }
-        public string Nombre { get; set; }
-        public string Correo { get; set; }
     }
 
     [WebMethod]
-    public static List<Evaluador> GetEvaluadores()
+    public static string GetEvaluadores(string term)
     {
         using (SqlConnection con = conn.conecta())
-        {            
+        {
             using (SqlCommand command = new SqlCommand("TraeEvaluadores", con))
             {
                 command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@parametro", term);
+
                 con.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -53,9 +48,19 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
 
                 con.Close();
 
-                return evaluadores;
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string jsonString = serializer.Serialize(evaluadores);
+
+                return jsonString;
             }
         }
+    }
+
+    public class Evaluador
+    {
+        public int ID { get; set; }
+        public string Nombre { get; set; }
+        public string Correo { get; set; }
     }
 
     private void DropEdicion()
@@ -147,7 +152,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                             default:
                                 sb.Append("<td data-order=\"5\">Sin estado.</td>");
                                 break;
-                        }                        
+                        }
                         sb.Append("<td align=\"center\" class=\"align-middle\">");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa-solid fa-magnifying-glass text-white w50\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-info fa-solid fa-user-gear text-white w50\" onclick=\"editarEvaluador(" + drseldatos["idPonencia"].ToString() + ", '"+ drseldatos["titulo"].ToString() +"');\"></button>");
@@ -183,7 +188,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 {
                     int estado;
 
-                    sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");                    
+                    sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");
                     sb.Append("<thead>");
                     sb.Append("<tr>");
                     sb.Append("<th scope=\"col\" style=\"width: 80px;\">Seleccionar</th>");
@@ -298,7 +303,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                     {
                         sb.Append("<tr class=\"align-middle\">");
                         sb.Append("<td width=\"60%\">" + drseldatos["autor"].ToString() + "</td>");
-                        sb.Append("<td width=\"20%\">" + drseldatos["tipoAutor"].ToString() + "</td>");                        
+                        sb.Append("<td width=\"20%\">" + drseldatos["tipoAutor"].ToString() + "</td>");
                         sb.Append("</tr>");
                     }
                     if (drseldatos.HasRows)
