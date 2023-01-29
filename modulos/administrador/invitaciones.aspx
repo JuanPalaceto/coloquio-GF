@@ -14,12 +14,14 @@
     <script src="../../FileInput/js/plugins/piexif.js"></script>
     <script src="../../FileInput/js/plugins/sortable.js"></script>
 
-    <!-- SweetAlert2 -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <%-- jQuery autocomplete --%>
     <link href="../../css/jquery-ui.min.css" rel="stylesheet" />
     <script src="../../js/jquery-ui.min.js"></script>
+
+    <%-- Scripts de confirmación más bonitos --%>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -192,7 +194,7 @@
                             <input id="txtEvaluador" type="text" class="form-control" placeholder="" />
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
+                            <button id="btnEnviarInvitacion" type="button" class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
                         </div>
                     </div>
                     <span class="text-muted ps-2" id="spanCorreo"></span>

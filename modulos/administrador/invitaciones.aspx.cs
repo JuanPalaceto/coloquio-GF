@@ -259,18 +259,17 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
 
 
     [WebMethod]
-    public static string AdministrarEvaluadores(int idPonencia, string[] evaluadores)
+    public static string EnviaInvitacion(int idPonencia, int idEvaluador)
     {
         int Exitoso = 0;
-        string arrayEvaluadores = string.Join(", ", evaluadores);
 
         using (SqlConnection Conn = conn.conecta())
         {
-            using (SqlCommand comand = new SqlCommand("AdministrarInvitaciones", Conn))
+            using (SqlCommand comand = new SqlCommand("EnviarInvitacion", Conn))
             {
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = idPonencia;
-                comand.Parameters.Add("@arrayEvaluadores", SqlDbType.NVarChar, 100).Value = arrayEvaluadores;
+                comand.Parameters.Add("@idEvaluador", SqlDbType.Int).Value = idEvaluador;
 
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;

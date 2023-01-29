@@ -1,5 +1,5 @@
 // Variable global con el ID de evaluador
-var idEvaluador;
+var idEvaluador = 0;
 
 $(function () {
     // Inicializa el plugin
