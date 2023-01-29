@@ -186,38 +186,20 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    int estado;
-
                     sb.Append("<table id=\"tablaEvaluadores\" class=\"table table-striped table-bordered \">");
                     sb.Append("<thead>");
                     sb.Append("<tr>");
-                    sb.Append("<th scope=\"col\" style=\"width: 80px;\">Seleccionar</th>");
                     sb.Append("<th scope=\"col\"style=\"width: 500px;\">Nombre</th>");
                     sb.Append("<th scope=\"col\" style=\"width: 80px;\">Estado</th>");
+                    sb.Append("<th scope=\"col\" style=\"width: 80px;\">Retirar</th>");
                     sb.Append("</tr>");
                     sb.Append("</thead>");
                     sb.Append("<tbody>");
                     while (drseldatos.Read())
                     {
+                        int estado = Convert.ToInt32(drseldatos["estado"].ToString());
+
                         sb.Append("<tr>");
-                        // Para saber si tiene invitación o no en la ponencia seleccionada y que la edición sea la activa
-                        if(!drseldatos.IsDBNull(2)){
-                            if (idEdicion == Convert.ToInt32(HttpContext.Current.Session["edicionActiva"])){
-                                sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"1\"><input class=\"form-check-input\" type=\"checkbox\" checked=\"checked\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
-                            } else {
-                                sb.Append("<td class=\"text-center align-middle\" data-order=\"1\"><input class=\"form-check-input\" type=\"checkbox\" checked=\"checked\" value=\"\" disabled></td>");
-                            }
-
-                            estado = Convert.ToInt32(drseldatos["estado"].ToString());
-                        } else {
-                            if (idEdicion == Convert.ToInt32(HttpContext.Current.Session["edicionActiva"])){
-                                sb.Append("<td class=\"seleccionable text-center align-middle\" data-order=\"2\"><input class=\"form-check-input\" type=\"checkbox\" value=\"" + drseldatos["idUsuario"].ToString() + "\"></td>");
-                            } else {
-                                sb.Append("<td class=\"text-center align-middle\" data-order=\"2\"><input class=\"form-check-input\" type=\"checkbox\" value=\"\" disabled></td>");
-                            }
-
-                            estado = 3;
-                        }
                         sb.Append("<td class=\"align-middle\">");
                         sb.Append("" + drseldatos["nombre"].ToString() + "");
                         sb.Append("</td>");
@@ -238,12 +220,13 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                             case 2:
                                 sb.Append("<i class=\"fa-sharp fa-solid fa-xmark text-danger\" style=\"font-size:1.2em;\"></i>");
                                 break;
-                            // no tiene invitación
+                            // Podría agregarse el estado 3, cuando ya realizó la evaluación
                             default:
-                                // Aquí podría ir un mensaje, prefiero dejarlo vacío
+                                //Pues aquí la loógica o catcheado por el case
                                 break;
                         }
                         sb.Append("</td>");
+                        sb.Append("<td class=\"text-center align-middle\"><button type=\"button\" class=\"btn btn-icon btn-danger fa-solid fa-circle-minus text-white w50\" onclick=\"retirarEvaluador(" + idPonencia + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button></td>");
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody>");
@@ -266,6 +249,31 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
         using (SqlConnection Conn = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("EnviarInvitacion", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = idPonencia;
+                comand.Parameters.Add("@idEvaluador", SqlDbType.Int).Value = idEvaluador;
+
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            Conn.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
+        }
+    }
+
+
+    [WebMethod]
+    public static string RetiraInvitacion(int idPonencia, int idEvaluador)
+    {
+        int Exitoso = 0;
+
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("RetirarEvaluador", Conn))
             {
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@idPonencia", SqlDbType.Int).Value = idPonencia;

@@ -142,38 +142,11 @@ function editarEvaluador(idPonencia, titulo){
             $('#listaEvaluadores').html(tablaEvaluadores.d);
             let idTable = "tablaEvaluadores";
             let orden = [[0, 'asc'], [1, 'asc']];
-            let contexto = "No hay evaluadores.";
+            let contexto = "No hay evaluadores asignados.";
             dataTable(idTable, orden, contexto);
         }
     });
 }
-/* ******************** */
-
-
-/* Para poder hacer check cuando se clickee en el td de seleccionar (agregados después de cargar aka dinámicamente) */
-$('#listaEvaluadores').on("click", "td.seleccionable", function(){
-    let checkbox = $(this).find("input[type=checkbox]");
-    checkbox.prop("checked", !checkbox.prop("checked"));
-});
-
-// En caso que se quiera que se haga el check clickando en el nombre también hay que descomentar este bloque y comentar el anterior
-// $('#listaEvaluadores').on("click", "td.seleccionable", function(){
-//     let checkbox = $(this).find("input[type=checkbox]");
-//     if(checkbox.length > 0){
-//         checkbox.prop("checked", !checkbox.prop("checked"));
-//     } else {
-//         let prevTD = $(this).prev("td.seleccionable");
-//         if(prevTD.length > 0){
-//             checkbox = prevTD.find("input[type=checkbox]");
-//             checkbox.prop("checked", !checkbox.prop("checked"));
-//         }
-//     }
-// });
-
-$('#listaEvaluadores').on("click", "td.seleccionable input[type=checkbox]", function(){
-    let checkbox = $(this);
-    checkbox.prop("checked", !checkbox.prop("checked"));
-});
 /* ******************** */
 
 
@@ -340,6 +313,67 @@ function verDatos(id) {
             $('#txtRes').val(JsonD.resumen);
             $('#txtPal').val(JsonD.palabrasClave);
         }
+    });
+}
+/* ******************** */
+
+
+/* Retirar evaluador */
+function retirarEvaluador(idPonencia, idUsuario){
+    return new Promise(function(resolve, reject) {
+        $.confirm({
+            escapeKey: true,
+            backgroundDismiss: true,
+            icon: 'fa fa-circle-question',
+            title: '¡Confirmación!',
+            content: '¿Desea retirar de esta ponencia al evaluador?',
+            type: 'orange',
+            buttons: {
+                Retirar: {
+                    btnClass: 'btn-primary text-white',
+                    keys: ['enter'],
+                    action: function(){
+                        var data = {
+                                idPonencia: idPonencia,
+                                idEvaluador: idUsuario
+                            };
+
+                            // Manda invitaciones
+                            $.ajax({
+                                type: "POST",
+                                url: "invitaciones.aspx/RetiraInvitacion",
+                                data: JSON.stringify(data),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                                },
+                                success: function(response) {
+                                    var JsonD = $.parseJSON(response.d);
+
+                                if (JsonD.success == 1) {
+                                    PNotify.success({
+                                        text: 'Evaluador retirado de la ponencia.',
+                                        delay: 3000,
+                                        addClass: 'translucent'
+                                    });
+                                } else {
+                                    PNotify.danger({
+                                        text: 'Ocurrió un error, favor de intentar más tarde.',
+                                        delay: 3000,
+                                        addClass: 'translucent'
+                                    });
+                                }
+
+                                editarEvaluador(globalIdPonencia, globalTitulo);
+                            }
+                        });
+                    }
+                },
+                Cancelar: function(){
+                }
+            }
+        });
     });
 }
 /* ******************** */
