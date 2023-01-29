@@ -17,8 +17,16 @@ $(function () {
                 success: function (data) {
                     arrayReturn = JSON.parse(data.d);
 
-                    for (var i = 0; i < arrayReturn.length; i++){
-                        arrayReturn[i]['label'] = arrayReturn[i].Nombre;
+                    if (arrayReturn.length > 0){
+                        for (var i = 0; i < arrayReturn.length; i++){
+                            arrayReturn[i]['label'] = arrayReturn[i].Nombre;
+                        }
+                    } else {
+                        arrayReturn.push({
+                            label: "No se encontró ningún evaluador.",
+                            Nombre: "",
+                            Correo: "Realice otra búsqueda."
+                        });
                     }
 
                     response(arrayReturn);
@@ -41,8 +49,12 @@ $(function () {
         // },
         // al seleccionar un autor, guarda su orcid, cvu o curp en otro input con data
         select: function (event, ui) {
-            $('#spanCorreo').html('('+ ui.item.Correo+ ')');
-            idEvaluador = ui.item.ID;
+            if(!ui.item.Nombre){
+                event.preventDefault();
+            } else {
+                idEvaluador = ui.item.ID;
+                $('#spanCorreo').html('('+ ui.item.Correo+ ')');
+            }
         }
     }).autocomplete( "instance" )._renderItem = function( ul, item ) {
         return $( "<li>" )

@@ -26,7 +26,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
             {
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@parametro", term);
+                command.Parameters.AddWithValue("@parametro", term.Trim());
 
                 con.Open();
 

@@ -188,24 +188,26 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <label for="txtEvaluador" class="col-form-label fw-bold">Ingrese un nombre o correo electrónico:</label>
-                    <div class="row g-2 mb-1">
-                        <div class="col-xl-5 col-7 ui-widget">
-                            <input id="txtEvaluador" type="text" class="form-control" placeholder="" />
+                    <div id="buscaEvaluador" class="mb-4">
+                        <label for="txtEvaluador" class="col-form-label fw-bold">Ingrese un nombre o correo electrónico:</label>
+                        <div class="row g-2 mb-1">
+                            <div class="col-xl-5 col-7 ui-widget">
+                                <input id="txtEvaluador" type="text" class="form-control" placeholder="" />
+                            </div>
+                            <div class="col-1">
+                                <button id="btnEnviarInvitacion" type="button" class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
+                            </div>
                         </div>
-                        <div class="col-1">
-                            <button id="btnEnviarInvitacion" type="button" class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
-                        </div>
+                        <span class="text-muted ps-2" id="spanCorreo"></span>
                     </div>
-                    <span class="text-muted ps-2" id="spanCorreo"></span>
 
                     <div>
-                        <label class="mt-4 fw-bold">Lista de Evaluadores</label>
+                        <label class="fw-bold">Lista de Evaluadores</label>
                     </div>
                     <div id="listaEvaluadores"></div>
 
                     <%-- leyendas --%>
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-auto">
                             <ul class="list-unstyled">
                                 <li><b>Estado de la invitación:</b></li>
