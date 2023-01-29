@@ -31,14 +31,14 @@ function TablaInvitaciones() {  //aqui se crea la tabla
 }
 
 
-/* Esconde el botón de guardar si la edición seleccionada no es la activa */
+/* Esconde el input para agregar evaluadores si la edición seleccionada no es la activa */
 function ocultaBoton(edicionActiva){
     let idEdicion = $('#selectEd').val();
 
     if (idEdicion == edicionActiva){
-        $('#btnEnviar').show();
+        $('#buscaEvaluador').show();
     } else {
-        $('#btnEnviar').hide();
+        $('#buscaEvaluador').hide();
     }
 }
 /* ******************** */

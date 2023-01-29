@@ -175,6 +175,7 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
     [WebMethod]
     public static string ListarEvaluadores(int idPonencia, int idEdicion)
     {
+        int edicionActiva = Convert.ToInt32(HttpContext.Current.Session["edicionActiva"]);
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
         {
@@ -226,7 +227,13 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                                 break;
                         }
                         sb.Append("</td>");
-                        sb.Append("<td class=\"text-center align-middle\"><button type=\"button\" class=\"btn btn-icon btn-danger fa-solid fa-circle-minus text-white w50\" onclick=\"retirarEvaluador(" + idPonencia + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button></td>");
+                        sb.Append("<td class=\"text-center align-middle\">");
+                        if (idEdicion != edicionActiva){
+                            sb.Append("<button type=\"button\" class=\"btn btn-danger text-white\" disabled><i class=\"fa-solid fa-circle-minus\"></i></button>");
+                        } else {
+                            sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa-solid fa-circle-minus text-white w50\" onclick=\"retirarEvaluador(" + idPonencia + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
+                        }
+                        sb.Append("</td>");
                         sb.Append("</tr>");
                     }
                     sb.Append("</tbody>");
