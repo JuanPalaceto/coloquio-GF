@@ -30,9 +30,6 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
 
                 command.Parameters.AddWithValue("@parametro", term.Trim());
 
-
-                command.Parameters.AddWithValue("@parametro", term.Trim());
-
                 con.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -59,13 +56,6 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                 return jsonString;
             }
         }
-    }
-
-    public class Evaluador
-    {
-        public int ID { get; set; }
-        public string Nombre { get; set; }
-        public string Correo { get; set; }
     }
 
     public class Evaluador
@@ -188,7 +178,6 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
     public static string ListarEvaluadores(int idPonencia, int idEdicion)
     {
         int edicionActiva = Convert.ToInt32(HttpContext.Current.Session["edicionActiva"]);
-        int edicionActiva = Convert.ToInt32(HttpContext.Current.Session["edicionActiva"]);
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
         {
@@ -206,14 +195,11 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                     sb.Append("<th scope=\"col\"style=\"width: 500px;\">Nombre</th>");
                     sb.Append("<th scope=\"col\" style=\"width: 80px;\">Estado</th>");
                     sb.Append("<th scope=\"col\" style=\"width: 80px;\">Retirar</th>");
-                    sb.Append("<th scope=\"col\" style=\"width: 80px;\">Retirar</th>");
                     sb.Append("</tr>");
                     sb.Append("</thead>");
                     sb.Append("<tbody>");
                     while (drseldatos.Read())
                     {
-                        int estado = Convert.ToInt32(drseldatos["estado"].ToString());
-
                         int estado = Convert.ToInt32(drseldatos["estado"].ToString());
 
                         sb.Append("<tr>");
@@ -241,13 +227,6 @@ public partial class modulos_administrador_invitaciones : System.Web.UI.Page
                             default:
                                 //Pues aquí la loógica o catcheado por el case
                                 break;
-                        }
-                        sb.Append("</td>");
-                        sb.Append("<td class=\"text-center align-middle\">");
-                        if (idEdicion != edicionActiva){
-                            sb.Append("<button type=\"button\" class=\"btn btn-danger text-white\" disabled><i class=\"fa-solid fa-circle-minus\"></i></button>");
-                        } else {
-                            sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa-solid fa-circle-minus text-white w50\" onclick=\"retirarEvaluador(" + idPonencia + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
                         }
                         sb.Append("</td>");
                         sb.Append("<td class=\"text-center align-middle\">");

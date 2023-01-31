@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Web.Script.Serialization;
 
 public partial class ponencias_registrar : System.Web.UI.Page
 {
@@ -98,13 +99,24 @@ public partial class ponencias_registrar : System.Web.UI.Page
                 Exitoso = int.Parse(pexitoso.Value.ToString());
                 id = int.Parse(pidponencia.Value.ToString());
                 titulo = ptitulo.Value.ToString();
-
-                HttpContext.Current.Session["idponencia"] = id;
             }
 
             Conn.Close();
-            return "{\"success\": \"" + Exitoso + "\", \"id\": \"" + id + "\", \"titulo\": \"" + titulo + "\"}";
         }
+        HttpContext.Current.Session["idponencia"] = id;
+
+        // Esto es para evitar problemas con el json, ya que se serializa automaticamente y no tengo que hacerlo manual
+        var obj = new
+        {
+            success = Exitoso,
+            id = id,
+            titulo = titulo
+        };
+
+        var serializer = new JavaScriptSerializer();
+        string jsonString = serializer.Serialize(obj);
+
+        return jsonString;
     }
 
     [WebMethod]
