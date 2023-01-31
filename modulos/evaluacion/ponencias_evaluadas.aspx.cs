@@ -41,7 +41,7 @@ public partial class modulos_evaluacion_ponencias_evaluadas : System.Web.UI.Page
                         sb.Append("<td>" + drseldatos["edicion"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["fechaEvaluacion"].ToString() + "</td>");
                         sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa-regular fa-clipboard text-white\" style=\"width: 1.2em; height: 1.5em;\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-download text-white m-1\" style=\"width: 1.2em; height: 1.5em;\"></button></td></tr>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-magnifying-glass text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button></td></tr>");
                     }
                     if (drseldatos.HasRows)
                     {
@@ -58,5 +58,33 @@ public partial class modulos_evaluacion_ponencias_evaluadas : System.Web.UI.Page
             con.Close();
             return sb.ToString();
         }
+    }
+
+
+    [WebMethod]
+    public static string TraeDatos(int id)
+    {
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("TraeDatos", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                Conn.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        sb.Append("{\"titulo\": \"" + dr["titulo"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"modalidad\": \"" + dr["modalidad"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"tema\": \"" + dr["tema"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"resumen\": \"" + dr["resumen"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\", \"palabrasClave\": \"" + dr["palabrasClave"].ToString().Trim().Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}");
+                    }
+                    dr.Close();
+                }
+            }
+            Conn.Close();
+        }
+        HttpContext.Current.Session["idponencia"] = id;
+
+        return sb.ToString();
     }
 }
