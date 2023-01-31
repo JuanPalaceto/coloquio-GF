@@ -255,6 +255,17 @@
             });
         };
         /* ******************** */
+
+
+        /* Controla las pills */
+        $('#btnMuestraAutores').on('click', function(){
+            $('#btnPillFile').trigger('click');
+        });
+
+        $('#btnRegresaAutores').on('click', function(){
+            $('#btnPillData').trigger('click');
+        });
+        /* ******************** */
     </script>
 </asp:Content>
 
