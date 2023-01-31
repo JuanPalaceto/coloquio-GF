@@ -10,7 +10,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Editar Usuario</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -88,7 +88,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="myLargeModalLabel21">ELIMINAR</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <h4>¿Está seguro de eliminar el usuario?</h4>

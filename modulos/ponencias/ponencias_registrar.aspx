@@ -282,20 +282,20 @@
         myModalEl.addEventListener('shown.bs.modal', function (event) {
             if ($('#inputEstado option').length == 1) {
                 displayOption();
-            }
+            }            
         }) --%>
 
         //Api de estados
         const batchTrack = document.getElementById("inputEstado");
         const getPost = async () => {
             const response = await fetch("https://api.datamexico.org/tesseract/data.jsonrecords?cube=inegi_population_total&drilldowns=State&locale=es&measures=Population");
-            const data = response.json();
+            const data = response.json();            
             return data;
-        };
+        };                
 
         const displayOption = async () => {
         const options = await getPost();
-        options.data.forEach(option => {
+        options.data.forEach(option => {            
             const newOption = document.createElement("option");
             newOption.value = option["State ID"];
             newOption.text = option.State;
@@ -305,15 +305,15 @@
         sortear("#inputEstado");
         $("#inputEstado option[value=0]").attr('selected', 'selected');
         };
-        displayOption();
+        displayOption();    
 
         //funcion para la api de instituciones
         function cargarInstitucion(){
             $("#inputInstitucion option").each(function() {
-                $(this).remove();
+                $(this).remove();            
             });
             var id = $('#inputEstado').val();
-            if(id == 0){
+            if(id == "0"){
                 const batchTrack = document.getElementById("inputInstitucion");
                 const newOption = document.createElement("option");
                 newOption.value = 0;
@@ -324,9 +324,9 @@
             const batchTrack = document.getElementById("inputInstitucion");
             const getPost = async () => {
                 const response = await fetch("https://api.datamexico.org/tesseract/data.jsonrecords?State="+id+"&cube=anuies_enrollment&drilldowns=Institution&locale=es&measures=Students");
-                const data = response.json();
+                const data = response.json();            
                 return data;
-            };
+            };                
 
             const displayOption = async () => {
             const options = await getPost();
@@ -334,25 +334,25 @@
             newOption.value = "0"
             newOption.text = "- Seleccionar -"
             batchTrack.appendChild(newOption);
-            options.data.forEach(option => {
+            options.data.forEach(option => {            
                 const newOption = document.createElement("option");
-                newOption.value = option["Institution ID"];
+                newOption.value = option.Institution;
                 newOption.text = option.Institution;
                 batchTrack.appendChild(newOption);
-                $("#inputInstitucion").removeAttr('disabled');
+                $("#inputInstitucion").removeAttr('disabled');    
             });
             sortear("#inputInstitucion");
             $("#inputInstitucion option[value=0]").attr('selected', 'selected');
             };
             displayOption();
             }
-        }
+        }        
 
         //función para sortear alfabéticamente las opciones de un select mandando el id del select
-        function sortear(id) {
+        function sortear(id) {    
             $(id).append($(id+" option").remove().sort(function(a, b) {
                 var at = $(a).text(),
-                    bt = $(b).text();
+                    bt = $(b).text();                
                 return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
             }));
         }

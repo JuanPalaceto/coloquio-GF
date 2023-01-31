@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Web.Services;
+using System.Net;
+using System.Net.Mail;
 
 public partial class register : System.Web.UI.Page
 {
@@ -44,6 +46,21 @@ public partial class register : System.Web.UI.Page
                 Exitoso = int.Parse(pexitoso.Value.ToString());
             }
             Conn.Close();
+
+            using (MailMessage mm = new MailMessage("a2143040255@alumnos.uat.edu.mx", email.Trim()))
+            {
+                mm.Subject = "Registro Exitoso";
+                mm.Body = "Apreciable: <b>" + nombre + " " + apellido + "</b><br /><br />Le informamos que se ha realizado correctamente su registro.<br /><br />Para ingresar al sistema utilice el siguiente usuario y contraseña: <br />" + email.Trim() + "<br />" + psw.Trim() + "<br /><br />Si nesecita asistencia con su cuenta, envíe un correo a la siguiente cuenta: a2143040255@alumnos.uat.edu.mx<br /><br />Saludos cordiales".Trim();
+                mm.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.office365.com";
+                smtp.EnableSsl = true;
+                NetworkCredential networkCred = new NetworkCredential("a2143040255@alumnos.uat.edu.mx", "Pcsv43k5zg");
+                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = networkCred;
+                smtp.Port = 587;
+                smtp.Send(mm);
+            }
             return "{\"success\": \"" + Exitoso + "\"}";
         }
     }

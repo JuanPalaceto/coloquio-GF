@@ -2,22 +2,6 @@ window.onload = function(){
     setTimeout(() => {
         TablaInvitaciones();
     }, 500);
-
-    var listaEvaluadores;
-
-    // Trae los evaluadores
-    $.ajax({
-        url: 'invitaciones.aspx/GetEvaluadores',
-        method: 'POST',        
-        success: function (data) {
-            listaEvaluadores = data;
-            console.log(listaEvaluadores);
-            console.log("hola");
-        },
-        error: function (err) {
-            alert(err);
-        }
-    });
 }
 
 
@@ -47,14 +31,14 @@ function TablaInvitaciones() {  //aqui se crea la tabla
 }
 
 
-/* Esconde el botón de guardar si la edición seleccionada no es la activa */
+/* Esconde el input para agregar evaluadores si la edición seleccionada no es la activa */
 function ocultaBoton(edicionActiva){
     let idEdicion = $('#selectEd').val();
 
     if (idEdicion == edicionActiva){
-        $('#btnEnviar').show();
+        $('#buscaEvaluador').show();
     } else {
-        $('#btnEnviar').hide();
+        $('#buscaEvaluador').hide();
     }
 }
 /* ******************** */
@@ -86,7 +70,7 @@ $('#file-input').fileinput({
 
 
 /* Ver el archivo de la ponencia */
-function verPonencia(idPonencia, idUsuario){    
+function verPonencia(idPonencia, idUsuario){
     $('#modalArchivo').modal('show');
     verDatos(idPonencia);
     TablaAut(idPonencia);
@@ -96,7 +80,7 @@ function verPonencia(idPonencia, idUsuario){
         url: "ver_archivo.ashx",
         data: { idPon: idPonencia, idUsu: idUsuario },
         success: function(response) {
-            $('#handler').html(response);                    
+            $('#handler').html(response);
         }
     });
 }
@@ -158,7 +142,7 @@ function editarEvaluador(idPonencia, titulo){
             $('#listaEvaluadores').html(tablaEvaluadores.d);
             let idTable = "tablaEvaluadores";
             let orden = [[0, 'asc'], [1, 'asc']];
-            let contexto = "No hay evaluadores.";
+            let contexto = "No hay evaluadores asignados.";
             dataTable(idTable, orden, contexto);
         }
     });
@@ -166,123 +150,91 @@ function editarEvaluador(idPonencia, titulo){
 /* ******************** */
 
 
-/* Para poder hacer check cuando se clickee en el td de seleccionar (agregados después de cargar aka dinámicamente) */
-$('#listaEvaluadores').on("click", "td.seleccionable", function(){
-    let checkbox = $(this).find("input[type=checkbox]");
-    checkbox.prop("checked", !checkbox.prop("checked"));
-});
+/* Enviar invitaciones */
+$("#btnEnviarInvitacion").click(function() {
+    return new Promise(function(resolve, reject) {
+        $.confirm({
+            escapeKey: true,
+            backgroundDismiss: true,
+            icon: 'fa fa-circle-question',
+            title: '¡Confirmación!',
+            content: '¿Desea asignar al evaluador esta ponencia?',
+            type: 'blue',
+            buttons: {
+                Asignar: {
+                    btnClass: 'btn-primary text-white',
+                    keys: ['enter'],
+                    action: function(){
+                        if(idEvaluador == 0){
+                            $.alert({
+                                backgroundDismiss: true,
+                                icon: 'fa fa-warning',
+                                title: '¡Advertencia!',
+                                content: 'Por favor, seleccione un evaluador primero',
+                                type: 'orange'
+                            });
+                        } else {
+                            var data = {
+                                    idPonencia: globalIdPonencia,
+                                    idEvaluador: idEvaluador
+                                 };
 
-// En caso que se quiera que se haga el check clickando en el nombre también hay que descomentar este bloque y comentar el anterior
-// $('#listaEvaluadores').on("click", "td.seleccionable", function(){
-//     let checkbox = $(this).find("input[type=checkbox]");
-//     if(checkbox.length > 0){
-//         checkbox.prop("checked", !checkbox.prop("checked"));
-//     } else {
-//         let prevTD = $(this).prev("td.seleccionable");
-//         if(prevTD.length > 0){
-//             checkbox = prevTD.find("input[type=checkbox]");
-//             checkbox.prop("checked", !checkbox.prop("checked"));
-//         }
-//     }
-// });
+                            // Manda invitaciones
+                            $.ajax({
+                                type: "POST",
+                                url: "invitaciones.aspx/EnviaInvitacion",
+                                data: JSON.stringify(data),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                                },
+                                success: function(response) {
+                                    var JsonD = $.parseJSON(response.d);
 
-$('#listaEvaluadores').on("click", "td.seleccionable input[type=checkbox]", function(){
-    let checkbox = $(this);
-    checkbox.prop("checked", !checkbox.prop("checked"));
+                                    if (JsonD.success == 1) {
+                                        $.alert({
+                                            backgroundDismiss: true,
+                                            icon: 'fa fa-warning',
+                                            title: '¡Advertencia!',
+                                            content: 'El evaluador ya se encuentra asignado a esta ponencia.',
+                                            type: 'orange',
+                                            onClose: function(){
+                                                $("#txtEvaluador").val('');
+                                                limpiaAutocomplete();
+                                            }
+                                        });
+                                    } else if (JsonD.success == 2) {
+                                        PNotify.success({
+                                            text: 'Invitación enviada.',
+                                            delay: 3000,
+                                            addClass: 'translucent'
+                                        });
+                                        $("#txtEvaluador").val('');
+                                        limpiaAutocomplete();
+                                    }
+
+                                    editarEvaluador(globalIdPonencia, globalTitulo);
+                                }
+                            });
+                        }
+                    }
+                },
+                Cancelar: function(){
+                }
+            }
+        });
+    });
 });
 /* ******************** */
 
 
-/* Enviar invitaciones */
-var isDialogOpen = false;
-
-$("#btnEnviar").click(function() {
-    isDialogOpen = true;
-
-    Swal.fire({
-        titleText: '¿Desea continuar?',
-        text: "Si desea guardar los cambios haga click en Aceptar",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#1F6C49',
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        isDialogOpen = false;
-        if (result.value) {
-            // Obtener los evaluadores seleccionados (En todas las páginas del datatable)
-            // var values = [];
-            // var table = $('#tablaEvaluadores').DataTable();
-
-            // // Recorrer las páginas de la tabla
-            // for (var i = 0; i < table.page.info().pages; i++) {
-            //     // Limpia el array (porque se duplica al recorrer cada página)
-            //     values = [];
-            //     // Ir a la página
-            //     table.page(i).draw();
-
-            //     // Selecciona los checkboxes
-            //     var checkboxes = table.rows().nodes().to$().find('input[type="checkbox"]');
-
-            //     // Recorre los checkboxes para encontrar los que estén marcados y asignalos al array
-            //     checkboxes.each(function() {
-            //         if (this.checked) {
-            //             values.push($(this).val());
-            //         }
-            //     });
-            // }
-            // console.log(values);
-
-            // Obtener los evaluadores seleccionados (En todas las páginas del datatable)
-            var values = [];
-
-            // Selecciona los checkboxes en todas las páginas de la datatable
-            // HAY QUE VER SI SELECCIONA CUANDO TRAIGO LA TABLA LLENA Y NO ABRO LA SIGUIENTE PÁGINA, SI NO REGRESAR YU PROBAR EL CÓDIGO DE ARRIBA
-            // Si sí funciona pus borrar el código de arriba:p
-            var checkboxes = $('#tablaEvaluadores').DataTable().rows().nodes().to$().find('input[type="checkbox"]');
-
-            // Selecciona los checkboxes que estén marcados y los guarda en el array
-            checkboxes.each(function() {
-                if(this.checked) {
-                    values.push($(this).val());
-                }
-            });
-
-            // Valida que el array contenga algún check, de lo contrario envía un 0 en al array, lo que quiere decir que de existir, elimina todas las invitaciones de dicha ponencia en la BD
-            if(!(values.length > 0)){
-                values.push("0");
-            }
-
-            var data = {
-                idPonencia: globalIdPonencia,
-                evaluadores: values
-            };
-
-            // Manda invitaciones
-            $.ajax({
-                type: "POST",
-                url: "invitaciones.aspx/AdministrarEvaluadores",
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
-                },
-                success: function(response) {
-                    editarEvaluador(globalIdPonencia, globalTitulo);
-                }
-            });
-        }
-    })
-});
-
-/* Esto es pa' cerrar el sweetalert al mismo tiempo que el modal */
+/* Esto es para eliminar el confirm (conflicto con moda) - Lo elimina del DOM  */
+//ESTO ES IMPORTANTE SI PLANEO REUTILIZAR LOS ALERTS DENTRO DE UN MODAL DE BOOTSTRAP:P
+// Si no es dentro de bootstrap funciona bien con las opciones del mismo plugin
 $(document).on('keydown', function(event) {
-    if (event.keyCode === 27 && isDialogOpen) {
-        // close the SweetAlert2 first
-        Swal.close();
-        isDialogOpen = false;
-        return false;
+    if (event.keyCode === 27) {
+        $('.jconfirm').remove();
     }
 });
 /* ******************** */
@@ -345,8 +297,8 @@ function verDatos(id) {
         },
         success: function (datos) {
             var JsonD = $.parseJSON(datos.d);
-  
-            // Trae los datos            
+
+            // Trae los datos
             $('#txtTit').val(JsonD.titulo);
             $("#selectMod option:selected").remove();
             $('#selectMod').append($('<option>', {
@@ -357,10 +309,71 @@ function verDatos(id) {
             $('#selectTema').append($('<option>', {
                 value: 1,
                 text: JsonD.tema
-            }));            
+            }));
             $('#txtRes').val(JsonD.resumen);
             $('#txtPal').val(JsonD.palabrasClave);
         }
+    });
+}
+/* ******************** */
+
+
+/* Retirar evaluador */
+function retirarEvaluador(idPonencia, idUsuario){
+    return new Promise(function(resolve, reject) {
+        $.confirm({
+            escapeKey: true,
+            backgroundDismiss: true,
+            icon: 'fa fa-circle-question',
+            title: '¡Confirmación!',
+            content: '¿Desea retirar de esta ponencia al evaluador?',
+            type: 'orange',
+            buttons: {
+                Retirar: {
+                    btnClass: 'btn-primary text-white',
+                    keys: ['enter'],
+                    action: function(){
+                        var data = {
+                                idPonencia: idPonencia,
+                                idEvaluador: idUsuario
+                            };
+
+                            // Manda invitaciones
+                            $.ajax({
+                                type: "POST",
+                                url: "invitaciones.aspx/RetiraInvitacion",
+                                data: JSON.stringify(data),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                                },
+                                success: function(response) {
+                                    var JsonD = $.parseJSON(response.d);
+
+                                if (JsonD.success == 1) {
+                                    PNotify.success({
+                                        text: 'Evaluador retirado de la ponencia.',
+                                        delay: 3000,
+                                        addClass: 'translucent'
+                                    });
+                                } else {
+                                    PNotify.danger({
+                                        text: 'Ocurrió un error, favor de intentar más tarde.',
+                                        delay: 3000,
+                                        addClass: 'translucent'
+                                    });
+                                }
+
+                                editarEvaluador(globalIdPonencia, globalTitulo);
+                            }
+                        });
+                    }
+                },
+                Cancelar: function(){
+                }
+            }
+        });
     });
 }
 /* ******************** */

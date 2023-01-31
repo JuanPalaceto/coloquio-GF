@@ -9,8 +9,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h4">Secciones</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title h4" id="parametro"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -61,7 +61,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Eliminar Parámetro</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <h3>¿Está seguro de eliminar el parámetro?</h3>
@@ -207,6 +207,7 @@
                 }, success: function (informacion) {
                     var jsonD = $.parseJSON(informacion.d);
                     $('#txtidparam').val(id);
+                    $('#parametro').html('Editar Parámetro');
                     $('#ddlseccion').val(jsonD.seccion);
                     $('#txtparametro').val(jsonD.parametro);
                     $('#ddlmaximo').val(jsonD.puntaje);
@@ -261,6 +262,7 @@
             $('#txtparametro').val('');
             $('#ddlseccion').val(0);
             $('#ddlmaximo').val(0);
+            $('#parametro').html('Agregar Nueva Parámetro');
         }
 
     </script>

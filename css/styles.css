@@ -11770,3 +11770,20 @@ body {
   height: 20px;
   margin: 2px;
 }
+
+/* jquery Autcomplete */
+/* .ui-autocomplete-loading {
+  background: white url("../assets/img/ui-anim_basic_16x16.gif") no-repeat right center;
+} */
+
+.ui-autocomplete {
+  max-height: 400px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+.small-gray{
+  font: small;
+  opacity: 0.8;
+}

@@ -9,8 +9,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h4">Modalidades</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title h4" id="modalidad"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
             </div>
             <div class="modal-body">
                 <div class="col-md-12">
@@ -38,17 +38,15 @@
 </div>
 
     <!-- Modal Eliminar modalidad -->
-    <div id="modaldel" class="modal fade bd-modal-del" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modaldel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="myLargeModalLabel21">ELIMINAR</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title h4">Eliminar Modalidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Está seguro de eliminar la Modalidad <strong>COMPLETA?</strong></h4>
+                    <h4>¿Está seguro de eliminar la modalidad?</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary eliminar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -62,7 +60,7 @@
 
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
-        <h3><strong>Lista de Modalidades</strong></h3>
+        <h3><strong>Lista de modalidades</strong></h3>
         </div>
         <div>
             <button type="button" class="btn  btn-primary" onclick="AgregarModalidad(); Limpia();" style="float:left;" >Agregar Nueva Modalidad</a>
@@ -226,6 +224,7 @@
                 }, success: function (informacion) {
                     var jsonD = $.parseJSON(informacion.d);
                     $('#txtidMod').val(id);
+                    $('#modalidad').html('Editar Modalidad');
                     $('#txtModalidad').val(jsonD.modalidad);
                     $('#modalModalidad').modal('show');
                 }
@@ -237,10 +236,10 @@
             $("#modaldel").modal('show');
             var id = ctrl;
             $(".eliminar").attr("id", "" + id + "");
-            $(".eliminar").attr("onclick", "EliminarModalidad(" + id + ");");
+            $(".eliminar").attr("onclick", "borrarModalidad(" + id + ");");
         }
 
-        function EliminarModalidad(id) {
+        function borrarModalidad(id) {
         var idModalidad = id;
             $.ajax({
                 type: 'POST',
@@ -254,26 +253,30 @@
                 success: function (valor) {
                     var JsonD = $.parseJSON(valor.d)
                     if (JsonD.success == 1) {
+                        $('#modaldel').modal('hide');
                         TablaModalidades();
                         PNotify.success({
-                            text: 'La modalidad se eliminó correctamente.',
-                            delay: 3000,
-                            addClass: 'translucent'
+                            text: 'La modalidad se elimino correctamente.',
+                            delay: 2500,
+                            styling: 'bootstrap3'
                         });
-                    } else if (JsonD.success == 2) {
-                        PNotify.notice({
-                            text: 'Algo salió mal.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });
-                    }
+                    } else
+                        if (JsonD.success == 2) {
+                            $('#modaldel').modal('hide');
+                            PNotify.notice({
+                                text: 'No se puede eliminar la modalidad porque existe una ponencia ligada.',
+                                delay: 2500,
+                                styling: 'bootstrap3'
+                            });
+                        }
                 }
             });
-        };
+        }
 
         function Limpia() {
             $('#txtidMod').val(0);
             $('#txtModalidad').val('');
+            $('#modalidad').html('Agregar Nueva Modalidad');
         }
 
         </script>

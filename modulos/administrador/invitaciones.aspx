@@ -14,17 +14,14 @@
     <script src="../../FileInput/js/plugins/piexif.js"></script>
     <script src="../../FileInput/js/plugins/sortable.js"></script>
 
-    <!-- SweetAlert2 -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <%-- jQuery autocomplete --%>
     <link href="../../css/jquery-ui.min.css" rel="stylesheet" />
-    <style>
-        .ui-autocomplete-loading {
-            background: white url("img/ui-anim_basic_16x16.gif") no-repeat right center;
-        }
-    </style>
     <script src="../../js/jquery-ui.min.js"></script>
+
+    <%-- Scripts de confirmación más bonitos --%>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -68,7 +65,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="labelArchivo">Detalle de la ponencia:</h3>
+                    <h4 class="modal-title" id="labelArchivo">Detalle de la ponencia:</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
@@ -84,11 +81,11 @@
                             <button class="nav-link" id="btnPillFile" data-bs-toggle="pill" data-bs-target="#pillFile" type="button" role="tab" aria-controls="pillFile" aria-selected="false">Archivo</button>
                         </li>
                     </ul>
-                    
+
                     <br/>
-                
+
                     <div class="tab-content" id="pillsContenido">
-                        <%-- Tab 1 --%>                        
+                        <%-- Tab 1 --%>
                         <div class="tab-pane fade show active" id="pillData" role="tabpanel" aria-labelledby="pills-1" tabindex="0">
                             <div class="row mb-3 g-3 align-items-center">
                                 <label for="txtTit" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label">Título de la ponencia:</label>
@@ -117,14 +114,14 @@
                                     <textarea id="txtRes" class="form-control" rows=8 maxlength="500" oninput="contador(this);" disabled></textarea>
                                     <%-- <p id="txtRes"></p> --%>
                                 </div>
-                            </div>                                    
+                            </div>
                             <div class="row g-3 align-items-center">
                                 <label for="txtPal" class="offset-xxl-2 col-xxl-2 col-sm-3  col-form-label text-start">Palabras clave de la ponencia:</label>
                                 <div class="col-xxl-6 col-sm-8 col-12 d-grid d-sm-block">
                                     <input type="text" id="txtPal" class="form-control" disabled/>
                                     <%-- <p id="txtPal"></p> --%>
-                                </div>                                
-                            </div>                            
+                                </div>
+                            </div>
                             <div class="row g-3 mb-3 mt-3 align-items-center">
                                 <div class="text-center">
                                     <button id="btnMuestraAutores" type="button" class="btn btn-primary btn-block w-auto">Siguiente</button>
@@ -137,7 +134,7 @@
                             <!-- Lista Autores -->
                             <!-- <div id="tablaAutores" class="card-body shadow p-3 mb-5 bg-body rounded"> -->
                             <!-- <h3><strong>Lista de autores</strong></h3> -->
-                            <div class="container">                                
+                            <div class="container">
                                 <div id="generarTablaAutores" class="table-responsive"></div>
                                 <br/>
                             </div>
@@ -176,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
@@ -187,27 +184,30 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="labelEvaluadores">Título: <span id="spanTituloEv"></span></h3>
+                    <h4 class="modal-title" id="labelEvaluadores">Título: <span id="spanTituloEv"></span></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <label for="txtEvaluador" class="col-form-label fw-bold">Ingrese un nombre o correo electrónico:</label>
-                    <div class="row g-1 mb-4">                        
-                        <div class="col-xl-5 col-7">
-                            <input id="txtEvaluador" type="text" class="form-control" placeholder="" />
+                    <div id="buscaEvaluador" class="mb-4">
+                        <label for="txtEvaluador" class="col-form-label fw-bold">Ingrese un nombre o correo electrónico:</label>
+                        <div class="row g-2 mb-1">
+                            <div class="col-xl-5 col-7 ui-widget">
+                                <input id="txtEvaluador" type="text" class="form-control" placeholder="" />
+                            </div>
+                            <div class="col-1">
+                                <button id="btnEnviarInvitacion" type="button" class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
+                            </div>
                         </div>
-                        <div class="col-1">
-                            <button class="btn btn-info text-white" style="height: 35.59px"><i class="fa-solid fa-envelope"></i></button>
-                        </div>                        
+                        <span class="text-muted ps-2" id="spanCorreo"></span>
                     </div>
-                                
+
                     <div>
                         <label class="fw-bold">Lista de Evaluadores</label>
                     </div>
                     <div id="listaEvaluadores"></div>
 
                     <%-- leyendas --%>
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-auto">
                             <ul class="list-unstyled">
                                 <li><b>Estado de la invitación:</b></li>
@@ -219,7 +219,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" style="float: right;" id="btnEnviar">Guardar</button>
+                    <%-- <button type="button" class="btn btn-primary" style="float: right;" id="btnEnviar">Guardar</button> --%>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right;">Cerrar</button>
                 </div>
             </div>

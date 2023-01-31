@@ -10,8 +10,7 @@ public partial class temas : System.Web.UI.Page
     {
         DropEdiciones();
         edicion.Enabled = false;
-    }
-    
+    }    
     private void DropEdiciones()
         {
             using (SqlConnection con = conn.conecta())

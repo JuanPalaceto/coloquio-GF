@@ -33,11 +33,12 @@ public partial class ponencias_evaluar : System.Web.UI.Page
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Resumen</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         sb.Append("<tr>");
                         sb.Append("<td>" + drseldatos["titulo"].ToString() + "</td>");
+                        sb.Append("<td>" + drseldatos["resumen"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["modalidad"].ToString() + "</td>");
                         sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa-regular fa-clipboard text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"evaluar(" + drseldatos["idPonencia"].ToString() + ",'" + drseldatos["titulo"].ToString() + "'," + drseldatos["idEvaluacion"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-download text-white m-1\" style=\"width: 1.2em; height: 1.5em;\"></button></td></tr>");

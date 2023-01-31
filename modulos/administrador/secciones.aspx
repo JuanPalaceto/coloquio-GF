@@ -9,8 +9,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h4">Secciones</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title h4" id="seccion"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -44,10 +44,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Eliminar Sección</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h2>¿Está seguro de eliminar la sección?</h2>
+                    <h4>¿Está seguro de eliminar la sección?</h2>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary eliminar" data-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -184,6 +184,7 @@
                     console.log("Error" + jqXHR.responseText);
                 }, success: function (informacion) {
                     var jsonD = $.parseJSON(informacion.d);
+                    $('#seccion').html('Editar Sección');
                     $('#txtidSec').val(id);
                     $('#txtseccion').val(jsonD.seccion);
                     $('#ddledicion').val(jsonD.edicion);
@@ -236,6 +237,7 @@
         function Limpia() {
             $('#txtidSec').val(0);
             $('#txtseccion').val('');
+            $('#seccion').html('Agregar Nueva Sección');
             //$('#ddledicion').val(0);
         }
     </script>

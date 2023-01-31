@@ -1,126 +1,134 @@
 /* Generales */
-$('#btnAutorSig').on('click',  function() {
-    var id = $('#idPonencia').val();
-    verificaAutor(id);
+$("#btnAutorSig").on("click", function () {
+  var id = $("#idPonencia").val();
+  verificaAutor(id);
 });
 
-var myModalEl = document.getElementById('modaladd');
-myModalEl.addEventListener('hidden.bs.modal', function (event) {
+var myModalEl = document.getElementById("modaladd");
+myModalEl.addEventListener("hidden.bs.modal", function (event) {
   limpiaAutor();
-})
+});
 
 function limpiaAutor() {
-    let valSelect = $('#selectAut').val();
+  let valSelect = $("#selectAut").val();
 
-    $('#idAutor').val("0");
-    $('#selectAut').prop('selectedIndex', 0);
-    $('#inputEstado').prop('selectedIndex', 0);
-    $('#inputSex').prop('selectedIndex', 0);
-    $('#txtAut').val("");
-    cargarDependencia();
+  $("#idAutor").val("0");
+  $("#selectAut").prop("selectedIndex", 0);
+  $("#inputEstado").prop("selectedIndex", 0);
+  cargarInstitucion();
+  $("#inputSex").prop("selectedIndex", 0);
+  $("#txtAut").val("");
 }
 /* ******************** */
 
 /* Agregar autores */
-function agregarAutor(idPonencia) {
-    var idAutor = "", autor = "", tipo = "";
-    institucion = $('#inputInstitucion').val();
-    sexo = $('#inputSex').val();
+function agregarAutor(idPonencia) {  
+  var idAutor = "",
+    autor = "",
+    tipo = "";
+  institucion = $("#inputInstitucion").val();
+  sexo = $("#inputSex").val();
 
-    if ($('#txtAut')[0].checkValidity() && institucion != "0" && $('#selectAut')[0].checkValidity() && sexo != "0") {
-        idAutor = $('#idAutor').val();
-        autor = $('#txtAut').val();        
-        tipo = $('#selectAut').val();
-        sexo = $('#inputSex').val();
+  if (
+    $("#txtAut")[0].checkValidity() &&
+    institucion != "0" &&
+    $("#selectAut")[0].checkValidity() &&
+    sexo != "0"
+  ) {
+    idAutor = $("#idAutor").val();
+    autor = $("#txtAut").val();
+    tipo = $("#selectAut").val();
+    // sexo = $("#inputSex").val();
 
-        var obj = {};
-        obj.idPonencia = idPonencia;
-        obj.idAutor = idAutor;
-        obj.autor = autor;
-        obj.institucion = institucion;
-        obj.tipo = tipo;
-        obj.sexo = sexo;
+    var obj = {};
+    obj.idPonencia = idPonencia;
+    obj.idAutor = idAutor;
+    obj.autor = autor;
+    obj.institucion = institucion;
+    obj.tipo = tipo;
+    obj.sexo = sexo;
 
-        $.ajax({
-            type: 'POST',
-            url: 'ponencias_registrar.aspx/AgregaAutor',
-            data: JSON.stringify(obj),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("Error" + jqXHR.responseText);
-            },
-            success: function (valor) {
-                var JsonD = $.parseJSON(valor.d)
-                var texto = "";
-                if (JsonD.success == 1) {
-                    texto = "Autor agregado correctamente.";
-                } else if (JsonD.success == 2) {
-                    texto = "Ponencia no seleccionada. Favor de agregar una nueva o bien editar una existente.";
-                } else if (JsonD.success == 3){
-                    texto = "Autor actualizado correctamente.";
-                }
-
-                if (JsonD.success == 2) {
-                    PNotify.notice({
-                        text: texto,
-                        delay: 3000,
-                        addClass: 'translucent'
-                    });
-                } else {
-                    PNotify.success({
-                        text: texto,
-                        delay: 3000,
-                        addClass: 'translucent'
-                    });
-                }
-
-                $("#modaladd").modal('hide');
-                TablaAut(idPonencia);
-            }
-        });
-    } else {        
-        $('#selectAut')[0].reportValidity();
-        // $('#inputInstitucion')[0].reportValidity();
-        if(institucion == "0"){
-            $("#inputInstitucion").focus();
-            PNotify.notice({
-                text: 'Seleccione una institución.',
-                delay: 2500,
-                addClass: 'translucent'
-            });  
-            return;
-        }
-        $('#txtAut')[0].reportValidity();        
-    }
-};
-
-$('#btnAutor').on('click', function () {
-    var id = $('#idPonencia').val();
-    agregarAutor(id);
-});
-/* ******************** */
-
-
-/* Tabla de Autores */
-function TablaAut(id) {  //aqui se crea la tabla
-  $.ajax({
-      type: 'POST',
-      url: 'ponencias_registrar.aspx/TablaListarAutores',
-      data: "{'id':'" + id + "'}",
+    $.ajax({
+      type: "POST",
+      url: "ponencias_registrar.aspx/AgregaAutor",
+      data: JSON.stringify(obj),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       error: function (jqXHR, textStatus, errorThrown) {
-          console.log("Error" + jqXHR.responseText);
+        console.log("Error" + jqXHR.responseText);
       },
-      success: function (tabla) {
-          $("#generarTabla").html(tabla.d); //nombre del id del div de la tabla
-          setTimeout(function myfunction() {
-              estiloDataTable();
-          }, 100);
-      }
+      success: function (valor) {
+        var JsonD = $.parseJSON(valor.d);
+        var texto = "";
+        if (JsonD.success == 1) {
+          texto = "Autor agregado correctamente.";
+        } else if (JsonD.success == 2) {
+          texto =
+            "Ponencia no seleccionada. Favor de agregar una nueva o bien editar una existente.";
+        } else if (JsonD.success == 3) {
+          texto = "Autor actualizado correctamente.";
+        }
+
+        if (JsonD.success == 2) {
+          PNotify.notice({
+            text: texto,
+            delay: 3000,
+            addClass: "translucent",
+          });
+        } else {
+          PNotify.success({
+            text: texto,
+            delay: 3000,
+            addClass: "translucent",
+          });
+        }
+
+        $("#modaladd").modal("hide");
+        TablaAut(idPonencia);
+      },
+    });
+  } else {
+    $("#selectAut")[0].reportValidity();
+    // $('#inputInstitucion')[0].reportValidity();
+    if (institucion == "0") {
+      $("#inputInstitucion").focus();
+      PNotify.notice({
+        text: "Seleccione una institución.",
+        delay: 2500,
+        addClass: "translucent",
+      });
+      return;
+    }
+    $("#txtAut")[0].reportValidity();
+  }
+}
+
+$("#btnAutor").on("click", function () {
+  var id = $("#idPonencia").val();
+  agregarAutor(id);
+});
+/* ******************** */
+
+/* Tabla de Autores */
+function TablaAut(id) {
+  //aqui se crea la tabla
+  $.ajax({
+    type: "POST",
+    url: "ponencias_registrar.aspx/TablaListarAutores",
+    data: "{'id':'" + id + "'}",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Error" + jqXHR.responseText);
+    },
+    success: function (tabla) {
+      $("#generarTabla").html(tabla.d); //nombre del id del div de la tabla
+      setTimeout(function myfunction() {
+        estiloDataTable();
+      }, 100);
+    },
   });
-};
+}
 
 // function estiloDataTable(page, leng) {
 //   $('#tabla').DataTable({
@@ -146,97 +154,101 @@ function TablaAut(id) {  //aqui se crea la tabla
 // };
 /* ******************** */
 
-
 /* editar Autor */
 function editarAutor(id) {
-    $.ajax({
-        type: 'POST',
-        url: 'ponencias_registrar.aspx/ModificaAutor',
-        data: "{'id':'" + id + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
-        },
-        success: function (datos) {
-            var JsonD = $.parseJSON(datos.d);
+  $.ajax({
+    type: "POST",
+    url: "ponencias_registrar.aspx/ModificaAutor",
+    data: "{'id':'" + id + "'}",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(
+        "Error- Status: " +
+          "jqXHR Status: " +
+          jqXHR.Status +
+          "jqXHR Response Text:" +
+          jqXHR.responseText
+      );
+    },
+    success: function (datos) {
+      var JsonD = $.parseJSON(datos.d);
 
-            // Trae los datos a los inputs
-            $('#idAutor').val(JsonD.idAutor);
-            $('#txtAut').val(JsonD.autor);
-            $('#inputInstitucion').val(JsonD.institucion);
-            $('#selectAut').val(JsonD.idTipoAutor);
-            $('#inputSex').val(JsonD.sexo);
-            $("#modaladd").modal('show');
-        }
-    });
+      // Trae los datos a los inputs      
+      $("#idAutor").val(JsonD.idAutor);
+      $("#txtAut").val(JsonD.autor);
+      $("#inputInstitucion").append("<option value=\""+ JsonD.institucion +"\">" + JsonD.institucion + "</option>");
+      $("#inputInstitucion").val(JsonD.institucion);
+      $("#selectAut").val(JsonD.idTipoAutor);
+      $("#inputSex").val(JsonD.sexo);
+      $("#modaladd").modal("show");
+    },
+  });
 }
 /* ******************** */
-
 
 /* Eliminar autor */
 function eliminarAutor(id) {
-    var idPonencia = $('#idPonencia').val();
-    $.ajax({
-        type: 'POST',
-        url: 'ponencias_registrar.aspx/EliminarAutor',
-        data: "{'idAutor':'" + id + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Error" + jqXHR.responseText);
-        },
-        success: function (valor) {
-            var JsonD = $.parseJSON(valor.d)
-            if (JsonD.success == 1) {
-                TablaAut(idPonencia);
-                PNotify.success({
-                    text: 'El autor se eliminó correctamente.',
-                    delay: 3000,
-                    addClass: 'translucent'
-                });
-            } else if (JsonD.success == 2) {
-                PNotify.notice({
-                    text: 'Algo salió mal.',
-                    delay: 3000,
-                    addClass: 'translucent'
-                });
-            }
-        }
-    });
+  var idPonencia = $("#idPonencia").val();
+  $.ajax({
+    type: "POST",
+    url: "ponencias_registrar.aspx/EliminarAutor",
+    data: "{'idAutor':'" + id + "'}",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Error" + jqXHR.responseText);
+    },
+    success: function (valor) {
+      var JsonD = $.parseJSON(valor.d);
+      if (JsonD.success == 1) {
+        TablaAut(idPonencia);
+        PNotify.success({
+          text: "El autor se eliminó correctamente.",
+          delay: 3000,
+          addClass: "translucent",
+        });
+      } else if (JsonD.success == 2) {
+        PNotify.notice({
+          text: "Algo salió mal.",
+          delay: 3000,
+          addClass: "translucent",
+        });
+      }
+    },
+  });
 }
 
 function ConfirmarEliminar(idAutor) {
-    $("#modaldel").modal('show');
-    //$(".eliminar").attr("id", "" + idAutor + "");
-    $("#btnEliminar").attr("onclick", "eliminarAutor(" + idAutor + ");");
+  $("#modaldel").modal("show");
+  //$(".eliminar").attr("id", "" + idAutor + "");
+  $("#btnEliminar").attr("onclick", "eliminarAutor(" + idAutor + ");");
 }
 /* ******************** */
 
-
 /* Verificar autores */
 function verificaAutor(idPonencia) {
-    $.ajax({
-        type: 'POST',
-        url: 'ponencias_registrar.aspx/VerificarAutor',
-        data: "{'idPonencia':'" + idPonencia + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Error" + jqXHR.responseText);
-        },
-        success: function (valor) {
-            var JsonD = $.parseJSON(valor.d)
-            if (JsonD.success == 1) {
-                $('#pills-3').trigger('click');
-            } else if (JsonD.success == 2) {
-                PNotify.notice({
-                    text: 'Favor de agregar al menos 𝟭 autor.',
-                    delay: 3000,
-                    addClass: 'translucent'
-                });
-            }
-        }
-    });
+  $.ajax({
+    type: "POST",
+    url: "ponencias_registrar.aspx/VerificarAutor",
+    data: "{'idPonencia':'" + idPonencia + "'}",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Error" + jqXHR.responseText);
+    },
+    success: function (valor) {
+      var JsonD = $.parseJSON(valor.d);
+      if (JsonD.success == 1) {
+        $("#pills-3").trigger("click");
+      } else if (JsonD.success == 2) {
+        PNotify.notice({
+          text: "Favor de agregar al menos 𝟭 autor.",
+          delay: 3000,
+          addClass: "translucent",
+        });
+      }
+    },
+  });
 }
 /* ******************** */

@@ -126,11 +126,11 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="myLargeModalLabel21">ELIMINAR</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="myLargeModalLabel21">Eliminar Edición</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Está seguro de eliminar la Edicion <strong>COMPLETA?</strong></h4>
+                    <h4>¿Está seguro de eliminar la edición <strong>COMPLETA?</strong></h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary eliminar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -149,7 +149,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="myLargeModalLabel21">Editar Edición</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     
@@ -184,13 +184,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Agregar Nueva Edicion:</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <br>
                     <div align="center">
                         <label nowrap="nowrap">Nombre de la Edicion: </label>
                         <input  id="nombreEdi" class="form" type="text" name="edicion" value="" size="30">
+                        <br>
+                        <div class="col-auto text-center alert alert-danger mt-2" style="display:none;" role="alert" id="alerta"></div>
                     </div>
                     <br>
                     <hr>
@@ -208,7 +210,7 @@
                                     <img name="walk" src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
                                 </div>                                
                             </div>
-                        
+
                             <div class="form-check input-container">
                                 <input class="form-check-input" type="radio" name="radio" id="run" value="2">
                                 <div class="radio-tile">
@@ -216,12 +218,20 @@
                                     <img name="run" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
                                 </div>
                             </div>
+
+                            <div class="form-check input-container">
+                                <input class="form-check-input" type="radio" name="radio" id="fly" value="3">
+                                <div class="radio-tile">
+                                    <label for="fly">Plantilla Anterior: </label>
+                                    <img name="fly" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary" data-bs-dismiss="modal" style="float: right; margin-left: 5px;" onclick="Plantilla();">Confirmar</button>
-                    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
+                    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;" onclick="Limpia();">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -235,7 +245,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3><b>Previsualizacion </b></h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <br>
@@ -496,25 +506,49 @@
 
         function Plantilla(){
             var nombreEdi=$("#nombreEdi").val();
-            if($("#nombreEdi").val("")){
-                console.log("Debe agregar nombre")
+            if($("#nombreEdi").val().length===0){
+                $('#alerta').show();
+                $('#alerta').html("<strong>Coloque el titulo de la edicion.</strong>");
             }else{
+                $('#alerta').css('display','none');
                 if($("#walk").is(":checked")){
-                $("#ModalEdicion").modal('show');
-                console.log(nombreEdi + "Plantilla predeterminada, Abre Pagina");
-                TablaEdicion();
+                    $("#ModalEdicion").modal('show');
+                    console.log(nombreEdi + "Plantilla predeterminada, Abre Pagina");
+                    EdicionPredeterminada();
                 }else if($("#run").is(":checked")){
                     console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
                     GuardarEdicion();                
+                }else if($("#fly").is(":checked")){
+                    $("#ModalEdicion").modal('show');
+                    console.log(nombreEdi + "Plantilla Anterior Seleccionada, Abre Pagina");
+                    EdicionAnterior();                
                 }
             }
             
         }
 
-        function TablaEdicion() {  //aqui se crea la tabla
+        function EdicionPredeterminada() {  //aqui se crea la tabla
             $.ajax({
                 type: 'POST',
-                url: 'ediciones.aspx/TablaEdicion',
+                url: 'ediciones.aspx/EdicionPredeterminada',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (tabla) {
+                    $("#DatosEdicion").html(tabla.d); //nombre del id del div de la tabla
+                    setTimeout(function myfunction() {
+                        //estiloDataTable2();
+                    }, 100);
+                }
+            });
+        }
+
+        function EdicionAnterior() {  //aqui se crea la tabla
+            $.ajax({
+                type: 'POST',
+                url: 'ediciones.aspx/EdicionAnterior',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -552,6 +586,7 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
+                            Limpia();
                         } else if (JsonD.success == 0) {
                             PNotify.notice({
                                 text: 'Algo salió mal.',
@@ -568,7 +603,7 @@
                             addClass: 'translucent'
                         });*/
             }else if($("#run").is(":checked")){
-                opcion=2
+                opcion=2;
                 $.ajax({
                     type: 'POST',
                     url: 'ediciones.aspx/GuardarEdicion',
@@ -587,6 +622,43 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
+                            Limpia();
+                        } else if (JsonD.success == 0) {
+                            PNotify.notice({
+                                text: 'Algo salió mal.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                        } 
+                    }
+                });
+
+                /*PNotify.success({
+                            text: 'Edicion agregada correctamente.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });*/
+            }else if($("#fly").is(":checked")){
+                opcion=3;
+                $.ajax({
+                    type: 'POST',
+                    url: 'ediciones.aspx/GuardarEdicion',
+                    data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                    },
+                    success: function (valor){
+                        var JsonD = $.parseJSON(valor.d)
+                        if (JsonD.success == 1) {
+                            TablaUsu();
+                            PNotify.success({
+                                text: 'Edicion guardada correctamente.',
+                                delay: 3000,
+                                addClass: 'translucent'
+                            });
+                            Limpia();
                         } else if (JsonD.success == 0) {
                             PNotify.notice({
                                 text: 'Algo salió mal.',
@@ -633,6 +705,10 @@
                     } 
                 }
             });*/
+        }
+
+        function Limpia() {
+            $('#nombreEdi').val('');
         }
 
         </script>

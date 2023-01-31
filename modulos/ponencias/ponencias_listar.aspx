@@ -45,7 +45,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="myLargeModalLabel21">Eliminar Ponencia</h3>
-                    <button type="button" class="close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <h4>¿Está seguro de eliminar la ponencia?</h4>

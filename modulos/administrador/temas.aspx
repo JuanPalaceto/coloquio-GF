@@ -9,8 +9,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h4">Temas</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title h4" id="tema"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12">
@@ -43,7 +43,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h4">Eliminar Tema</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
                     <h2>¿Está seguro de eliminar el tema?</h2>
@@ -187,6 +187,7 @@
                 }, success: function (informacion) {
                     var jsonD = $.parseJSON(informacion.d);
                     $('#idTema').val(id);
+                    $('#tema').html('Editar Tema');
                     $('#nombreTema').val(jsonD.tema);
                     $('#edicion').val(jsonD.edicion);
                     $('#modalNuevoTema').modal('show');
@@ -226,7 +227,7 @@
                         if (JsonD.success == 2) {
                             $('#modaldel').modal('hide');
                             PNotify.notice({
-                                text: 'No se puede eliminar el tema porque tiene parametros asignados.',
+                                text: 'No se puede eliminar el tema porque ha sido asignado a una o más ponencias.',
                                 delay: 2500,
                                 styling: 'bootstrap3'
                             });
@@ -269,7 +270,8 @@
 
         function Limpia() {
             $('#idTema').val(0);
-            $('#nombreTema').val('');            
+            $('#nombreTema').val('');
+            $('#tema').html('Agregar Nuevo Tema');             
         }
     </script>
 </asp:Content>
