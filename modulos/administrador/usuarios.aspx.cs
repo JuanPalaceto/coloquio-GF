@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 
 public partial class usuarios : System.Web.UI.Page
 {
@@ -180,7 +181,10 @@ public partial class usuarios : System.Web.UI.Page
     [WebMethod]
     public static string modusuario(int id)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("selidusuario", con))
@@ -192,14 +196,31 @@ public partial class usuarios : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\",\"cp\": \"" + dr["curp"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            nom = dr["nombre"].ToString().Trim(),
+                            apell = dr["apellidos"].ToString().Trim(),
+                            inst = dr["institucion"].ToString().Trim(),
+                            depen = dr["dependencia"].ToString().Trim(),
+                            estado = dr["estado"].ToString().Trim(),
+                            ciud = dr["ciudad"].ToString().Trim(),
+                            tel = dr["telefono"].ToString().Trim(),
+                            idT = dr["idTipo"].ToString().Trim(),
+                            eml = dr["email"].ToString().Trim(),
+                            contra = dr["contrasena"].ToString().Trim(),
+                            cp = dr["curp"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                        // sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\",\"cp\": \"" + dr["curp"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+        return jsonString;
     }
 
     [WebMethod]

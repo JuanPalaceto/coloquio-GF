@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.Services;
 using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
 
 public partial class modulos_administrador_parametros : System.Web.UI.Page
 {
@@ -160,7 +161,10 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     [WebMethod]
     public static string ModParametro(int id)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("ModParametro ", con))
@@ -172,14 +176,24 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"seccion\": \"" + dr["idSeccion"].ToString().Trim() + "\",\"parametro\": \"" + dr["parametro"].ToString().Trim() + "\",\"puntaje\": \"" + dr["puntajeMax"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            seccion = dr["idSeccion"].ToString().Trim(),
+                            parametro = dr["parametro"].ToString().Trim(),
+                            puntaje = dr["puntajeMax"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                        // sb.Append("{\"seccion\": \"" + dr["idSeccion"].ToString().Trim() + "\",\"parametro\": \"" + dr["parametro"].ToString().Trim() + "\",\"puntaje\": \"" + dr["puntajeMax"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+
+        return jsonString;
     }
 
     [WebMethod]
