@@ -35,24 +35,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_invitacion.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-question""></i></div>Invitaciones</a>
                                     <a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-list""></i></div>Ponencias Asignadas</a>
 									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-check""></i></div>Ponencias Evaluadas</a>";
-                cambiaRol = @"<ul class=""navbar-nav ms-auto ms-md-0 me-lg-2 muestraMenu"">
-								<li class=""nav-item dropdown"">
-									<a class=""nav-link dropdown-toggle no-toggle no-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
-									<ul class=""dropdown-menu dropdown-menu-end"" aria-labelledby=""navbarDropdown"">
-										<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>
-									</ul>
-								</li>
-							</ul>";
-                cambiaRolMovil = @"<a class=""nav-link collapsed"" href=""#"" data-bs-toggle=""collapse"" data-bs-target=""#collapseRol"" aria-expanded=""false"" aria-controls=""collapseRol"">
-									<div class=""sb-nav-link-icon""><i class=""fas fa-user fa-fw""></i></div>
-									Rol de Usuario
-									<div class=""sb-sidenav-collapse-arrow""><i class=""fas fa-angle-down""></i></div>
-								</a>
-								<div class=""collapse"" id=""collapseRol"" aria-labelledby=""headingOne"" data-bs-parent=""#sidenavAccordion"">
-									<nav class=""sb-sidenav-menu-nested nav"">
-										<a class=""nav-link"" href=""#"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a>
-									</nav>
-								</div>";
+                cambiaRol = @"<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>";
+                cambiaRolMovil = @"<a class=""nav-link"" href=""#"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a>";
                 tipoRol = "Ponente";
                 break;
             // Administrador
@@ -103,24 +87,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 modulo = "Ponencias";
                 menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_listar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-lines""></i></div>Mis Ponencias</a>
 									<a class=""nav-link"" href=""/coloquio/modulos/ponencias/ponencias_registrar.aspx"" onclick=""nuevaPonencia();""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-file-circle-plus""></i></div>Registrar Ponencia</a>";
-                cambiaRol = @"<ul class=""navbar-nav ms-auto ms-md-0 me-3 me-lg-2 muestraMenu"">
-								<li class=""nav-item dropdown"">
-									<a class=""nav-link dropdown-toggle"" id=""navbarDropdown"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false""><i class=""fas fa-user fa-fw""></i></a>
-									<ul class=""dropdown-menu dropdown-menu-end"" aria-labelledby=""navbarDropdown"">
-										<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>
-									</ul>
-								</li>
-							</ul>";
-                cambiaRolMovil = @"<a class=""nav-link collapsed"" href=""#"" data-bs-toggle=""collapse"" data-bs-target=""#collapseRol"" aria-expanded=""false"" aria-controls=""collapseRol"">
-									<div class=""sb-nav-link-icon""><i class=""fas fa-user fa-fw""></i></div>
-									Rol de Usuario
-									<div class=""sb-sidenav-collapse-arrow""><i class=""fas fa-angle-down""></i></div>
-								</a>
-								<div class=""collapse"" id=""collapseRol"" aria-labelledby=""headingOne"" data-bs-parent=""#sidenavAccordion"">
-									<nav class=""sb-sidenav-menu-nested nav"">
-										<a class=""nav-link"" href=""#"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a>
-									</nav>
-								</div>";
+                cambiaRol = @"<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>";
+                cambiaRolMovil = @"<a class=""nav-link"" href=""#"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a>";
                 tipoRol = "Evaluador";
                 break;
             // Auxiliar
@@ -150,7 +118,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         else
         {
             Session["tipoUsuario"] = 2;
-            Response.Redirect("/coloquio/modulos/evaluacion/ponencias_evaluar.aspx");
+            Response.Redirect("/coloquio/modulos/evaluacion/ponencias_invitacion.aspx");
         }
     }
 }

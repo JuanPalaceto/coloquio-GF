@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 
 public partial class ediciones : System.Web.UI.Page
 {
@@ -42,7 +43,7 @@ public partial class ediciones : System.Web.UI.Page
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         }
 
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
 
                     }
@@ -84,6 +85,40 @@ public partial class ediciones : System.Web.UI.Page
             return "";
         }
     }
+
+
+    [WebMethod]
+    public static string traeEdicion(int id){
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("TraeEdicion ", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                con.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        var obj = new
+                        {
+                            id = dr["idEdicion"].ToString().Trim(),
+                            edicion = dr["edicion"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                    }
+                    dr.Close();
+                }
+            }
+            con.Close();
+        }
+        return jsonString;
+    }
+
 
     [WebMethod]
     public static string borrarEdicion(int id){

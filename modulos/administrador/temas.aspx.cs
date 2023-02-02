@@ -4,13 +4,14 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.Services;
 using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
 public partial class temas : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         DropEdiciones();
         edicion.Enabled = false;
-    }    
+    }
     private void DropEdiciones()
         {
             using (SqlConnection con = conn.conecta())
@@ -65,7 +66,7 @@ public partial class temas : System.Web.UI.Page
                         }
                         sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarTema(" + drseldatos["idTema"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idTema"].ToString() + ");\"></button></td></tr>");
-                    }                   
+                    }
                     if (drseldatos.HasRows)
                     {
                         sb.Append("</tbody></table>");
@@ -91,7 +92,7 @@ public partial class temas : System.Web.UI.Page
         {
             using (SqlCommand comand = new SqlCommand("GuardarTema", con))
             {
-                comand.CommandType = CommandType.StoredProcedure;                
+                comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@tema", SqlDbType.NVarChar, 120).Value = tema;
                 comand.Parameters.Add("@edicion", SqlDbType.Int).Value = edicion;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
@@ -116,7 +117,7 @@ public partial class temas : System.Web.UI.Page
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@tema", SqlDbType.NVarChar, 120).Value = tema;
                 comand.Parameters.Add("@edicion", SqlDbType.Int).Value = edicion;
-                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;                           
+                comand.Parameters.Add("@idTema", SqlDbType.Int).Value = id;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;
                 con.Open();
@@ -131,7 +132,10 @@ public partial class temas : System.Web.UI.Page
     [WebMethod]
     public static string editarTema(int id)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("editarTema", con))
@@ -143,14 +147,22 @@ public partial class temas : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"tema\": \"" + dr["tema"].ToString().Trim() + "\",\"edicion\": \"" + dr["idEdicion"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            tema = dr["tema"].ToString().Trim(),
+                            edicion = dr["idEdicion"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                        // sb.Append("{\"tema\": \"" + dr["tema"].ToString().Trim() + "\",\"edicion\": \"" + dr["idEdicion"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+        return jsonString;
     }
 
     [WebMethod]
@@ -173,7 +185,7 @@ public partial class temas : System.Web.UI.Page
                 return "{\"success\": \"" + Eliminado + "\"}";
             }
         }
-        
+
     [WebMethod]
     public static string alternarActivo(int id)
     {
@@ -192,7 +204,6 @@ public partial class temas : System.Web.UI.Page
             }
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
-        }        
-    } 
-}   
-    
+        }
+    }
+}

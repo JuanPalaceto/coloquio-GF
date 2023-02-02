@@ -16,7 +16,7 @@
         }
 
         .input-container{
-            position: relative; 
+            position: relative;
             height: 14rem;
             width: 14rem;
             margin: 0.5rem;
@@ -152,7 +152,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="form-group">
                         <label nowrap="nowrap" align="center">Edición:</label>
                         <input type="text" id="idEdicion" name="edicion" value="" size="30" hidden="hidden">
@@ -164,7 +164,7 @@
                         <option value="1">Activado</option>
                         <option value="0" selected="">Desactivado</option>
                     </select>
-                            
+
                         <br />
                         <br />
                 </div>
@@ -208,7 +208,7 @@
                                 <div class="radio-tile">
                                     <label for="walk">Plantilla de Parametros Predeterminada:</label>
                                     <img name="walk" src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
-                                </div>                                
+                                </div>
                             </div>
 
                             <div class="form-check input-container">
@@ -225,7 +225,7 @@
                                     <label for="fly">Plantilla Anterior: </label>
                                     <img name="fly" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                 <div class="modal-body">
                     <br>
                     <!--Se genera tabla-->
-                    <div id="DatosEdicion" class="table-responsive"></div> 
+                    <div id="DatosEdicion" class="table-responsive"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary" data-bs-dismiss="modal" style="float: right; margin-left: 5px;" onclick="GuardarEdicion();">Continuar</button>
@@ -260,7 +260,7 @@
         </div>
     </div>
     <%----------------------%>
-   <!-- 
+   <!--
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
             <h3><strong>Crear nueva edición</strong></h3>
@@ -290,7 +290,7 @@
                         </tr>
                     </tbody>
                 </ul>
-            </div>   
+            </div>
         </div>
     </div-->
 
@@ -302,13 +302,13 @@
         <div>
             <button type="button" class="btn  btn-primary" onclick="ModalNuevaEdicion();" style="float:left;" >Agregar Nueva Edicion</a>
         </div>
-        <br />        
+        <br />
         <div class="card-body">
         <%-- se genera la tabla --%>
-            <div id="generarTabla" class="table-responsive "></div>            
+            <div id="generarTabla" class="table-responsive "></div>
             <%-- leyendas --%>
             <div class="row">
-                <div class="col-auto">                
+                <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activa</li>
@@ -323,7 +323,7 @@
                     </ul>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
         <script>
         window.onload = function(){
@@ -371,7 +371,7 @@
             });
         };
 
-        /*function editarEdicion(id){     
+        /*function editarEdicion(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/editarEdicion',
@@ -382,15 +382,15 @@
                     console.log("Error" + jqXHR.responseText);
                 },
                 success: function () {
-                  
-                   
+
+
                         window.location.href = "editar_ediciones.aspx";
                         //console.log("Salio");
                 }
             });
         };*/
 
-        /*function borrarEdicion(id){            
+        /*function borrarEdicion(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/borrarEdicion',
@@ -413,22 +413,38 @@
             $("#modalNuevaEdi").modal('show');
         }
 
-        function ModalEditar(idEdicion, Edicion) {
+        function ModalEditar(idEdicion) {
             $("#modaledit").modal('show');
-            var id = idEdicion;
-            var Edicion= Edicion;
-            $("#idEdicion").val(id);
-            $("#nombreEdicion").val(Edicion);
-            $(".confirmar").attr("id", "" + id + "");
-            $(".confirmar").attr("onclick", "ActualizarEdicion(" + id + ");");
+
+            $.ajax({
+                type: 'POST',
+                url: 'ediciones.aspx/traeEdicion',
+                data: "{'id':'" + idEdicion + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (data) {
+                    var JsonD = $.parseJSON(data.d);
+
+                    $("#idEdicion").val(JsonD.id);
+                    $("#nombreEdicion").val(JsonD.edicion);
+                }
+            });
         };
 
         function ActualizarEdicion(id){
             var UpEdicion=$("#nombreEdicion").val();
+
+            var obj = {};
+            obj.newEdicion = UpEdicion;
+            obj.id = id;
+
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/ModificarEdicion',
-                data: "{'id':'" + id + "','newEdicion':'"+ UpEdicion +"'}",
+                data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -445,6 +461,13 @@
                 }
             });
         };
+
+
+        $('.confirmar').on('click', function(){
+        let idParaEditar = $("#idEdicion").val();
+            ActualizarEdicion(idParaEditar);
+        })
+
 
         function ConfirmarEliminar(idEdicion) {
             $("#modaldel").modal('show');
@@ -484,7 +507,7 @@
             });
         };
 
-        function alternarActivo(id){            
+        function alternarActivo(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/alternarActivo',
@@ -517,14 +540,14 @@
                     EdicionPredeterminada();
                 }else if($("#run").is(":checked")){
                     console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
-                    GuardarEdicion();                
+                    GuardarEdicion();
                 }else if($("#fly").is(":checked")){
                     $("#ModalEdicion").modal('show');
                     console.log(nombreEdi + "Plantilla Anterior Seleccionada, Abre Pagina");
-                    EdicionAnterior();                
+                    EdicionAnterior();
                 }
             }
-            
+
         }
 
         function EdicionPredeterminada() {  //aqui se crea la tabla
@@ -593,7 +616,7 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
-                        } 
+                        }
                     }
                 });
 
@@ -629,7 +652,7 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
-                        } 
+                        }
                     }
                 });
 
@@ -665,7 +688,7 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
-                        } 
+                        }
                     }
                 });
 
@@ -702,7 +725,7 @@
                             delay: 3000,
                             addClass: 'translucent'
                         });
-                    } 
+                    }
                 }
             });*/
         }
