@@ -24,7 +24,7 @@
                                 <label for="ddlseccion">Sección:</label>
                                 <asp:DropDownList ID="ddlseccion" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
                             </div>
-                            <div class="form-group col-md-6 mt-3">
+                            <%-- <div class="form-group col-md-6 mt-3">
                                 <label for="ddlmaximo">Puntaje Máximo:</label>
                                 <select class="form-control" id="ddlmaximo">
                                     <option value="0">- Seleccione un puntaje máximo -</option>
@@ -39,7 +39,7 @@
                                     <option value="9">9</option>
                                     <option value="10">10</option>
                                 </select>
-                            </div>
+                            </div> --%>
                             <%--<div class="form-group col-md-6 mt-3">
                                 <label for="ddledicion">Edición:</label>
                                 <asp:DropDownList ID="ddledicion" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
@@ -88,6 +88,13 @@
             <div id="tabparametros" class="table-responsive "></div>            
             <!-- Leyenda de los botones -->
             <div class="row">
+            <div class="col-auto">                
+                    <ul class="list-unstyled">
+                        <li><b>Estados:</b></li>
+                        <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activa</li>
+                        <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactiva</li>
+                    </ul>
+                </div>
                 <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Acciones:</b></li>
@@ -256,6 +263,39 @@
                 }
             });
         }
+
+        function alternarActivo(id) {
+            $.ajax({
+                type: 'POST',
+                url: 'parametros.aspx/alternarActivo',
+                data: "{'id':'" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error" + jqXHR.responseText);
+                },
+                success: function (valor) {
+                    var JsonD = $.parseJSON(valor.d)
+                    console.log(JsonD);
+                    if (JsonD.success == 1) {
+                        PNotify.success({
+                            text: 'El parámetro se activo correctamente.',
+                            delay: 2500,
+                            styling: 'bootstrap3'
+                        });
+                        TablaParametros();
+                    }
+                    else if (JsonD.success == 2) {
+                        PNotify.success({
+                            text: 'El parámetro se desactivo correctamente.',
+                            delay: 2500,
+                            styling: 'bootstrap3'
+                        });
+                        TablaParametros();
+                    }
+                }
+            });
+        };
 
         function Limpia() {
             $('#txtidparam').val(0);

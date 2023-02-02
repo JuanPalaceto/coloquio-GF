@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 
 public partial class modalidades : System.Web.UI.Page
 {
@@ -62,18 +63,18 @@ protected void Page_Load(object sender, EventArgs e)
                         sb.Append("<tr>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["modalidad"].ToString() + "</td>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["edicion"].ToString() + "</td>");
-                        
-                        
+
+
                         if(activo == 1){
                             sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         } else {
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         }
-                        
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarModalidad(" + drseldatos["idModalidad"].ToString() + ");\"></button>");                        
+
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModificarModalidad(" + drseldatos["idModalidad"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idModalidad"].ToString() + ");\"></button></td></tr>");
-                        
-                         
+
+
 
                     }
                     if (drseldatos.HasRows)
@@ -111,11 +112,11 @@ protected void Page_Load(object sender, EventArgs e)
             }
             Conn.Close();
             return "{\"success\": \"" + Exitoso + "\"}";
-        }        
+        }
     }
 
     [WebMethod]
-    public static string borrarModalidad(int id){      
+    public static string borrarModalidad(int id){
         int Eliminado = 0;
         using (SqlConnection Conn = conn.conecta())
         {
@@ -183,7 +184,10 @@ protected void Page_Load(object sender, EventArgs e)
     [WebMethod]
     public static string ModModalidad(int idModalidad)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("ModModalidad", con))
@@ -195,15 +199,22 @@ protected void Page_Load(object sender, EventArgs e)
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"modalidad\": \"" + dr["modalidad"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            modalidad = dr["modalidad"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+
+                        // sb.Append("{\"modalidad\": \"" + dr["modalidad"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+        return jsonString;
     }
 
 }
-    

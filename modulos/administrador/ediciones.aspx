@@ -16,7 +16,7 @@
         }
 
         .input-container{
-            position: relative; 
+            position: relative;
             height: 14rem;
             width: 14rem;
             margin: 0.5rem;
@@ -66,55 +66,6 @@
             border: 2px solid #217cb188;
             box-shadow: 0 0 16px #217cb188;
         }
-        /*.lab1{
-            height: 250px;
-            width: 300px;
-            position: relative;
-            color: rgb(0, 0, 0);
-            border: 2px solid #000000;
-            padding: 10px;
-            border-radius: 5px;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .lab1 input:checked {
-            background-color: #005c00;
-        }
-
-        .lab1:hover{
-            border: 10px;
-            opacity: 1;
-            border-color: #269916;
-        }
-
-
-        input[type="radio"]:checked + label{
-            background-color: #005c00;
-            color: #01cc65;
-            opacity: 1;
-        }
-
-        input[type="radio"]:checked + label::before{
-            height: 16px;
-            width: 16px;
-            border: 10 px solid rgb(0, 0, 0);
-            background-color: #01cc65;
-        }*/
-
-        /*.op{
-            border-color: white;
-            background-color:white;
-            opacity: 0.6;
-            transition: 0.4s;
-        }
-
-        .op:hover{
-            border: 10px;
-            opacity: 1;
-            border-color: #9c9c9c;
-            background-color:#ffffff;
-        }*/
     </style>
 </asp:Content>
 
@@ -130,7 +81,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Está seguro de eliminar la edición <strong>COMPLETA?</strong></h4>
+                    <h4>¿Está seguro de eliminar la edición <strong>COMPLETA?</strong><small>(Se eliminaran temas, modalidades, secciones y parametros)</small></h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary eliminar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -152,7 +103,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="form-group">
                         <label nowrap="nowrap" align="center">Edición:</label>
                         <input type="text" id="idEdicion" name="edicion" value="" size="30" hidden="hidden">
@@ -164,7 +115,7 @@
                         <option value="1">Activado</option>
                         <option value="0" selected="">Desactivado</option>
                     </select>
-                            
+
                         <br />
                         <br />
                 </div>
@@ -188,12 +139,14 @@
                 </div>
                 <div class="modal-body">
                     <br>
-                    <div align="center">
-                        <label nowrap="nowrap">Nombre de la Edicion: </label>
-                        <input  id="nombreEdi" class="form" type="text" name="edicion" value="" size="30">
+                    <div class="row justify-content-md-center">
+                        <label class="col-md-3 col-form-label" nowrap="nowrap">Nombre de la Edicion: </label>
+                        <div class="col-md-4">
+                            <input  id="nombreEdi" class="form-control" type="text" name="edicion" value="" size="30">
+                        </div>
                         <br>
-                        <div class="col-auto text-center alert alert-danger mt-2" style="display:none;" role="alert" id="alerta"></div>
                     </div>
+                    <div class="col-auto text-center alert alert-danger mt-2" style="display:none;" role="alert" id="alerta"></div>
                     <br>
                     <hr>
                     <label>Elija una de las opciones para crear la nueva edicion:</label>
@@ -206,26 +159,26 @@
                             <div class="form-check input-container">
                                 <input class="form-check-input" type="radio" name="radio" id="walk" value="1">
                                 <div class="radio-tile">
-                                    <label for="walk">Plantilla de Parametros Predeterminada:</label>
-                                    <img name="walk" src="google-docs.png" class="img-thumbnail" style="width: 100px;" alt="">
-                                </div>                                
+                                    <label for="walk">Plantilla con Parametros: </label>
+                                    <img name="walk" src="google-docs.png" class="img-thumbnail" style="width: 100px; border: 0cm;" alt="">
+                                </div>
                             </div>
 
                             <div class="form-check input-container">
                                 <input class="form-check-input" type="radio" name="radio" id="run" value="2">
                                 <div class="radio-tile">
-                                    <label for="run">Plantilla de Parametros Nueva: </label>
-                                    <img name="run" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
+                                    <label for="run">Plantilla sin Parametros: </label>
+                                    <img name="run" src="expediente.png" class="img-thumbnail" style="width: 100px; border: 0cm;" alt="">
                                 </div>
                             </div>
 
-                            <div class="form-check input-container">
+                            <!--<div class="form-check input-container">
                                 <input class="form-check-input" type="radio" name="radio" id="fly" value="3">
                                 <div class="radio-tile">
                                     <label for="fly">Plantilla Anterior: </label>
                                     <img name="fly" src="expediente.png" class="img-thumbnail" style="width: 100px;" alt="">
                                 </div>
-                            </div>                            
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -250,7 +203,7 @@
                 <div class="modal-body">
                     <br>
                     <!--Se genera tabla-->
-                    <div id="DatosEdicion" class="table-responsive"></div> 
+                    <div id="DatosEdicion" class="table-responsive"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary" data-bs-dismiss="modal" style="float: right; margin-left: 5px;" onclick="GuardarEdicion();">Continuar</button>
@@ -260,41 +213,6 @@
         </div>
     </div>
     <%----------------------%>
-   <!-- 
-    <div class="card shadow p-3 mb-5 bg-body rounded">
-        <div class="">
-            <h3><strong>Crear nueva edición</strong></h3>
-        </div>
-        <br>
-        <div class="card-body">
-            <div align="center">
-                <ul>
-                    <tbody>
-                        <tr>
-                            <td nowrap="nowrap" align="center">Edición:</td>
-                            <td>
-                                <input type="text" name="edicion" value="" size="30">
-                                <br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center" nowrap="nowrap">&nbsp;</td>
-                        </tr>
-                        <br />
-                        <tr>
-                            <td colspan="2" align="center" nowrap="nowrap">
-                                <input type="hidden" name="MM_insert" value="form1">
-                                <div class="text-center"><a class="btn btn-primary btn-block" href="modulos\ponencias\ponencias_registrar.aspx" style="width: 27%;">Agregar</a></div>
-                                <br>
-                            </td>
-                        </tr>
-                    </tbody>
-                </ul>
-            </div>   
-        </div>
-    </div-->
-
-    <!---------------------->
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="">
         <h3><strong>Lista de ediciones</strong></h3>
@@ -302,13 +220,13 @@
         <div>
             <button type="button" class="btn  btn-primary" onclick="ModalNuevaEdicion();" style="float:left;" >Agregar Nueva Edicion</a>
         </div>
-        <br />        
+        <br />
         <div class="card-body">
         <%-- se genera la tabla --%>
-            <div id="generarTabla" class="table-responsive "></div>            
+            <div id="generarTabla" class="table-responsive "></div>
             <%-- leyendas --%>
             <div class="row">
-                <div class="col-auto">                
+                <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activa</li>
@@ -323,9 +241,10 @@
                     </ul>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
         <script>
+
         window.onload = function(){
             TablaUsu();
         }
@@ -371,7 +290,7 @@
             });
         };
 
-        /*function editarEdicion(id){     
+        /*function editarEdicion(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/editarEdicion',
@@ -382,15 +301,15 @@
                     console.log("Error" + jqXHR.responseText);
                 },
                 success: function () {
-                  
-                   
+
+
                         window.location.href = "editar_ediciones.aspx";
                         //console.log("Salio");
                 }
             });
         };*/
 
-        /*function borrarEdicion(id){            
+        /*function borrarEdicion(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/borrarEdicion',
@@ -413,22 +332,38 @@
             $("#modalNuevaEdi").modal('show');
         }
 
-        function ModalEditar(idEdicion, Edicion) {
+        function ModalEditar(idEdicion) {
             $("#modaledit").modal('show');
-            var id = idEdicion;
-            var Edicion= Edicion;
-            $("#idEdicion").val(id);
-            $("#nombreEdicion").val(Edicion);
-            $(".confirmar").attr("id", "" + id + "");
-            $(".confirmar").attr("onclick", "ActualizarEdicion(" + id + ");");
+
+            $.ajax({
+                type: 'POST',
+                url: 'ediciones.aspx/traeEdicion',
+                data: "{'id':'" + idEdicion + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (data) {
+                    var JsonD = $.parseJSON(data.d);
+
+                    $("#idEdicion").val(JsonD.id);
+                    $("#nombreEdicion").val(JsonD.edicion);
+                }
+            });
         };
 
         function ActualizarEdicion(id){
             var UpEdicion=$("#nombreEdicion").val();
+
+            var obj = {};
+            obj.newEdicion = UpEdicion;
+            obj.id = id;
+
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/ModificarEdicion',
-                data: "{'id':'" + id + "','newEdicion':'"+ UpEdicion +"'}",
+                data: JSON.stringify(obj),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -445,6 +380,13 @@
                 }
             });
         };
+
+
+        $('.confirmar').on('click', function(){
+        let idParaEditar = $("#idEdicion").val();
+            ActualizarEdicion(idParaEditar);
+        })
+
 
         function ConfirmarEliminar(idEdicion) {
             $("#modaldel").modal('show');
@@ -484,7 +426,7 @@
             });
         };
 
-        function alternarActivo(id){            
+        function alternarActivo(id){
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/alternarActivo',
@@ -517,38 +459,20 @@
                     EdicionPredeterminada();
                 }else if($("#run").is(":checked")){
                     console.log(nombreEdi + "Plantilla Nueva Seleccionada, Abre Pagina");
-                    GuardarEdicion();                
+                    GuardarEdicion();
                 }else if($("#fly").is(":checked")){
                     $("#ModalEdicion").modal('show');
                     console.log(nombreEdi + "Plantilla Anterior Seleccionada, Abre Pagina");
-                    EdicionAnterior();                
+                    EdicionAnterior();
                 }
             }
-            
+
         }
 
         function EdicionPredeterminada() {  //aqui se crea la tabla
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/EdicionPredeterminada',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
-                },
-                success: function (tabla) {
-                    $("#DatosEdicion").html(tabla.d); //nombre del id del div de la tabla
-                    setTimeout(function myfunction() {
-                        //estiloDataTable2();
-                    }, 100);
-                }
-            });
-        }
-
-        function EdicionAnterior() {  //aqui se crea la tabla
-            $.ajax({
-                type: 'POST',
-                url: 'ediciones.aspx/EdicionAnterior',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -593,15 +517,10 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
-                        } 
+                        }
                     }
                 });
 
-                /*PNotify.success({
-                            text: 'Edicion agregada correctamente.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });*/
             }else if($("#run").is(":checked")){
                 opcion=2;
                 $.ajax({
@@ -629,82 +548,12 @@
                                 delay: 3000,
                                 addClass: 'translucent'
                             });
-                        } 
+                        }
                     }
                 });
 
-                /*PNotify.success({
-                            text: 'Edicion agregada correctamente.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });*/
-            }else if($("#fly").is(":checked")){
-                opcion=3;
-                $.ajax({
-                    type: 'POST',
-                    url: 'ediciones.aspx/GuardarEdicion',
-                    data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
-                    },
-                    success: function (valor){
-                        var JsonD = $.parseJSON(valor.d)
-                        if (JsonD.success == 1) {
-                            TablaUsu();
-                            PNotify.success({
-                                text: 'Edicion guardada correctamente.',
-                                delay: 3000,
-                                addClass: 'translucent'
-                            });
-                            Limpia();
-                        } else if (JsonD.success == 0) {
-                            PNotify.notice({
-                                text: 'Algo salió mal.',
-                                delay: 3000,
-                                addClass: 'translucent'
-                            });
-                        } 
-                    }
-                });
-
-                /*PNotify.success({
-                            text: 'Edicion agregada correctamente.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });*/
             }
             console.log(opcion);
-
-            /*-----Problema de Envio-----
-            $.ajax({
-                type: 'POST',
-                url: 'ediciones.aspx/GuardarEdicion',
-                data: "{'nombre':'" + nombreEdi + "','opcion':'"+ opcion +"'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
-                },
-                success: function (valor){
-                    var JsonD = $.parseJSON(valor.d)
-                    if (JsonD.success == 1) {
-                        TablaUsu();
-                        PNotify.success({
-                            text: 'Edicion guardada correctamente.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });
-                    } else if (JsonD.success == 0) {
-                        PNotify.notice({
-                            text: 'Algo salió mal.',
-                            delay: 3000,
-                            addClass: 'translucent'
-                        });
-                    } 
-                }
-            });*/
         }
 
         function Limpia() {

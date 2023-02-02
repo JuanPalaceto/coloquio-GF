@@ -89,7 +89,7 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string Guardar(string calif, string observaciones, string recomendaciones, string idParametro)
+    public static string Guardar(int calif, string observaciones, string recomendaciones, string idParametro)
     {
         int Exitoso = 0;
         using (SqlConnection Conn = conn.conecta())
@@ -98,7 +98,7 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
             {
                 comand.CommandType = CommandType.StoredProcedure;
 
-                comand.Parameters.Add("@califs", SqlDbType.NVarChar).Value = calif;
+                comand.Parameters.Add("@califs", SqlDbType.Int).Value = calif;
                 comand.Parameters.Add("@idParametro", SqlDbType.NVarChar).Value = idParametro;
                 comand.Parameters.Add("@observaciones", SqlDbType.NVarChar, 500).Value = observaciones;
                 comand.Parameters.Add("@recomendaciones", SqlDbType.NVarChar, 500).Value = recomendaciones;

@@ -47,7 +47,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Está seguro de eliminar la sección?</h2>
+                    <h4>¿Está seguro de eliminar la sección?</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary eliminar" data-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -75,8 +75,8 @@
                 <div class="col-auto">
                     <ul class="list-unstyled">
                         <li><b>Acciones:</b></li>
-                        <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size: 1.2em;"></i>= Editar sección</li>
-                        <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size: 1.2em;"></i>= Eliminar sección</li>
+                        <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size: 1.2em;"></i> = Editar sección</li>
+                        <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size: 1.2em;"></i> = Eliminar sección</li>
                     </ul>
                 </div>
             </div>

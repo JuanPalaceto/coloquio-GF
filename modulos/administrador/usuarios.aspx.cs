@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 
 public partial class usuarios : System.Web.UI.Page
 {
@@ -28,6 +29,7 @@ public partial class usuarios : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
+                    if (drseldatos.HasRows)
                     sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Nombre</th><th scope=\"col\" style=\"max-width: 150px;\">Email</th><th scope=\"col\">Tipo</th><th scope=\"col\">Estado</th><th scope=\"col\">Acciones</th><tbody>");
                     while (drseldatos.Read())
                     {
@@ -65,6 +67,7 @@ public partial class usuarios : System.Web.UI.Page
                     }
                     else
                     {
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Usuarios</th></tr></thead><tbody>");
                         sb.Append("<td colspan=\"5\" style=\"text-align: center;\">No hay usuarios disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
@@ -180,7 +183,10 @@ public partial class usuarios : System.Web.UI.Page
     [WebMethod]
     public static string modusuario(int id)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("selidusuario", con))
@@ -192,14 +198,31 @@ public partial class usuarios : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\",\"cp\": \"" + dr["curp"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            nom = dr["nombre"].ToString().Trim(),
+                            apell = dr["apellidos"].ToString().Trim(),
+                            inst = dr["institucion"].ToString().Trim(),
+                            depen = dr["dependencia"].ToString().Trim(),
+                            estado = dr["estado"].ToString().Trim(),
+                            ciud = dr["ciudad"].ToString().Trim(),
+                            tel = dr["telefono"].ToString().Trim(),
+                            idT = dr["idTipo"].ToString().Trim(),
+                            eml = dr["email"].ToString().Trim(),
+                            contra = dr["contrasena"].ToString().Trim(),
+                            cp = dr["curp"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                        // sb.Append("{\"nom\": \"" + dr["nombre"].ToString().Trim() + "\",\"apell\": \"" + dr["apellidos"].ToString().Trim() + "\",\"inst\": \"" + dr["institucion"].ToString().Trim() + "\",\"depen\": \"" + dr["dependencia"].ToString().Trim() + "\",\"estado\": \"" + dr["estado"].ToString().Trim() + "\",\"ciud\": \"" + dr["ciudad"].ToString().Trim() + "\",\"tel\": \"" + dr["telefono"].ToString().Trim() + "\",\"idT\": \"" + dr["idTipo"].ToString().Trim() + "\",\"eml\": \"" + dr["email"].ToString().Trim() + "\",\"contra\": \"" + dr["contrasena"].ToString().Trim() + "\",\"cp\": \"" + dr["curp"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+        return jsonString;
     }
 
     [WebMethod]

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web.Services;
 using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
 
 public partial class modulos_administrador_parametros : System.Web.UI.Page
 {
@@ -75,7 +76,8 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th scope=\"col\">Parámetro</th><th scope=\"col\">Puntaje Máximo</th><th scope=\"col\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    if (drseldatos.HasRows)
+                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th scope=\"col\">Parámetro</th><th scope=\"col\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
@@ -83,7 +85,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                         sb.Append("<tr>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["seccion"].ToString() + "</td>");
                         sb.Append("<td class=\"align-middle\">" + drseldatos["parametro"].ToString() + "</td>");
-                        sb.Append("<td class=\"align-middle\">" + drseldatos["puntajeMax"].ToString() + "</td>");
+                        // sb.Append("<td class=\"align-middle\">" + drseldatos["puntajeMax"].ToString() + "</td>");
                         if(activo == 1){
                             sb.Append("<td data-order=\"1\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa fa-check text-white\" onclick=\"alternarActivo(" + drseldatos["idParametro"].ToString() + ");\"></button>");
                         } else {
@@ -100,6 +102,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                     }
                     else
                     {
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Parametros</th></tr></thead><tbody>");
                         sb.Append("<td colspan=\"6\" style=\"text-align: center;\">No hay parametros disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
@@ -111,7 +114,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string GuardarParametro(string parametro, int seccion, int puntaje)
+    public static string GuardarParametro(string parametro, int seccion)
     {
         int Exitoso = 0;
         using (SqlConnection con = conn.conecta())
@@ -121,7 +124,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@parametro", SqlDbType.NVarChar, 120).Value = parametro;
                 comand.Parameters.Add("@seccion", SqlDbType.Int).Value = seccion;
-                comand.Parameters.Add("@puntaje", SqlDbType.Int).Value = puntaje;
+                // comand.Parameters.Add("@puntaje", SqlDbType.Int).Value = puntaje;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;
                 con.Open();
@@ -134,7 +137,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string ActualizarParametro(string parametro, int seccion, int puntaje, int id)
+    public static string ActualizarParametro(string parametro, int seccion, int id)
     {
         int Exitoso = 0;
         using (SqlConnection con = conn.conecta())
@@ -144,7 +147,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@parametro", SqlDbType.NVarChar, 120).Value = parametro;
                 comand.Parameters.Add("@seccion", SqlDbType.Int).Value = seccion;
-                comand.Parameters.Add("@puntaje", SqlDbType.Int).Value = puntaje;
+                // comand.Parameters.Add("@puntaje", SqlDbType.Int).Value = puntaje;
                 comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;
@@ -160,7 +163,10 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     [WebMethod]
     public static string ModParametro(int id)
     {
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand comand = new SqlCommand("ModParametro ", con))
@@ -172,14 +178,24 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
                 {
                     if (dr.Read())
                     {
-                        sb.Append("{\"seccion\": \"" + dr["idSeccion"].ToString().Trim() + "\",\"parametro\": \"" + dr["parametro"].ToString().Trim() + "\",\"puntaje\": \"" + dr["puntajeMax"].ToString().Trim() + "\"}");
+                        var obj = new
+                        {
+                            seccion = dr["idSeccion"].ToString().Trim(),
+                            parametro = dr["parametro"].ToString().Trim(),
+                            // puntaje = dr["puntajeMax"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                        // sb.Append("{\"seccion\": \"" + dr["idSeccion"].ToString().Trim() + "\",\"parametro\": \"" + dr["parametro"].ToString().Trim() + "\",\"puntaje\": \"" + dr["puntajeMax"].ToString().Trim() + "\"}");
                     }
                     dr.Close();
                 }
             }
             con.Close();
         }
-        return sb.ToString();
+        // return sb.ToString();
+
+        return jsonString;
     }
 
     [WebMethod]

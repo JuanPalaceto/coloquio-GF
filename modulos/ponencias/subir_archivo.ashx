@@ -27,7 +27,7 @@ public class subir_archivo : IHttpHandler, System.Web.SessionState.IRequiresSess
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFile file = files[i];
-                    string fname = context.Server.MapPath("~/ponencias/" + idusuario + "/" + idponencia + "/ponencia_" + idponencia + ".pdf");
+                    string fname = context.Server.MapPath("~/ponencias/" + idusuario + "/" + idponencia + "/ponencia_" + idponencia + "_(Ver " + (i+1) + ").pdf");
                     string rutaBD = fname;
 
                     file.SaveAs(fname);

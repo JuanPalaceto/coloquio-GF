@@ -19,10 +19,11 @@
                 <div class="col-auto">                
                     <ul class="list-unstyled">
                         <li><b>Estados:</b></li>                        
-                        <li><i class="fa-solid fa-list-check text-secondary" style="font-size:1.2em;"></i> = Registro incompleto</li>                        
-                        <li><i class="fa-regular fa-file-lines" style="font-size:1.2em;"></i> = Registrada</li>
-                        <li><i class="fa-regular fa-hourglass-half" style="font-size:1.2em;"></i> = En evaluación</li>
+                        <li><i class="fa-solid fa-file-circle-question" style="font-size:1.2em;"></i> = Registro incompleto</li>                        
+                        <li><i class="fa-solid fa-file-circle-check" style="font-size:1.2em;"></i> = Registro completo</li>
+                        <li><i class="fa-solid fa-clipboard-user" style="font-size:1.2em;"></i> = Asignada</li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aprobada</li>
+                        <li><i class="fa-solid fa-rotate-left text-secondary" style="font-size:1.2em;"></i> = Aprobada con cambios</li>
                         <li><i class="fa-sharp fa-solid fa-xmark text-danger" style="font-size:1.2em;"></i> = Rechazada</li>
                     </ul>
                 </div>
@@ -31,6 +32,7 @@
                         <li><b>Acciones:</b></li>
                         <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar ponencia</li>
                         <li><i class="fa-sharp fa-solid fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar ponencia</li>
+                        <li><i class="fa-sharp fa-solid fa-comment text-success" style="font-size:1.2em;"></i> = Ver comentarios</li>
                         <%-- <li><i class="fa-sharp fa-solid fa fa-download" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Descargar ponencia</li> --%>
                     </ul>
                 </div>
@@ -38,7 +40,7 @@
         </div>
     </div>
 
-    <!--- Modal --->
+    <!--- Modal eliminar --->
     <div id="modaldel" class="modal fade bd-modal-del" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -49,6 +51,26 @@
                 </div>
                 <div class="modal-body">
                     <h4>¿Está seguro de eliminar la ponencia?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-primary eliminar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
+                    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal" style="float: right;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--- Modal comentarios --->
+    <div id="modalcom" class="modal fade bd-modal-del" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myLargeModalLabel21">Comentarios</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Comentarios</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary eliminar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -163,6 +185,31 @@
                 }
             });
         };
+
+        function notificacionEditar(){
+            PNotify.notice({
+                text: 'No es posible editar la ponencia a menos que se requiera una correción.',
+                delay: 3000,
+                addClass: 'translucent'
+            });
+        }
+
+        function notificacionBorrar(){
+            PNotify.notice({
+                text: 'No es posible eliminar la ponencia una vez completado el registro.',
+                delay: 3000,
+                addClass: 'translucent'
+            });
+        }
+
+        function notificacionComentarios(){
+            PNotify.notice({
+                text: 'La ponencia no se ha evaluado.',
+                delay: 3000,
+                addClass: 'translucent'
+            });
+        }
+        
     </script>
 
 </asp:Content>

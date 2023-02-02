@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 
 public partial class ediciones : System.Web.UI.Page
 {
@@ -28,7 +29,8 @@ public partial class ediciones : System.Web.UI.Page
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
-                    sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Edición</th><th scope=\"col\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                    if (drseldatos.HasRows)
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Edición</th><th scope=\"col\">Estado</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int activo = Convert.ToInt32(drseldatos["activo"].ToString());
@@ -42,7 +44,7 @@ public partial class ediciones : System.Web.UI.Page
                             sb.Append("<td data-order=\"0\" align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-ban text-white\" onclick=\"alternarActivo(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         }
 
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ",'" + drseldatos["edicion"].ToString()+ "');\"></button>");
+                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" onclick=\"ModalEditar(" + drseldatos["idEdicion"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-danger fa fa-trash text-white m-1\" onclick=\"ConfirmarEliminar(" + drseldatos["idEdicion"].ToString() + ");\"></button></td></tr>");
 
                     }
@@ -52,6 +54,7 @@ public partial class ediciones : System.Web.UI.Page
                     }
                     else
                     {
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Ediciones</th></tr></thead><tbody>");
                         sb.Append("<td colspan=\"5\" style=\"text-align: center;\">No hay ediciones disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
@@ -85,12 +88,46 @@ public partial class ediciones : System.Web.UI.Page
         }
     }
 
+
+    [WebMethod]
+    public static string traeEdicion(int id){
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("TraeEdicion ", con))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                con.Open();
+                using (SqlDataReader dr = comand.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        var obj = new
+                        {
+                            id = dr["idEdicion"].ToString().Trim(),
+                            edicion = dr["edicion"].ToString().Trim()
+                        };
+
+                        jsonString = serializer.Serialize(obj);
+                    }
+                    dr.Close();
+                }
+            }
+            con.Close();
+        }
+        return jsonString;
+    }
+
+
     [WebMethod]
     public static string borrarEdicion(int id){
         int Eliminado = 0;
         using (SqlConnection Conn = conn.conecta())
         {
-            using (SqlCommand comand = new SqlCommand("EliminarEdicion", Conn))
+            using (SqlCommand comand = new SqlCommand("EliminarEdicionCompleta", Conn))
             {
                 comand.CommandType = CommandType.StoredProcedure;
                 comand.Parameters.Add("@idEdicion", SqlDbType.Int).Value = id;
@@ -167,11 +204,9 @@ public partial class ediciones : System.Web.UI.Page
                     int regNum = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetros</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetros</th><th hidden>idParametro</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
-                        int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
-                        ptsTotales += puntajeMax;
                         string y = Convert.ToString(drseldatos["seccion"]);
 
                         sb.Append("<tr>");
@@ -186,82 +221,17 @@ public partial class ediciones : System.Web.UI.Page
                         }
                         sb.Append("<td data-order=\"\">" + drseldatos["parametro"].ToString() + "</td>");
                         sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\" data-order=\"\">" + puntajeMax + "</td>");
                     }
                     if (drseldatos.HasRows)
                     {
                         sb.Append("<tfoot><tr>");
-                        sb.Append("<td><b>Puntajes</b></td>");
-                        sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
-                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
                         sb.Append("</tr></tfoot>");
                         sb.Append("</tbody></table>");
                         sb.Append("<input type=\"hidden\" value=\"" + regNum + "\" id= \"regTot\"></input>");
                     }
                     else
                     {
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Evaluación</th></tr></thead><tbody>");
-                        sb.Append("<td style=\"text-align: center;\">No hay parámetros disponibles.</td></tbody></table>");
-                    }
-                    drseldatos.Close();
-                }
-            }
-            con.Close();
-            return sb.ToString();
-        }
-    }
-
-    [WebMethod]
-    public static string EdicionAnterior()
-    {
-        StringBuilder sb = new StringBuilder();
-        using (SqlConnection con = conn.conecta())
-        {
-            using (SqlCommand seldata = new SqlCommand("EdicionAnterior", con))
-            {
-                seldata.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                using (SqlDataReader drseldatos = seldata.ExecuteReader())
-                {
-                    string x = "";
-                    int ptsTotales = 0;
-                    int regNum = 0;
-
-                    if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetros</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th></tr></thead><tbody>");
-                    while (drseldatos.Read())
-                    {
-                        int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
-                        ptsTotales += puntajeMax;
-                        string y = Convert.ToString(drseldatos["seccion"]);
-
-                        sb.Append("<tr>");
-                        if (x == y)
-                        {
-                            sb.Append("<td style=\"font-size:0px\">" + drseldatos["seccion"].ToString() + "</td>");
-                        }
-                        else
-                        {
-                            sb.Append("<td data-order=\"\">" + drseldatos["seccion"].ToString() + "</td>");
-                            x = Convert.ToString(drseldatos["seccion"]);
-                        }
-                        sb.Append("<td data-order=\"\">" + drseldatos["parametro"].ToString() + "</td>");
-                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\" data-order=\"\">" + puntajeMax + "</td>");
-                    }
-                    if (drseldatos.HasRows)
-                    {
-                        sb.Append("<tfoot><tr>");
-                        sb.Append("<td><b>Puntajes</b></td>");
-                        sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
-                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
-                        sb.Append("</tr></tfoot>");
-                        sb.Append("</tbody></table>");
-                        sb.Append("<input type=\"hidden\" value=\"" + regNum + "\" id= \"regTot\"></input>");
-                    }
-                    else
-                    {
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Evaluación</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Edición</th></tr></thead><tbody>");
                         sb.Append("<td style=\"text-align: center;\">No hay parámetros disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();

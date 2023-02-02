@@ -46,7 +46,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <h2>¿Está seguro de eliminar el tema?</h2>
+                    <h4>¿Está seguro de eliminar el tema?</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary eliminar" data-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -73,18 +73,18 @@
                 <div class="col-auto">
                     <ul class="list-unstyled">
                             <ul class="list-unstyled">
-                                    <li><b>Estados:</b></li>
-                                    <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activo</li>
-                                    <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactivo</li>
-                                </ul>
-                            </div>
-                            <div class="col-auto">
-                                <ul class="list-unstyled">
-                                    <li><b>Acciones:</b></li>
-                                    <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar tema</li>
-                                    <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar tema</li>
-                                </ul>                    
-                    </ul>
+                                <li><b>Estados:</b></li>
+                                <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activo</li>
+                                <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactivo</li>
+                            </ul>
+                        </div>
+                        <div class="col-auto">
+                            <ul class="list-unstyled">
+                                <li><b>Acciones:</b></li>
+                                <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar tema</li>
+                                <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar tema</li>
+                            </ul>                    
+                        </ul>
                 </div>
             </div>
         </div>

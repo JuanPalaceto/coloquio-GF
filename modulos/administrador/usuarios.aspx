@@ -9,7 +9,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h4">Editar Usuario</h5>
+                    <h5 class="modal-title h4" id="usuario"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
@@ -103,14 +103,36 @@
 
     <!-- Ponencias section -->
     <div class="card shadow p-3 mb-5 bg-body rounded">
-    <h3><strong>Lista de usuarios:</strong></h3>
+        <div class="">
+        <h3><strong>Lista de usuarios:</strong></h3>
+        </div>
     <div>
         <button type="button" class="btn btn-primary" onclick="AgregarUsuario();" style="float: left;">Agregar Nuevo Usuario</button>
+        </div>
 
         <br />
-        <br />
-        <br />
+        <div class="card-body">
         <div id="generarTabla" class="table-responsive"></div>
+         <!-- Leyenda de los botones -->
+            <div class="row">
+                <div class="col-auto">
+                    <ul class="list-unstyled">
+                            <ul class="list-unstyled">
+                                    <li><b>Estados:</b></li>
+                                    <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Activo</li>
+                                    <li><i class="fa-sharp fa-solid fa-ban" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Inactivo</li>
+                                </ul>
+                            </div>
+                            <div class="col-auto">
+                                <ul class="list-unstyled">
+                                    <li><b>Acciones:</b></li>
+                                    <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar usuario</li>
+                                    <li><i class="fa-sharp fa-solid fa fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar usuario</li>
+                                </ul>                    
+                    </ul>
+                </div>
+            </div>
+
     </div>
     </div>    
 
@@ -279,6 +301,19 @@
                     var JsonD = $.parseJSON(valor.d)
                     console.log(JsonD);
                     if (JsonD.success == 1) {
+                        PNotify.success({
+                            text: 'El usuario se activo correctamente.',
+                            delay: 2500,
+                            styling: 'bootstrap3'
+                        });
+                        TablaUsu();
+                    }
+                    else if (JsonD.success == 2) {
+                        PNotify.success({
+                            text: 'El usuario se desactivo correctamente.',
+                            delay: 2500,
+                            styling: 'bootstrap3'
+                        });
                         TablaUsu();
                     }
                 }
@@ -296,7 +331,8 @@
                     console.log("Error" + jqXHR.responseText);
                 }, success: function (informacion) {
                     var jsonD = $.parseJSON(informacion.d);
-                     $('#txtidUsu').val(id);
+                    $('#txtidUsu').val(id);
+                    $('#usuario').html('Editar Usuario'); 
                     $('#txtNombre').val(jsonD.nom);
                     $('#txtApellidos').val(jsonD.apell);
                     <%-- $('#txtidIns').val(jsonD.inst);
@@ -518,6 +554,7 @@
             $('#txtEmail').val('');
             $('#txtContraseña').val('');
             $('#txtCurp').val('');
+            $('#usuario').html('Agregar Nuevo Usuario'); 
         }
 
     </script>

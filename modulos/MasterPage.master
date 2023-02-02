@@ -50,7 +50,6 @@
 				</div>
 			</div>
 			<!-- Navbar-->
-			<%=cambiaRol%>
 			<%-- <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-2">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -64,12 +63,13 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle no-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-gear"></i></a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-						<li><a class="dropdown-item" href="http://148.237.36.49/coloquio/modulos/perfil.aspx">Mis datos</a></li>
-						<li><a class="dropdown-item" href="#!">Registro de Actividad</a></li>
+						<li><a class="dropdown-item" href="http://148.237.36.49/coloquio/modulos/perfil.aspx"><i class="fa fa-user" aria-hidden="true"></i> Mis datos</a></li>
+						<%-- <li><a class="dropdown-item" href="#!">Registro de Actividad</a></li> --%>
+						<%=cambiaRol%>
 						<li>
 							<hr class="dropdown-divider" />
 						</li>
-						<li><a class="dropdown-item" href="<%= Page.ResolveUrl("~")%>login/logout.aspx">Cerrar Sesión</a></li>
+						<li><a class="dropdown-item" href="<%= Page.ResolveUrl("~")%>login/logout.aspx"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar Sesión</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -99,7 +99,7 @@
 							<!-- Opciones en móvil -->
 							<div class="ocultaMenu">
 								<div class="sb-sidenav-menu-heading">Opciones</div>
-								<%= cambiaRolMovil%>
+
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOpciones" aria-expanded="false" aria-controls="collapseOpciones">
 									<div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div>
 									Cuenta
@@ -109,6 +109,7 @@
 									<nav class="sb-sidenav-menu-nested nav">
 										<a class="nav-link" href="http://148.237.36.49/coloquio/modulos/perfil.aspx">Mis datos</a>
 										<%--<a class="nav-link" href="#">Registro de Actividad</a>--%>
+										<%= cambiaRolMovil%>
 									</nav>
 								</div>
 							</div>
@@ -192,7 +193,7 @@
 						</div>
 					</div>
 					<div class="sb-sidenav-footer ocultaMenu">
-						<a class="nav-link logout" href="<%= Page.ResolveUrl("~")%>login/logout.aspx">Cerrar sesión<i class="fa-solid fa-right-from-bracket float-end"></i></a>
+						<a class="nav-link logout" href="<%= Page.ResolveUrl("~")%>login/logout.aspx"><i class="fa fa-power-off" aria-hidden="true"></i> Cerrar sesión<i class="fa-solid fa-right-from-bracket float-end"></i></a>
 					</div>
 				</nav>
 			</div>
