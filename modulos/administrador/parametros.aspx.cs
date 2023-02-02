@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using System.Web.Script.Serialization;
+using System.Web.Script.Serialization;
 
 public partial class modulos_administrador_parametros : System.Web.UI.Page
 {
@@ -163,7 +164,10 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     [WebMethod]
     public static string ModParametro(int id)
     {
-        // StringBuilder sb = new StringBuilder();
+        // // StringBuilder sb = new StringBuilder();
+        var serializer = new JavaScriptSerializer();
+        string jsonString = string.Empty;
+
         var serializer = new JavaScriptSerializer();
         string jsonString = string.Empty;
 
@@ -193,7 +197,9 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
             }
             con.Close();
         }
-        // return sb.ToString();
+        // // return sb.ToString();
+
+        return jsonString;
 
         return jsonString;
     }

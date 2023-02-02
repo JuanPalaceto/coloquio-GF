@@ -360,6 +360,11 @@
             obj.newEdicion = UpEdicion;
             obj.id = id;
 
+
+            var obj = {};
+            obj.newEdicion = UpEdicion;
+            obj.id = id;
+
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/ModificarEdicion',
@@ -380,6 +385,13 @@
                 }
             });
         };
+
+
+        $('.confirmar').on('click', function(){
+        let idParaEditar = $("#idEdicion").val();
+            ActualizarEdicion(idParaEditar);
+        })
+
 
 
         $('.confirmar').on('click', function(){
