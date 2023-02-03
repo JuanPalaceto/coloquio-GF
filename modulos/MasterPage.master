@@ -109,8 +109,7 @@
 									<nav class="sb-sidenav-menu-nested nav">
 										<a class="nav-link" href="http://148.237.36.49/coloquio/modulos/perfil.aspx">Mis datos</a>
 										<%--<a class="nav-link" href="#">Registro de Actividad</a>--%>
-										<%= cambiaRolMovil%>
-										<%= cambiaRolMovil%>
+										<%= cambiaRolMovil%>								
 									</nav>
 								</div>
 							</div>

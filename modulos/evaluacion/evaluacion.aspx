@@ -1,6 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/modulos/MasterPage.master" AutoEventWireup="true" CodeFile="evaluacion.aspx.cs" Inherits="modulos_evaluacion_evaluacion" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style>
+        .d-flex button {
+            width: 200px !important; /* set the width based on the longest button */
+        }
+    </style>    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <div class="card shadow p-3 mb-5 bg-body rounded">
@@ -32,7 +37,17 @@
             <span id="conttxtRecomendaciones" class="float-end text-muted">(0/500)</span>
             </div>                    
         </div>
-        <div class="text-center"><a class="btn btn-primary btn-block" onclick="Guardar();" style="width: auto;">Guardar</a></div>
+        <div class="row mt-5 gy-3">
+            <div class="offset-xxl-2 col-xxl-2 offset-md-2 col-md-4 offset-sm-2 col-sm-8">
+                <button id="btnAprobar" class="btn btn-primary w-100" style="height: 100%;">Aprobar</button>
+            </div>            
+            <div class="offset-xxl-1 col-xxl-2 offset-md-0 col-md-4 offset-sm-2 col-sm-8">
+                <button id="btnAprobarCambios" class="btn btn-info text-white w-100">Aprobar con cambios</button>
+            </div>
+            <div class="offset-xxl-1 col-xxl-2 offset-md-4 col-md-4 offset-sm-2 col-sm-8">
+                <button id="btnRechazar" class="btn btn-danger w-100" style="height: 100%;">Rechazar</button>
+            </div>            
+        </div>
     </div> 
 </div> 
 <script>
@@ -81,19 +96,6 @@
         });
     };
 
-    function sumatoria(){
-        var temp, sumatoria = 0;
-        var numReg = parseInt($('#regTot').val());        
-        if(numReg != 0 && numReg != NaN){
-            for(var i = 0; i < numReg; i++){
-                temp = $('#sel' + i).val();
-                if(temp != "") {
-                    sumatoria += parseInt(temp);
-                }                            
-            }
-            $('#pts').html('<b>' + sumatoria + ' Puntos</b>');
-        }
-    }
 
     function Guardar(){
         numReg = parseInt($('#regTot').val());

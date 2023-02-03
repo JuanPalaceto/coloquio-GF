@@ -35,11 +35,9 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                     int regNum = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
                     while (drseldatos.Read())
-                    {
-                        int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
-                        ptsTotales += puntajeMax;
+                    {                                                
                         string y = Convert.ToString(drseldatos["seccion"]);
 
                         sb.Append("<tr>");
@@ -53,27 +51,17 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                             x = Convert.ToString(drseldatos["seccion"]);
                         }
                         sb.Append("<td data-order=\"\">" + drseldatos["parametro"].ToString() + "</td>");
-                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\" data-order=\"\">" + puntajeMax + "</td>");
-                        sb.Append("<td align=\"center\" data-order=\"\"><select id=\"sel" + regNum + "\" oninput=sumatoria(); id=\"txtPuntaje" + puntajeMax + "\">");
+                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");                        
+                        sb.Append("<td align=\"center\" data-order=\"\"><select>");
                         sb.Append("<option value=\"\">Seleccione...</option>");
-                        for (int i = 0; i <= puntajeMax; i++)
-                        {
-                            sb.Append("<option value=" + i + ">" + i + "</option>");
-                        }
-                        sb.Append("</option></select>");
+                        sb.Append("<option value=\"1\">Satisfactorio</option>");
+                        sb.Append("<option value=\"0\">No Satisfactorio</option>");
+                        sb.Append("</select></td>");
                         regNum++;
                     }
                     if (drseldatos.HasRows)
-                    {
-                        sb.Append("<tfoot><tr>");
-                        sb.Append("<td><b>Puntajes</b></td>");
-                        sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
-                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
-                        sb.Append("<td style=\"text-align:center !important\" id=\"pts\"><b>0 Puntos</b></td>");
-                        sb.Append("</tr></tfoot>");
-                        sb.Append("</tbody></table>");
-                        sb.Append("<input type=\"hidden\" value=\"" + regNum + "\" id= \"regTot\"></input>");
+                    {                        
+                        sb.Append("</tbody></table>");                        
                     }
                     else
                     {
