@@ -25,27 +25,27 @@
         <br>
         <div class="row">
             <div class="col-12 col-sm-10 offset-sm-1 ">
-                <label for="txtObservaciones" class="col-form-label">Observaciones:</label>            
+                <label for="txtObservaciones" class="col-form-label">Observaciones para el ponente:</label>            
                 <textarea id="txtObservaciones" class="form-control" rows=5 maxlength="500" oninput="contador(this);"></textarea>
                 <span id="conttxtObservaciones" class="float-end text-muted">(0/500)</span>
             </div>                    
         </div>        
         <div class="row">
             <div class="col-12 col-sm-10 offset-sm-1 ">
-            <label for="txtRecomendaciones" class="col-form-label">En caso de recomendar cambios enlistarlos a continuación:</label>            
+            <label for="txtRecomendaciones" class="col-form-label">Comentarios para los evaluadores:</label>            
             <textarea id="txtRecomendaciones" class="form-control" rows=5 maxlength="500" oninput="contador(this);"></textarea>
             <span id="conttxtRecomendaciones" class="float-end text-muted">(0/500)</span>
             </div>                    
         </div>
         <div class="row mt-5 gy-3">
             <div class="offset-xxl-2 col-xxl-2 offset-md-2 col-md-4 offset-sm-2 col-sm-8">
-                <button id="btnAprobar" class="btn btn-primary w-100" style="height: 100%;">Aprobar</button>
+                <button id="btnAprobar" type="button" class="btn btn-primary w-100" style="height: 100%;">Aprobar</button>
             </div>            
             <div class="offset-xxl-1 col-xxl-2 offset-md-0 col-md-4 offset-sm-2 col-sm-8">
-                <button id="btnAprobarCambios" class="btn btn-info text-white w-100">Aprobar con cambios</button>
+                <button id="btnAprobarCambios" type="button" class="btn btn-info text-white w-100">Aprobar con cambios</button>
             </div>
             <div class="offset-xxl-1 col-xxl-2 offset-md-4 col-md-4 offset-sm-2 col-sm-8">
-                <button id="btnRechazar" class="btn btn-danger w-100" style="height: 100%;">Rechazar</button>
+                <button id="btnRechazar" type="button" class="btn btn-danger w-100" style="height: 100%;">Rechazar</button>
             </div>            
         </div>
     </div> 
@@ -97,6 +97,11 @@
     };
 
 
+    $('#btnAprobar').on('click', function () {
+        Guardar();
+    })
+
+
     function Guardar(){
         numReg = parseInt($('#regTot').val());
         var calif = [];
@@ -104,7 +109,7 @@
         var observaciones = $('#txtObservaciones').val();
         var recomendaciones = $('#txtRecomendaciones').val();
         for(var i = 0; i < numReg; i++) {
-            calif[i] = parseInt($('#sel' + i).val());            
+            calif[i] = parseInt($('#sel' + i).val());
             <%-- idParametro[i] = parseInt($('#idPar' + i).val()); --%>
         }        
 
@@ -131,6 +136,7 @@
         obj.recomendaciones = recomendaciones;
 
         console.log(obj)
+        console.log(calif)
 
         if ($('form')[0].checkValidity()){
             $.ajax({
