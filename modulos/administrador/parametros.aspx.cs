@@ -5,7 +5,6 @@ using System.Text;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using System.Web.Script.Serialization;
-using System.Web.Script.Serialization;
 
 public partial class modulos_administrador_parametros : System.Web.UI.Page
 {
@@ -164,10 +163,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
     [WebMethod]
     public static string ModParametro(int id)
     {
-        // // StringBuilder sb = new StringBuilder();
-        var serializer = new JavaScriptSerializer();
-        string jsonString = string.Empty;
-
+        // StringBuilder sb = new StringBuilder();
         var serializer = new JavaScriptSerializer();
         string jsonString = string.Empty;
 
@@ -197,9 +193,7 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
             }
             con.Close();
         }
-        // // return sb.ToString();
-
-        return jsonString;
+        // return sb.ToString();
 
         return jsonString;
     }
@@ -222,6 +216,27 @@ public partial class modulos_administrador_parametros : System.Web.UI.Page
             }
             con.Close();
             return "{\"success\": \"" + Eliminado + "\"}";
+        }
+    }
+
+    [WebMethod]
+    public static string alternarActivo(int id)
+    {
+        int Exitoso = 1;
+        using (SqlConnection Conn = conn.conecta())
+        {
+            using (SqlCommand comand = new SqlCommand("activarParametro", Conn))
+            {
+                comand.CommandType = CommandType.StoredProcedure;
+                comand.Parameters.AddWithValue("@idParametro", id);
+                SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
+                pexitoso.Direction = ParameterDirection.Output;
+                Conn.Open();
+                comand.ExecuteNonQuery();
+                Exitoso = int.Parse(pexitoso.Value.ToString());
+            }
+            Conn.Close();
+            return "{\"success\": \"" + Exitoso + "\"}";
         }
     }
 }

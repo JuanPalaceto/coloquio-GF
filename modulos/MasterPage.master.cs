@@ -35,9 +35,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 menuDisponible = @"<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_invitacion.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-question""></i></div>Invitaciones</a>
                                     <a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluar.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-list""></i></div>Ponencias Asignadas</a>
 									<a class=""nav-link"" href=""/coloquio/modulos/evaluacion/ponencias_evaluadas.aspx""><div class=""sb-nav-link-icon""><i class=""fa-solid fa-clipboard-check""></i></div>Ponencias Evaluadas</a>";
-                cambiaRol = @"<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a></li>";
+                cambiaRol = @"<li><a id=""btnCambiarRol"" class=""dropdown-item"" href=""#!"" data-bs-toggle=""modal"" data-bs-target=""#modalRol""><i class=""fa fa-refresh"" aria-hidden=""true""></i> Cambiar de Rol</a></li>";
                 cambiaRolMovil = @"<a class=""nav-link"" href=""#"" data-bs-toggle=""modal"" data-bs-target=""#modalRol"">Cambiar de Rol</a>";
-                tipoRol = "Ponente";
+                tipoRol = "Ponente";    
                 break;
             // Administrador
             case 3:

@@ -64,16 +64,33 @@ public partial class ponencias_listar : System.Web.UI.Page
                             // asignada
                             case 2:
                                 sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-solid fa-clipboard-user\" style=\"font-size:1.4em;\"></i></td>");
+                                sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionEditar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionBorrar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-comment text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionComentarios();\"></button>");
                                 break;
 
                             // aprobada
                             case 3:
                                 sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-check text-success\" style=\"font-size:1.4em;\"></i></td>");
+                                sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionEditar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionBorrar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-comment text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionComentarios();\"></button>");
                                 break;
 
-                            // reprobada
+                            // rechazada
                             case 4:
                                 sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-xmark text-danger\" style=\"font-size:1.4em;\"></i></td>");
+                                sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionEditar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionBorrar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-success fa fa-comment text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"VerComentarios();\"></button>");
+                                break;
+
+                            // aprobada con cambios
+                            case 5:
+                                sb.Append("<td align=\"center\" class=\"align-middle\"><i class=\"fa-sharp fa-solid fa-triangle-exclamation text-warning\" style=\"font-size:1.4em;\"></i></td>");
+                                sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-info fa fa-pencil text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"editarPonencia(" + drseldatos["idPonencia"].ToString() + ");\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-trash text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"notificacionBorrar();\"></button>");
+                                sb.Append("<button type=\"button\" class=\"btn btn-icon btn-success fa fa-comment text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"VerComentarios();\"></button>");
                                 break;
 
                             default:

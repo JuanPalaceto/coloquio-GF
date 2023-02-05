@@ -84,7 +84,7 @@ protected void Page_Load(object sender, EventArgs e)
                     else
                     {
                         sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Modalidades</th></tr></thead><tbody>");
-                        sb.Append("<td colspan=\"3\" style=\"text-align: center;\">No hay modalidades disponibles.</td></tbody></table>");
+                        sb.Append("<td style=\"text-align: center;\">No hay modalidades disponibles.</td></tbody></table>");
                     }
                     drseldatos.Close();
                 }

@@ -110,14 +110,10 @@
                         <input class="form-control" type="text" id="nombreEdicion" name="edicion" value="" size="30">
                         <br>
                     </div>
-                    <br />
-                    <select name="activo">
+                    <%-- <select name="activo">
                         <option value="1">Activado</option>
                         <option value="0" selected="">Desactivado</option>
-                    </select>
-
-                        <br />
-                        <br />
+                    </select> --%>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-primary confirmar" data-bs-dismiss="modal" style="float: right; margin-left: 5px;">Confirmar</button>
@@ -360,11 +356,6 @@
             obj.newEdicion = UpEdicion;
             obj.id = id;
 
-
-            var obj = {};
-            obj.newEdicion = UpEdicion;
-            obj.id = id;
-
             $.ajax({
                 type: 'POST',
                 url: 'ediciones.aspx/ModificarEdicion',
@@ -385,13 +376,6 @@
                 }
             });
         };
-
-
-        $('.confirmar').on('click', function(){
-        let idParaEditar = $("#idEdicion").val();
-            ActualizarEdicion(idParaEditar);
-        })
-
 
 
         $('.confirmar').on('click', function(){

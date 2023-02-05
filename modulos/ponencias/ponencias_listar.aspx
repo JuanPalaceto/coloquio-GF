@@ -22,8 +22,8 @@
                         <li><i class="fa-solid fa-file-circle-question" style="font-size:1.2em;"></i> = Registro incompleto</li>                        
                         <li><i class="fa-solid fa-file-circle-check" style="font-size:1.2em;"></i> = Registro completo</li>
                         <li><i class="fa-solid fa-clipboard-user" style="font-size:1.2em;"></i> = Asignada</li>
+                        <li><i class="fa-solid fa-triangle-exclamation text-warning" style="font-size:1.2em;"></i> = Requiere correcciones</li>
                         <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aprobada</li>
-                        <li><i class="fa-solid fa-rotate-left text-secondary" style="font-size:1.2em;"></i> = Aprobada con cambios</li>
                         <li><i class="fa-sharp fa-solid fa-xmark text-danger" style="font-size:1.2em;"></i> = Rechazada</li>
                     </ul>
                 </div>
@@ -33,6 +33,7 @@
                         <li><i class="fa-sharp fa-solid fa-pencil text-info" style="font-size:1.2em;"></i> = Editar ponencia</li>
                         <li><i class="fa-sharp fa-solid fa-trash text-danger" style="font-size:1.2em;"></i> = Eliminar ponencia</li>
                         <li><i class="fa-sharp fa-solid fa-comment text-success" style="font-size:1.2em;"></i> = Ver comentarios</li>
+                        <li><i class="fa-solid fa-square text-black-50" style="font-size:1.2em;"></i> = Acción deshabilitada</li>
                         <%-- <li><i class="fa-sharp fa-solid fa fa-download" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Descargar ponencia</li> --%>
                     </ul>
                 </div>
