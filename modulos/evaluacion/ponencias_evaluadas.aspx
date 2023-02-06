@@ -19,8 +19,31 @@
     <div class="card shadow p-3 mb-5 bg-body rounded">
         <h3><strong>Ponencias evaluadas</strong></h3>
         <br>
-        <div id="generarTabla" class="table-responsive"></div>
-        <br>
+        <div class="card-body">
+            <br />
+            <div id="generarTabla" class="table-responsive"></div>
+            <br>
+
+            <%-- leyendas --%>
+            <div class="row">
+                <div class="col-auto">
+                    <ul class="list-unstyled">
+                        <li><b>Acciones:</b></li>
+                        <li><i class="fa-sharp fa-solid fa-clipboard text-success" style="font-size:1.2em;"></i> = Ver evaluación</li>
+                        <li><i class="fa-sharp fa-solid fa fa-magnifying-glass" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Ver ponencia</li>
+                    </ul>
+                </div>
+
+                <div class="col-auto">
+                    <ul class="list-unstyled">
+                        <li><b>Evaluación:</b></li>
+                        <li><i class="fa-sharp fa-solid fa-check text-success" style="font-size:1.2em;"></i> = Aprobada</li>
+                        <li><i class="fa-sharp fa-solid fa-xmark text-danger" style="font-size:1.2em;"></i> = Rechazada</li>
+                        <li><i class="fa-solid fa-triangle-exclamation text-warning" style="font-size:1.2em;"></i> = Aprobada con cambios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <%-- Modal ver ponencia --%>
@@ -117,6 +140,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%-- Modal ver evaluación --%>
+    <div id="modalEval" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelEval" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="labelEval">Detalle de la evaluación:</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                </div>
+                <div class="modal-body">
+                    <h4><b>Título de la ponencia: </b><span id="lblTitulo"></span></h4>
+                    <br />
+                    <div id="tablaEvaluacion" class="table-responsive"></div>                    
                 </div>
             </div>
         </div>
@@ -265,6 +306,59 @@
         $('#btnRegresaAutores').on('click', function(){
             $('#btnPillData').trigger('click');
         });
+        /* ******************** */
+
+
+        /* Función que crea la tabla de la evaluación y abre el modal */
+        function verEvaluacion(id, titulo, idEvaluacion) {  //aqui se crea la tabla
+            $('#modalEval').modal('show');
+            $('#lblTitulo').html(titulo);
+
+            var obj = {};            
+            obj.idEvaluacion = idEvaluacion;
+
+            $.ajax({
+                type: 'POST',
+                url: 'ponencias_evaluadas.aspx/verEval',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (tabla) {
+                    $("#tablaEvaluacion").html(tabla.d); //nombre del id del div de la tabla
+                    setTimeout(function myfunction() {
+                        dataTableEvaluacion();
+                    }, 100);
+                }
+            });
+        }
+        /* ******************** */
+
+
+        /* Estilos de la datatable de la evaluaciónm */
+        function dataTableEvaluacion(page, leng) {
+            $('#tablaEv').DataTable({
+                "bPaginate": false,
+                "ordering": false,
+                "searching": false,
+                language: {
+                    "decimal": ".",
+                    "emptyTable": "",
+                    "info": "Mostrando _TOTAL_ parámetros.",
+                    "infoEmpty": "",
+                    "infoFiltered": "<br/>(Filtrado de _MAX_ parámetros en total)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrando _MENU_ parámetros",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "B&uacute;squeda:",
+                    "zeroRecords": "No hay parámetros disponibles.",
+                }
+            });
+        };
         /* ******************** */
     </script>
 </asp:Content>

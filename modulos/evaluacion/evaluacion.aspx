@@ -42,7 +42,7 @@
                 <button id="btnAprobar" type="button" class="btn btn-primary w-100" style="height: 100%;">Aprobar</button>
             </div>            
             <div class="offset-xxl-1 col-xxl-2 offset-md-0 col-md-4 offset-sm-2 col-sm-8">
-                <button id="btnAprobarCambios" type="button" class="btn btn-info text-white w-100">Aprobar con cambios</button>
+                <button id="btnAprobarCambios" type="button" class="btn btn-warning text-white w-100">Aprobar con cambios</button>
             </div>
             <div class="offset-xxl-1 col-xxl-2 offset-md-4 col-md-4 offset-sm-2 col-sm-8">
                 <button id="btnRechazar" type="button" class="btn btn-danger w-100" style="height: 100%;">Rechazar</button>
