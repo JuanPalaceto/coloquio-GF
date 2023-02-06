@@ -21,23 +21,28 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
     [WebMethod]
     public static string TablaListarPonencias()
     {
+        int user = Convert.ToInt32(HttpContext.Current.Session["idusuario"]);
+
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
         {
             using (SqlCommand seldata = new SqlCommand("Evaluacion", con))
             {
-                seldata.CommandType = CommandType.StoredProcedure;
+                seldata.CommandType = CommandType.StoredProcedure;                
+                seldata.Parameters.AddWithValue("@idUsuario", user);
                 con.Open();
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
                     string x = "";
-                    //int ptsTotales = 0;
+                    int ptsTotales = 0;
                     int regNum = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Evaluación</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
                     while (drseldatos.Read())
-                    {                                                
+                    {
+                        int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
+                        ptsTotales += puntajeMax;
                         string y = Convert.ToString(drseldatos["seccion"]);
 
                         sb.Append("<tr>");
@@ -51,17 +56,27 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                             x = Convert.ToString(drseldatos["seccion"]);
                         }
                         sb.Append("<td data-order=\"\">" + drseldatos["parametro"].ToString() + "</td>");
-                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");                        
-                        sb.Append("<td align=\"center\" data-order=\"\"><select id=\"sel" + regNum + "\" class=\"form-select w-auto\" required>");
+                        sb.Append("<td hidden data-order=\"\" id=\"idPar" + regNum + "\">" + drseldatos["idParametro"].ToString() + "</td>");
+                        sb.Append("<td align=\"center\" data-order=\"\">" + puntajeMax + "</td>");
+                        sb.Append("<td align=\"center\" data-order=\"\"><select id=\"sel" + regNum + "\" class=\"form-select w-auto\" required oninput=sumatoria(); id=\"txtPuntaje" + puntajeMax + "\">");
                         sb.Append("<option value=\"\">Seleccione...</option>");
-                        sb.Append("<option value=\"1\">Satisfactorio</option>");
-                        sb.Append("<option value=\"0\">No Satisfactorio</option>");
+                        for (int i = 0; i <= puntajeMax; i++)
+                        {
+                            sb.Append("<option value=" + i + ">" + i + "</option>");
+                        }
                         sb.Append("</select></td>");
                         regNum++;
                     }
                     if (drseldatos.HasRows)
-                    {                        
-                        sb.Append("</tbody></table>");
+                    {
+                        sb.Append("</tbody>");
+                        sb.Append("<tfoot><tr>");
+                        sb.Append("<td><b>Puntajes</b></td>");
+                        sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
+                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
+                        sb.Append("<td style=\"text-align:center !important\" id=\"pts\"><b>0 Puntos</b></td>");
+                        sb.Append("</tr></tfoot>");
+                        sb.Append("</table>");
                         sb.Append("<input type=\"hidden\" value=\"" + regNum + "\" id= \"regTot\"></input>");
                     }
                     else
@@ -78,23 +93,22 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string Guardar(string calif, string observaciones, string recomendaciones, string idParametro)
+    public static string Guardar(string calif, string observaciones, string recomendaciones, string idParametro, int estado)
     {
-        int Exitoso = 0, idUsuario;
-        idUsuario = Convert.ToInt32(HttpContext.Current.Session["idusuario"]);
+        int Exitoso = 0;        
 
         using (SqlConnection Conn = conn.conecta())
         {
-            using (SqlCommand comand = new SqlCommand("GuardarEvaluacionn", Conn))
+            using (SqlCommand comand = new SqlCommand("GuardarEvaluacion", Conn))
             {
                 comand.CommandType = CommandType.StoredProcedure;
 
                 comand.Parameters.Add("@califs", SqlDbType.NVarChar, -1).Value = calif;
                 comand.Parameters.Add("@idParametro", SqlDbType.NVarChar, -1).Value = idParametro;
                 comand.Parameters.Add("@observaciones", SqlDbType.NVarChar, -1).Value = observaciones;
-                comand.Parameters.Add("@recomendaciones", SqlDbType.NVarChar, -1).Value = recomendaciones;
-                comand.Parameters.Add("@idUsuario", SqlDbType.Int).Value = idUsuario;
+                comand.Parameters.Add("@recomendaciones", SqlDbType.NVarChar, -1).Value = recomendaciones;                
                 comand.Parameters.Add("@idEvaluacion", SqlDbType.Int).Value = Convert.ToString(HttpContext.Current.Session["idEvaluacion"]);
+                comand.Parameters.Add("@estado", SqlDbType.Int).Value = estado;
 
                 SqlParameter pexitoso = comand.Parameters.Add("@Exitoso", SqlDbType.Int);
                 pexitoso.Direction = ParameterDirection.Output;

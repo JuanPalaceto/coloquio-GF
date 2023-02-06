@@ -97,12 +97,37 @@
     };
 
 
+    function sumatoria() {
+        var temp, sumatoria = 0;
+        var numReg = parseInt($('#regTot').val());
+        if (numReg != 0 && numReg != NaN) {
+            for (var i = 0; i < numReg; i++) {
+                temp = $('#sel' + i).val();
+                if (temp != "") {
+                    sumatoria += parseInt(temp);
+                }
+            }
+            $('#pts').html('<b>' + sumatoria + ' Puntos</b>');
+        }
+    }
+
+
     $('#btnAprobar').on('click', function () {
-        Guardar();
+        Guardar(1);
     })
 
 
-    function Guardar(){
+    $('#btnRechazar').on('click', function () {
+        Guardar(2);
+    })
+
+
+    $('#btnAprobarCambios').on('click', function () {
+        Guardar(3);
+    })
+
+
+    function Guardar(estado){
         numReg = parseInt($('#regTot').val());
         var calif = [];
         var idParametro = [];
@@ -134,9 +159,10 @@
         obj.idParametro = apar;
         obj.observaciones = observaciones;
         obj.recomendaciones = recomendaciones;
+        obj.estado = estado;
 
-        console.log(obj)
-        console.log(calif)
+        //console.log(obj)
+        //console.log(calif)
 
         if ($('form')[0].checkValidity()){
             $.ajax({
@@ -150,11 +176,21 @@
                 },
                 success: function (valor) {
                     var JsonD = $.parseJSON(valor.d)
-                    if (JsonD.success == 1) {
-                        alert('La informacion se guardó correctamente.');
-                        window.location.href = "ponencias_evaluar.aspx";
+                    if (JsonD.success == 1) {                        
+                        PNotify.success({
+                            text: 'La información se guardó correctamente.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+                        setTimeout(function () {
+                            window.location.href = "ponencias_evaluar.aspx";
+                        }, 3001);                   
                     } else if (JsonD.success == 2) {
-                        alert('Algo salió mal.')
+                        PNotify.error({
+                            text: 'Algo salió mal.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
                     }
                 }
             });
