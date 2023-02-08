@@ -31,7 +31,9 @@
                     <ul class="list-unstyled">
                         <li><b>Acciones:</b></li>
                         <li><i class="fa-sharp fa-solid fa-clipboard text-success" style="font-size:1.2em;"></i> = Evaluar ponencia</li>
-                        <li><i class="fa-sharp fa-solid fa fa-magnifying-glass" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Ver ponencia</li>
+                        <li><i class="fa-sharp fa-solid fa fa-magnifying-glass text-dark" style="font-size:1.2em;color: var(--bs-gray-600);"></i> = Ver ponencia</li>
+                        <li><i class="fa-sharp fa-solid fa-comment text-success" style="font-size:1.2em;"></i> = Ver comentarios</li>
+                        <li><i class="fa-solid fa-square text-black-50" style="font-size:1.2em;"></i> = Acción deshabilitada</li>
                     </ul>
                 </div>
             </div>
@@ -136,6 +138,24 @@
             </div>
         </div>
     </div>
+
+
+    <%-- Modal ver comentarios --%>
+    <div id="modalComentarios" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelComents" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="labelComents">Comentarios de los evaluadores:</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                </div>
+                <div class="modal-body">
+                    <div id="comentariosBox"></div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         window.onload = function(){
@@ -302,6 +322,63 @@
         $('#btnRegresaAutores').on('click', function(){
             $('#btnPillData').trigger('click');
         });
+        /* ******************** */
+
+
+        /* Ver comentarios */
+        function verComentarios(idPonencia) {                      
+            $.ajax({
+                type: 'POST',
+                url: 'ponencias_evaluar.aspx/VerComentarios',
+                data: "{'id':'" + idPonencia + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error- Status: " + "jqXHR Status: " + jqXHR.Status + "jqXHR Response Text:" + jqXHR.responseText);
+                },
+                success: function (datos) {
+                    if (datos.d == "") {
+                        PNotify.notice({
+                            text: 'No hay comentarios disponibles.',
+                            delay: 3000,
+                            addClass: 'translucent'
+                        });
+                    } else {                        
+                        $("#comentariosBox").html(datos.d);
+                        setTimeout(function myfunction() {
+                            dataTableComents();
+                            $('#modalComentarios').modal('show'); 
+                        }, 100);
+                    }                    
+                }
+            });
+        };
+        /* ******************** */
+
+
+        /* dataTable de comentarios */
+        function dataTableComents(page, leng) {
+            $('#tablaComentarios').DataTable({
+                "lengthMenu": [5, 10, 25, 50, 75, 100],
+                "pageLength": leng,
+                pagingType: 'numbers',
+                "order": [[0, 'asc']],
+                language: {
+                    "decimal": ".",
+                    "emptyTable": "",
+                    "info": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "infoEmpty": "",
+                    "infoFiltered": "<br/>(Filtrado de _MAX_ registros en total)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrando _MENU_ registros",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "B&uacute;squeda:",
+                    "zeroRecords": "No hay registros",
+                }
+            });
+        };
         /* ******************** */
     </script>
 </asp:Content>

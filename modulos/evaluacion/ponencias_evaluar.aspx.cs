@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Remoting.Messaging;
 
 public partial class ponencias_evaluar : System.Web.UI.Page
 {
@@ -21,6 +22,8 @@ public partial class ponencias_evaluar : System.Web.UI.Page
     public static string TablaListarPonencias()
     {
         string user = Convert.ToString(HttpContext.Current.Session["idusuario"]);
+        string clases = string.Empty;
+        int comentarios;
 
         StringBuilder sb = new StringBuilder();
         using (SqlConnection con = conn.conecta())
@@ -36,12 +39,27 @@ public partial class ponencias_evaluar : System.Web.UI.Page
                         sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Resumen</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
+                        // Guardo los comentarios
+                        comentarios = Convert.ToInt32(drseldatos["comentarios"].ToString()); 
+
                         sb.Append("<tr>");
                         sb.Append("<td>" + drseldatos["titulo"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["resumen"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["modalidad"].ToString() + "</td>");
-                        sb.Append("<td align=\"center\"><button type=\"button\" class=\"btn btn-icon btn-success fa-regular fa-clipboard text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"evaluar(" + drseldatos["idPonencia"].ToString() + ",'" + drseldatos["titulo"].ToString() + "'," + drseldatos["idEvaluacion"].ToString() + ");\"></button>");
-                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-secondary fa fa-magnifying-glass text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button></td></tr>");
+                        sb.Append("<td align=\"center\">");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-success fa-regular fa-clipboard text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"evaluar(" + drseldatos["idPonencia"].ToString() + ",'" + drseldatos["titulo"].ToString() + "'," + drseldatos["idEvaluacion"].ToString() + ");\"></button>");
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon btn-dark fa fa-magnifying-glass text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
+                        if (comentarios == 0)
+                        {
+                            clases = "btn-secondary";
+                        }
+                        else
+                        {
+                            clases = "btn-success";
+                        }
+                        sb.Append("<button type=\"button\" class=\"btn btn-icon " + clases + " fa-solid fa-comment text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verComentarios(" + drseldatos["idPonencia"].ToString() + ");\"></button>");
+                        sb.Append("</td>");
+                        sb.Append("</tr>");
                     }
                     if (drseldatos.HasRows)
                     {
@@ -59,6 +77,7 @@ public partial class ponencias_evaluar : System.Web.UI.Page
             return sb.ToString();
         }
     }
+
 
     [WebMethod]
     public static string evaluar(int id, string titulo, int idEvaluacion)
@@ -96,5 +115,47 @@ public partial class ponencias_evaluar : System.Web.UI.Page
         HttpContext.Current.Session["idponencia"] = id;
 
         return sb.ToString();
+    }
+
+
+    [WebMethod]
+    public static string VerComentarios(int id)
+    {        
+        StringBuilder sb = new StringBuilder();
+        using (SqlConnection con = conn.conecta())
+        {
+            using (SqlCommand seldata = new SqlCommand("VerComentarios", con))
+            {
+                seldata.CommandType = CommandType.StoredProcedure;
+                seldata.Parameters.AddWithValue("@idPonencia", id);
+                con.Open();
+                using (SqlDataReader drseldatos = seldata.ExecuteReader())
+                {
+                    if (drseldatos.HasRows)
+                        sb.Append("<table id=\"tablaComentarios\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Fecha</th><th scope=\"col\">Evaluador</th><th scope=\"col\">Comentarios</th><th scope=\"col\">Ronda</th></tr></thead><tbody>");
+                    while (drseldatos.Read())
+                    {
+                        sb.Append("<tr>");
+                        sb.Append("<td>" + drseldatos["fecha"].ToString() + "</td>");
+                        sb.Append("<td>" + drseldatos["evaluador"].ToString() + "</td>");
+                        sb.Append("<td>" + drseldatos["comentarios"].ToString() + "</td>");
+                        sb.Append("<td>" + drseldatos["ronda"].ToString() + "</td>");
+                        sb.Append("</tr>");                        
+                    }
+                    
+                    if (drseldatos.HasRows)
+                    {
+                        sb.Append("</tbody></table>");
+                    }
+                    else
+                    {
+                        //Aquí tengo que encontrar la lógica para cuando no haya comentarios poder saberlo en js
+                    }
+                    drseldatos.Close();
+                }
+            }
+            con.Close();
+            return sb.ToString();
+        }
     }
 }
