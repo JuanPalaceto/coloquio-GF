@@ -1,6 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/modulos/MasterPage.master" AutoEventWireup="true" CodeFile="ponencias_invitacion.aspx.cs" Inherits="modulos_evaluacion_ponencias_invitacion" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style>
+        /* Esto es pal width de las columnas de la tabla, ya no hay que moverle >:v */
+        #generarTabla td:nth-child(1) {
+            width: 25%;
+        }
+        #generarTabla td:nth-child(2) {
+            width: 45%;
+        }
+        #generarTabla td:nth-child(3) {
+            width: 15%;
+        }
+        #generarTabla td:nth-child(4) {
+            width: 15%;
+            /* min-width: 100px; Si quieres que la columna no se achique taaanto cuando empieza a hacerse pequeña la pantalla y 15% es demasiado poco que solo queda al t amaño del texto */
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <!-- body -->

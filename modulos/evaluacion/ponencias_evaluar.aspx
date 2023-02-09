@@ -13,6 +13,22 @@
     <!--ESTOS SON OPCIONALES, AÑADEN EXTRAS DE ORIENTACIÓN (Deben cargarse antes del fileinput.js-->
     <script src="../../FileInput/js/plugins/piexif.js"></script>
     <script src="../../FileInput/js/plugins/sortable.js"></script>
+
+    <style>
+        /* Esto es pal width de las columnas de la tabla, ya no hay que moverle >:v */
+        #tablaComentarios td:nth-child(1) {
+            width: 30%;
+        }
+        #tablaComentarios td:nth-child(2) {
+            width: 15%;
+        }
+        #tablaComentarios td:nth-child(3) {
+            width: 40%;
+        }
+        #tablaComentarios td:nth-child(4) {
+            width: 15%;
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -150,7 +166,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
                 </div>
                 <div class="modal-body">
-                    <div id="comentariosBox"></div>                   
+                    <div id="comentariosBox" class="table-responsive"></div>                   
                 </div>
             </div>
         </div>

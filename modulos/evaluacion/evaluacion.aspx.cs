@@ -38,7 +38,7 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                     int regNum = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th hidden>idParametro</th><th scope=\"col\" style=\"text-align:center !important; max-width: 120px !important;\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important; max-width: 160px !important;\">Puntaje Otorgado</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
@@ -73,7 +73,7 @@ public partial class modulos_evaluacion_evaluacion : System.Web.UI.Page
                         sb.Append("<tfoot><tr>");
                         sb.Append("<td><b>Puntajes</b></td>");
                         sb.Append("<td style=\"text-align:right !important\"><b>Total:</b></td>");
-                        sb.Append("<td style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
+                        sb.Append("<td id=\"tdPuntos\" style=\"text-align:center !important\"><b>" + ptsTotales + " Puntos</b></td>");
                         sb.Append("<td style=\"text-align:center !important\" id=\"pts\"><b>0 Puntos</b></td>");
                         sb.Append("</tr></tfoot>");
                         sb.Append("</table>");

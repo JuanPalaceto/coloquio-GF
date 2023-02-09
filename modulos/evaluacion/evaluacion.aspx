@@ -50,6 +50,28 @@
         </div>
     </div> 
 </div> 
+
+    <%-- Modal confirmación --%>
+    <div id="modalConfirm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="labelConfirm" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="labelConfirm">Confirmación</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        ¿Está seguro de <span id="spnAccion" class="fw-bold"></span> la ponencia <span id="spnTitulo" class="fw-bold"></span> con <span id="spnPuntos" class="fw-bold"></span> de un total de <span id="spnTotal" class="fw-bold"></span>?.
+                    </p>                
+                </div>
+                <div class="modal-footer">
+                    <button id="btnConfirm" type="button" class="btn btn-primary">Enviar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     window.onload = function(){
         TablaUsu();
@@ -112,19 +134,58 @@
     }
 
 
+    // variable para saber que opcion se clickeó
+    var opcion;
+
     $('#btnAprobar').on('click', function () {
-        Guardar(1);
-    })
+        showModal(1);
+    });
 
 
     $('#btnRechazar').on('click', function () {
-        Guardar(2);
-    })
+        showModal(2);
+    });
 
 
     $('#btnAprobarCambios').on('click', function () {
-        Guardar(3);
-    })
+        showModal(3);
+    });
+
+
+    // Crea el modal y lo muestra
+    function showModal(parameter) {
+        let titulo = $('#lblTitulo').text();
+        let total = $('#tdPuntos').text();
+        let puntos = $('#pts').text();
+        let opcionElegida;
+
+        switch (parameter) {
+            case 1:
+                opcionElegida = "Aprobar";
+                break;
+            case 2:
+                opcionElegida = "Rechazar";
+                break;
+            case 3:
+                opcionElegida = "Aprobar con cambios";
+                break;
+        }
+
+        $('#spnTitulo').html(titulo);
+        $('#spnTotal').html(total);
+        $('#spnPuntos').html(puntos);
+        $('#spnAccion').html(opcionElegida);
+        
+        opcion = parameter
+
+        $('#modalConfirm').modal('show');
+    }
+
+
+    $('#btnConfirm').on('click', function () {
+        $('#modalConfirm').modal('hide');
+        Guardar(opcion);
+    });
 
 
     function Guardar(estado){

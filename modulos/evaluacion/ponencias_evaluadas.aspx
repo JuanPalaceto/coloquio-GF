@@ -13,6 +13,22 @@
     <!--ESTOS SON OPCIONALES, AÑADEN EXTRAS DE ORIENTACIÓN (Deben cargarse antes del fileinput.js-->
     <script src="../../FileInput/js/plugins/piexif.js"></script>
     <script src="../../FileInput/js/plugins/sortable.js"></script>
+
+    <style>
+        /* Esto es pal width de las columnas de la tabla, ya no hay que moverle >:v */
+        #tablaEv td:nth-child(1) {
+            width: 30%;
+        }
+        #tablaEv td:nth-child(2) {
+            width: 40%;
+        }
+        #tablaEv td:nth-child(3) {
+            width: 15%;
+        }
+        #tablaEv td:nth-child(4) {
+            width: 15%;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <!-- evaluadas -->

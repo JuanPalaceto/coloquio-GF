@@ -22,7 +22,8 @@ public partial class ponencias_evaluar : System.Web.UI.Page
     public static string TablaListarPonencias()
     {
         string user = Convert.ToString(HttpContext.Current.Session["idusuario"]);
-        string clases = string.Empty;
+        string clases = string.Empty, ronda = string.Empty;
+        int numRonda;
         int comentarios;
 
         StringBuilder sb = new StringBuilder();
@@ -36,16 +37,25 @@ public partial class ponencias_evaluar : System.Web.UI.Page
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Resumen</th><th scope=\"col\">Modalidad</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Resumen</th><th scope=\"col\" style=\"max-width: 130px;\">Modalidad</th><th scope=\"col\" style=\"max-width: 50px;\">Ronda</th><th scope=\"col\" style=\"max-width: 130px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
-                        // Guardo los comentarios
-                        comentarios = Convert.ToInt32(drseldatos["comentarios"].ToString()); 
+                        // Guardo los comentarios y la ronda
+                        comentarios = Convert.ToInt32(drseldatos["comentarios"].ToString());
+                        ronda = drseldatos["ronda"].ToString();
 
                         sb.Append("<tr>");
                         sb.Append("<td>" + drseldatos["titulo"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["resumen"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["modalidad"].ToString() + "</td>");
+                        if (int.TryParse(ronda, out numRonda))
+                        {
+                            sb.Append("<td>" + numRonda + "</td>");
+                        } else
+                        {                            
+                            sb.Append("<td>1</td>");
+                        }
+                        
                         sb.Append("<td align=\"center\">");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-success fa-regular fa-clipboard text-white\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"evaluar(" + drseldatos["idPonencia"].ToString() + ",'" + drseldatos["titulo"].ToString() + "'," + drseldatos["idEvaluacion"].ToString() + ");\"></button>");
                         sb.Append("<button type=\"button\" class=\"btn btn-icon btn-dark fa fa-magnifying-glass text-white m-1\" style=\"width: 1.2em; height: 1.5em;\" onclick=\"verPonencia(" + drseldatos["idPonencia"].ToString() + ", "+ drseldatos["idUsuario"].ToString() + ");\"></button>");
@@ -132,7 +142,7 @@ public partial class ponencias_evaluar : System.Web.UI.Page
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tablaComentarios\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Fecha</th><th scope=\"col\">Evaluador</th><th scope=\"col\">Comentarios</th><th scope=\"col\">Ronda</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tablaComentarios\" class=\"table table-striped table-bordered w-100\"><thead><tr><th scope=\"col\">Fecha</th><th scope=\"col\">Evaluador</th><th scope=\"col\">Comentarios</th><th scope=\"col\">Ronda</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         sb.Append("<tr>");

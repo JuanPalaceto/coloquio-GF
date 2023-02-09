@@ -33,7 +33,7 @@ public partial class modulos_evaluacion_ponencias_evaluadas : System.Web.UI.Page
                 using (SqlDataReader drseldatos = seldata.ExecuteReader())
                 {                    
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Modalidad</th><th scope=\"col\">Edición</th><th scope=\"col\">Fecha de Evaluación</th><th scope=\"col\" style=\"max-width: 100px;\">Evaluación</th><th scope=\"col\" style=\"max-width: 150px;\">Acciones</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tabla\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Título</th><th scope=\"col\">Modalidad</th><th scope=\"col\">Edición</th><th scope=\"col\" style=\"max-width: 120px;\">Fecha de Evaluación</th><th scope=\"col\" style=\"max-width: 50px;\">Ronda</th><th scope=\"col\" style=\"max-width: 60px;\">Evaluación</th><th scope=\"col\" style=\"max-width: 100px;\">Acciones</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         estado = Convert.ToInt32(drseldatos["aptoPublicacion"].ToString());
@@ -42,6 +42,7 @@ public partial class modulos_evaluacion_ponencias_evaluadas : System.Web.UI.Page
                         sb.Append("<td>" + drseldatos["modalidad"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["edicion"].ToString() + "</td>");
                         sb.Append("<td>" + drseldatos["fechaEvaluacion"].ToString() + "</td>");
+                        sb.Append("<td>" + drseldatos["ronda"].ToString() + "</td>");
                         sb.Append("<td class=\"align-middle text-center\">");
                         switch (estado)
                         {
@@ -123,7 +124,7 @@ public partial class modulos_evaluacion_ponencias_evaluadas : System.Web.UI.Page
                     int suma = 0;
 
                     if (drseldatos.HasRows)
-                        sb.Append("<table id=\"tablaEv\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important\">Puntaje Otorgado</th></tr></thead><tbody>");
+                        sb.Append("<table id=\"tablaEv\" width=\"100%\" class=\"table table-striped table-bordered \"><thead><tr><th scope=\"col\">Sección</th><th  scope=\"col\">Parámetro</th><th scope=\"col\" style=\"text-align:center !important; max-width: 100px !important;\">Puntaje Máximo</th><th scope=\"col\" style=\"text-align:center !important; max-width: 80px !important\">Puntaje Otorgado</th></tr></thead><tbody>");
                     while (drseldatos.Read())
                     {
                         int puntajeMax = Convert.ToInt32(drseldatos["puntajeMax"]);
